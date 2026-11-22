@@ -2,7 +2,7 @@
   "title": "بلوچ پینگ VIP",
   "hero_title": "اشتراک اختصاصی گیمینگ",
   "hero_subtitle": "اتصال پایدار به سرورهای اختصاصی با کمترین پینگ در بازی‌های آنلاین",
-  "support_url": "https://t.me/BalochpingSuport",
+  "support_url": "https://t.me/DNS_GAMINGX",
   "footer_note": "تحویل آنی از طریق پشتیبانی • تضمین کیفیت و پایداری سرورها",
   "plans": [
     {
@@ -11,7 +11,9 @@
       "subtitle": "مناسب تست و استفاده روزمره",
       "price": "۵۰ هزار تومان",
       "badge": "",
-      "is_popular": false
+      "is_popular": false,
+      "is_discount_badge": false,
+      "buy_url": "https://t.me/DNS_GAMINGX?text=%D8%B3%D9%84%D8%A7%D9%85%20%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%DA%A9%20%D8%A8%D9%84%D9%88%DA%86%20%D9%BE%DB%8C%D9%86%DA%AF%20%D9%85%DB%8C%D8%AE%D9%88%D8%A7%D9%85%205%20%DA%AF%DB%8C%DA%AF"
     },
     {
       "id": "10gb",
@@ -19,7 +21,9 @@
       "subtitle": "مناسب گیمرهای حرفه‌ای",
       "price": "۱۰۰ هزار تومان",
       "badge": "پرطرفدار",
-      "is_popular": true
+      "is_popular": true,
+      "is_discount_badge": false,
+      "buy_url": "https://t.me/DNS_GAMINGX?text=%D8%B3%D9%84%D8%A7%D9%85%20%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%DA%A9%20%D8%A8%D9%84%D9%88%DA%86%20%D9%BE%DB%8C%D9%86%DA%AF%20%D9%85%DB%8C%D8%AE%D9%88%D8%A7%D9%85%2010%20%DA%AF%DB%8C%DA%AF"
     },
     {
       "id": "20gb",
@@ -27,7 +31,9 @@
       "subtitle": "حجم بالا با قیمت اقتصادی",
       "price": "۱۹۰ هزار تومان",
       "badge": "2ماهه Vip",
-      "is_popular": false
+      "is_popular": false,
+      "is_discount_badge": true,
+      "buy_url": "https://t.me/DNS_GAMINGX?text=%D8%B3%D9%84%D8%A7%D9%85%20%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%DA%A9%20%D8%A8%D9%84%D9%88%DA%86%20%D9%BE%DB%8C%D9%86%DA%AF%20%D9%85%DB%8C%D8%AE%D9%88%D8%A7%D9%85%2020%20%DA%AF%DB%8C%DA%AF"
     }
   ]
 }
