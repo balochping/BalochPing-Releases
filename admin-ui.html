@@ -1,681 +1,884 @@
+admin-ui.html
 
-/* =========================================================
-   BALOCH PING DNS + VIP WORKER
-   GitHub: BalochPing-Releases
-   ========================================================= */
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>مدیریت VIP بلوچ پینگ</title>
 
-// حتماً مقادیر زیر را با مقادیر جدید خودت جایگزین کن
-const SECRET_KEY = "REPLACE_WITH_YOUR_32_CHARACTER_SECRET";
-const APP_TOKEN = "REPLACE_WITH_NEW_APP_TOKEN";
-const ADMIN_PASSWORD = "REPLACE_WITH_NEW_ADMIN_PASSWORD";
-
-// آدرس فایل‌ها در GitHub
-const GITHUB_UI_URL =
-  "https://raw.githubusercontent.com/balochping/BalochPing-Releases/main/dns-ui.html";
-
-// طبق اسکرین‌شات، نام فایل admin-ui.htm است
-const GITHUB_ADMIN_URL =
-  "https://raw.githubusercontent.com/balochping/BalochPing-Releases/main/admin-ui.htm";
-
-const ONLINE_WINDOW_MS = 30 * 60 * 1000;
-const DAY_MS = 24 * 60 * 60 * 1000;
-
-// سرورهای رایگان
-const FREE_DNS_SERVERS = {
-  free_tr: { p: "2.189.86.93", s: "2.189.86.94" },
-  free_ae: { p: "2.189.86.93", s: "2.189.86.94" },
-  free_de: { p: "2.189.86.93", s: "2.189.86.94" }
-};
-
-// سرورهای VIP
-const VIP_DNS_SERVERS = [
-  { id: "vip_tr_1", p: "1.1.1.1", s: "1.0.0.1" },
-  { id: "vip_tr_2", p: "1.1.1.1", s: "1.0.0.1" },
-  { id: "vip_de_1", p: "1.1.1.1", s: "1.0.0.1" },
-  { id: "vip_ae_1", p: "1.1.1.1", s: "1.0.0.1" },
-  { id: "vip_ae_2", p: "1.1.1.1", s: "1.0.0.1" },
-  { id: "vip_qa_1", p: "1.1.1.1", s: "1.0.0.1" },
-  { id: "vip_bh_1", p: "1.1.1.1", s: "1.0.0.1" }
-];
-
-// =========================================================
-// ابزارهای عمومی
-// =========================================================
-
-function jsonResponse(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-store"
-    }
-  });
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-function errorResponse(message, status = 500) {
-  return new Response(message, {
-    status,
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "no-store"
-    }
-  });
+body {
+  margin: 0;
+  background: #0a0b10;
+  color: #fff;
+  font-family: system-ui, Tahoma, sans-serif;
+  padding: 14px 14px 44px;
 }
 
-async function encryptPayload(dataObj) {
-  const enc = new TextEncoder();
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 10px;
+}
 
-  const key = await crypto.subtle.importKey(
-    "raw",
-    enc.encode(SECRET_KEY),
-    { name: "AES-GCM" },
-    false,
-    ["encrypt"]
+.head-title {
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.head-sub {
+  font-size: 11px;
+  color: #8b93a7;
+  margin-top: 2px;
+}
+
+.refresh-btn {
+  width: auto;
+  margin: 0;
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: #1a1e2e;
+  color: #ffe082;
+  border: 1px solid rgba(245,183,0,.45);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.stat {
+  background: #141622;
+  border: 1px solid #262a3d;
+  border-radius: 14px;
+  padding: 10px 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.stat .num {
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.stat .lbl {
+  font-size: 10px;
+  color: #9aa3b8;
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+.stat.online .num { color: #10e870; }
+.stat.active .num { color: #00e5ff; }
+.stat.ready .num { color: #ffe082; }
+.stat.expired .num { color: #ff7b7b; }
+
+.stat.selected {
+  background: #1c1f30;
+  border-color: #f5b700;
+}
+
+.stat.online.selected { border-color: #10e870; }
+.stat.active.selected { border-color: #00e5ff; }
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10e870;
+  box-shadow: 0 0 0 0 rgba(16,232,112,.75);
+  animation: pulse 1.8s infinite;
+  display: inline-block;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(16,232,112,.75); }
+  70% { box-shadow: 0 0 0 7px rgba(16,232,112,0); }
+  100% { box-shadow: 0 0 0 0 rgba(16,232,112,0); }
+}
+
+.card {
+  background: #141622;
+  border: 1px solid #2b2f45;
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+h2 {
+  margin: 0 0 11px;
+  color: #f5b700;
+  font-size: 15.5px;
+  font-weight: 800;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 11px;
+  border: 1px solid #333852;
+  background: #0b0c12;
+  color: #fff;
+  font-size: 13.5px;
+  margin-bottom: 9px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #f5b700;
+}
+
+button {
+  background: linear-gradient(90deg,#ffe082,#f5b700);
+  color: #140e00;
+  font-weight: 900;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+}
+
+.f-pill {
+  width: auto;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  background: #141622;
+  color: #9aa3b8;
+  border: 1px solid #262a3d;
+  white-space: nowrap;
+}
+
+.f-pill.on {
+  background: rgba(245,183,0,.16);
+  color: #ffe082;
+  border-color: #f5b700;
+}
+
+.search-wrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.search-input {
+  margin-bottom: 0;
+  padding: 11px 14px 11px 38px;
+  background: #141622;
+  border: 1px solid #2b2f45;
+  border-radius: 13px;
+}
+
+.search-clear {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #262a3d;
+  color: #cbd5e1;
+  font-size: 12px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-sm {
+  padding: 8px 10px;
+  font-size: 12px;
+  border-radius: 9px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.btn-gray {
+  background: #23273a;
+  color: #fff;
+}
+
+.btn-red {
+  background: #3b161c;
+  color: #ff7b7b;
+}
+
+.btn-green {
+  background: #113626;
+  color: #10e870;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.code-wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 15.5px;
+  color: #ffe082;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.b-online {
+  background: rgba(16,232,112,.16);
+  color: #10e870;
+  border: 1px solid rgba(16,232,112,.5);
+}
+
+.b-active {
+  background: rgba(0,229,255,.14);
+  color: #7ceeff;
+  border: 1px solid rgba(0,229,255,.4);
+}
+
+.b-ready {
+  background: rgba(245,183,0,.15);
+  color: #ffe082;
+  border: 1px solid rgba(245,183,0,.45);
+}
+
+.meta {
+  font-size: 11.8px;
+  color: #9aa3b8;
+  margin: 7px 0 9px;
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+.prog-bg {
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  background: #0b0c12;
+  overflow: hidden;
+  margin-bottom: 10px;
+  border: 1px solid #222638;
+}
+
+.prog-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg,#f5b700,#10e870);
+}
+
+.prog-fill.low {
+  background: linear-gradient(90deg,#ff5252,#ff9100);
+}
+
+.msg {
+  font-size: 12px;
+  color: #10e870;
+  margin-top: 2px;
+  min-height: 16px;
+  word-break: break-word;
+}
+
+.clean-banner {
+  background: rgba(255,123,123,.12);
+  border: 1px solid rgba(255,123,123,.38);
+  color: #ff9e9e;
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-size: 12px;
+  margin-bottom: 12px;
+  display: none;
+}
+
+.empty {
+  text-align: center;
+  color: #8b93a7;
+  font-size: 13px;
+  padding: 22px 12px;
+}
+
+@media (max-width: 360px) {
+  .stats { gap: 5px; }
+  .stat .num { font-size: 16px; }
+  .stat .lbl { font-size: 9px; }
+  .row { gap: 5px; }
+  .btn-sm { font-size: 10.5px; padding: 8px 5px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="head">
+  <div>
+    <div class="head-title">پنل مدیریت VIP بلوچ پینگ</div>
+    <div class="head-sub">مدیریت اشتراک‌ها • حذف خودکار منقضی‌ها</div>
+  </div>
+  <button id="refreshBtn" class="refresh-btn" type="button">↻ بروزرسانی</button>
+</div>
+
+<div id="cleanBanner" class="clean-banner"></div>
+
+<div class="stats">
+  <div class="stat online" data-filter="online">
+    <div class="num">
+      <span class="pulse"></span>
+      <span id="stOnline">0</span>
+    </div>
+    <div class="lbl">آنلاین</div>
+  </div>
+
+  <div class="stat active" data-filter="active">
+    <div id="stActive" class="num">0</div>
+    <div class="lbl">فعال</div>
+  </div>
+
+  <div class="stat ready" data-filter="ready">
+    <div id="stReady" class="num">0</div>
+    <div class="lbl">آماده</div>
+  </div>
+
+  <div class="stat expired" id="expiredBox">
+    <div id="stExpired" class="num">0</div>
+    <div class="lbl">منقضی پاک‌شده</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>ساخت کد اشتراک VIP جدید</h2>
+
+  <select id="days">
+    <option value="30">اشتراک یک‌ماهه (۳۰ روز)</option>
+    <option value="60">اشتراک دوماهه (۶۰ روز)</option>
+    <option value="90">اشتراک سه‌ماهه (۹۰ روز)</option>
+    <option value="7">تست هفتگی (۷ روز)</option>
+  </select>
+
+  <input id="note" maxlength="60" placeholder="یادداشت یا آیدی مشتری">
+
+  <button id="createBtn" type="button">
+    ساخت کد یکتا و کپی
+  </button>
+
+  <div id="statusMsg" class="msg"></div>
+</div>
+
+<div class="filter-bar">
+  <button class="f-pill on" data-pill="all" type="button">
+    همه (<span id="cntAll">0</span>)
+  </button>
+
+  <button class="f-pill" data-pill="online" type="button">آنلاین</button>
+  <button class="f-pill" data-pill="active" type="button">فعال</button>
+  <button class="f-pill" data-pill="ready" type="button">آماده فعال‌سازی</button>
+</div>
+
+<div class="search-wrap">
+  <input
+    id="searchInput"
+    class="search-input"
+    placeholder="جستجو با کد اشتراک یا آیدی مشتری..."
+  >
+  <button id="clearSearch" class="search-clear" type="button">✕</button>
+</div>
+
+<div id="list">
+  <div class="card empty">در حال بارگذاری...</div>
+</div>
+
+<script>
+"use strict";
+
+const adminKey =
+  new URLSearchParams(location.search).get("key") || "";
+
+const API =
+  "/v1/admin/api?key=" + encodeURIComponent(adminKey);
+
+let allItems = [];
+let serverNow = Date.now();
+let onlineWindowMs = 1800000;
+let expiredTotal = 0;
+let activeFilter = "all";
+
+function isOnline(item) {
+  return Boolean(
+    item.deviceId &&
+    item.lastSeenAt &&
+    serverNow - item.lastSeenAt <= onlineWindowMs
   );
-
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-
-  const encrypted = await crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
-    key,
-    enc.encode(JSON.stringify(dataObj))
-  );
-
-  const cipherBytes = new Uint8Array(encrypted);
-  const combined = new Uint8Array(iv.length + cipherBytes.length);
-
-  combined.set(iv, 0);
-  combined.set(cipherBytes, iv.length);
-
-  let binary = "";
-  for (let i = 0; i < combined.length; i++) {
-    binary += String.fromCharCode(combined[i]);
-  }
-
-  return btoa(binary);
 }
 
-function generateVipCode() {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+function formatAgo(timestamp) {
+  if (!timestamp) return "ثبت نشده";
 
-  const part = (len) => {
-    const bytes = crypto.getRandomValues(new Uint8Array(len));
+  const diff = Math.max(0, serverNow - timestamp);
+  const mins = Math.floor(diff / 60000);
 
-    return Array.from(bytes, (b) => {
-      return chars[b % chars.length];
-    }).join("");
-  };
+  if (mins < 2) return "هم‌اکنون";
+  if (mins < 60) return mins + " دقیقه پیش";
 
-  return `BP-${part(4)}-${part(2)}`;
+  const hrs = Math.floor(mins / 60);
+
+  if (hrs < 24) return hrs + " ساعت پیش";
+
+  return Math.floor(hrs / 24) + " روز پیش";
 }
 
-function formatDateFa(ms) {
-  if (!ms) return "";
+function showMessage(message, color = "#10e870") {
+  const element = document.getElementById("statusMsg");
+  element.textContent = message;
+  element.style.color = color;
+}
 
+async function copyText(text) {
   try {
-    return new Date(ms).toLocaleDateString("fa-IR");
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      const copied = document.execCommand("copy");
+      textarea.remove();
+
+      if (!copied) throw new Error("COPY_FAILED");
+    }
+
+    showMessage("کد کپی شد: " + text);
   } catch {
-    return new Date(ms).toISOString().slice(0, 10);
+    showMessage("کد ساخته شد؛ برای کپی دستی: " + text, "#ffe082");
   }
 }
 
-async function incrementExpiredCount(env, delta = 1) {
-  if (!delta || delta <= 0) return;
+function setFilter(filter) {
+  activeFilter = filter;
 
-  const stats =
-    (await env.VIP_KV.get("meta:stats", { type: "json" })) ||
-    { expiredTotal: 0 };
+  document.querySelectorAll(".stat[data-filter]").forEach(element => {
+    element.classList.toggle(
+      "selected",
+      element.dataset.filter === filter
+    );
+  });
 
-  stats.expiredTotal =
-    (Number(stats.expiredTotal) || 0) + delta;
+  document.querySelectorAll(".f-pill").forEach(element => {
+    element.classList.toggle(
+      "on",
+      element.dataset.pill === filter
+    );
+  });
 
-  await env.VIP_KV.put(
-    "meta:stats",
-    JSON.stringify(stats)
-  );
+  renderList();
 }
 
-// =========================================================
-// دریافت HTML از GitHub
-// =========================================================
+function createElement(tag, className, text) {
+  const element = document.createElement(tag);
 
-async function proxyHtml(targetUrl, fileName) {
+  if (className) element.className = className;
+  if (text !== undefined) element.textContent = text;
+
+  return element;
+}
+
+function renderList() {
+  const box = document.getElementById("list");
+  const query = (
+    document.getElementById("searchInput").value || ""
+  ).trim().toLowerCase();
+
+  document.getElementById("clearSearch").style.display =
+    query ? "flex" : "none";
+
+  let onlineCount = 0;
+  let activeCount = 0;
+  let readyCount = 0;
+
+  allItems.forEach(item => {
+    if (!item.deviceId) {
+      readyCount++;
+    } else {
+      activeCount++;
+      if (isOnline(item)) onlineCount++;
+    }
+  });
+
+  document.getElementById("stOnline").textContent = onlineCount;
+  document.getElementById("stActive").textContent = activeCount;
+  document.getElementById("stReady").textContent = readyCount;
+  document.getElementById("stExpired").textContent = expiredTotal;
+  document.getElementById("cntAll").textContent = allItems.length;
+
+  let filtered = allItems.filter(item => {
+    if (activeFilter === "online" && !isOnline(item)) return false;
+    if (activeFilter === "active" && !item.deviceId) return false;
+    if (activeFilter === "ready" && item.deviceId) return false;
+
+    if (!query) return true;
+
+    const haystack = (
+      (item.code || "") + " " +
+      (item.note || "") + " " +
+      (item.deviceId || "")
+    ).toLowerCase();
+
+    return haystack.includes(query);
+  });
+
+  if (activeFilter === "online") {
+    filtered.sort((a, b) =>
+      (b.lastSeenAt || 0) - (a.lastSeenAt || 0)
+    );
+  }
+
+  if (!allItems.length) {
+    box.innerHTML =
+      '<div class="card empty">هیچ اشتراک فعالی در پنل نیست.</div>';
+    return;
+  }
+
+  if (!filtered.length) {
+    box.innerHTML =
+      '<div class="card empty">موردی با این فیلتر یا جستجو پیدا نشد.</div>';
+    return;
+  }
+
+  box.replaceChildren();
+
+  filtered.forEach(item => {
+    const online = isOnline(item);
+    const card = createElement("div", "card");
+
+    const top = createElement("div", "top-bar");
+    const codeWrap = createElement("div", "code-wrap");
+    const code = createElement("span", "code", item.code || "");
+
+    const badge = createElement("span", "badge");
+
+    if (!item.deviceId) {
+      badge.classList.add("b-ready");
+      badge.textContent = "آماده";
+    } else if (online) {
+      badge.classList.add("b-online");
+      badge.appendChild(createElement("span", "pulse"));
+      badge.appendChild(document.createTextNode(" آنلاین"));
+    } else {
+      badge.classList.add("b-active");
+      badge.textContent = "فعال";
+    }
+
+    codeWrap.append(code, badge);
+
+    const copyButton = createElement(
+      "button",
+      "btn-sm btn-green",
+      "کپی کد"
+    );
+
+    copyButton.style.width = "auto";
+    copyButton.onclick = () => copyText(item.code);
+
+    top.append(codeWrap, copyButton);
+
+    const meta = createElement("div", "meta");
+
+    const remainingMs = item.expiresAtMs
+      ? Math.max(0, item.expiresAtMs - serverNow)
+      : 0;
+
+    const remainingDays = Math.ceil(remainingMs / 86400000);
+    const remainingHours = Math.ceil(remainingMs / 3600000);
+
+    let timeText;
+
+    if (!item.deviceId) {
+      timeText = "آماده فعال‌سازی (" + (item.days || 30) + " روز)";
+    } else if (remainingHours <= 24) {
+      timeText = remainingHours + " ساعت باقی‌مانده";
+    } else {
+      timeText = remainingDays + " روز باقی‌مانده";
+    }
+
+    const noteText = item.note ? " | " + item.note : "";
+    const seenText = item.deviceId
+      ? " | آخرین اتصال: " + formatAgo(item.lastSeenAt)
+      : "";
+
+    meta.textContent = timeText + noteText + seenText;
+
+    card.append(top, meta);
+
+    if (item.deviceId && item.expiresAtMs) {
+      const totalMs =
+        (Number(item.totalDays) || Number(item.days) || 30) *
+        86400000;
+
+      const percent = Math.max(
+        4,
+        Math.min(100, Math.round((remainingMs / totalMs) * 100))
+      );
+
+      const progressBackground = createElement("div", "prog-bg");
+      const progressFill = createElement("div", "prog-fill");
+
+      if (remainingDays <= 3) {
+        progressFill.classList.add("low");
+      }
+
+      progressFill.style.width = percent + "%";
+      progressBackground.appendChild(progressFill);
+      card.appendChild(progressBackground);
+    }
+
+    const row = createElement("div", "row");
+
+    const resetButton = createElement(
+      "button",
+      "btn-sm btn-gray",
+      "ریست گوشی"
+    );
+
+    resetButton.onclick = () => act("reset_device", item.code);
+
+    const extendButton = createElement(
+      "button",
+      "btn-sm btn-gray",
+      "+۳۰ روز"
+    );
+
+    extendButton.onclick = () => act("extend", item.code);
+
+    const deleteButton = createElement(
+      "button",
+      "btn-sm btn-red",
+      "حذف"
+    );
+
+    deleteButton.onclick = () => act("delete", item.code);
+
+    row.append(resetButton, extendButton, deleteButton);
+    card.appendChild(row);
+    box.appendChild(card);
+  });
+}
+
+async function load() {
+  const box = document.getElementById("list");
+  const refreshButton = document.getElementById("refreshBtn");
+
+  refreshButton.disabled = true;
+
   try {
-    const response = await fetch(targetUrl, {
-      headers: {
-        "User-Agent": "BalochPing-Worker",
-        "Accept": "text/html"
-      }
+    const response = await fetch(API, {
+      method: "GET",
+      cache: "no-store"
     });
 
-    if (!response.ok) {
-      return errorResponse(
-        `${fileName} not found on GitHub. HTTP ${response.status}`,
-        502
-      );
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      box.innerHTML =
+        '<div class="card empty"></div>';
+
+      box.firstElementChild.textContent =
+        data.error || "خطا در دریافت اطلاعات";
+
+      return;
     }
 
-    const html = await response.text();
+    allItems = data.items || [];
+    serverNow = data.now || Date.now();
+    onlineWindowMs = data.onlineWindowMs || 1800000;
+    expiredTotal = data.expiredTotal || 0;
 
-    if (!html || !html.trim()) {
-      return errorResponse(
-        `${fileName} is empty on GitHub`,
-        502
-      );
+    const banner = document.getElementById("cleanBanner");
+
+    if (data.cleanedNow > 0) {
+      banner.textContent =
+        data.cleanedNow +
+        " اشتراک منقضی‌شده به‌صورت خودکار پاک شد.";
+
+      banner.style.display = "block";
+    } else {
+      banner.style.display = "none";
     }
 
-    return new Response(html, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "no-store",
-        "X-Content-Type-Options": "nosniff"
-      }
-    });
+    renderList();
   } catch (error) {
-    return errorResponse(
-      `GitHub fetch failed: ${error.message}`,
-      502
-    );
+    box.innerHTML =
+      '<div class="card empty">خطا در ارتباط با سرور</div>';
+  } finally {
+    refreshButton.disabled = false;
   }
 }
 
-// =========================================================
-// Worker
-// =========================================================
+async function createCode() {
+  const button = document.getElementById("createBtn");
 
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-    const method = request.method;
+  button.disabled = true;
+  button.textContent = "در حال ساخت...";
 
-    // -----------------------------------------------------
-    // صفحه اصلی DNS
-    // -----------------------------------------------------
+  try {
+    const days = document.getElementById("days").value;
+    const note = document.getElementById("note").value.trim();
 
-    if (path === "/" || path.endsWith("/v1/ui")) {
-      return proxyHtml(
-        GITHUB_UI_URL,
-        "dns-ui.html"
-      );
+    const response = await fetch(API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "create",
+        days,
+        note
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      alert("خطا: " + (data.error || "نامشخص"));
+      return;
     }
 
-    // -----------------------------------------------------
-    // DNS رایگان
-    // -----------------------------------------------------
-
-    if (path.endsWith("/v1/dns")) {
-      if (
-        request.headers.get("X-BP-Auth") !== APP_TOKEN
-      ) {
-        return jsonResponse(
-          { error: "UNAUTHORIZED" },
-          401
-        );
-      }
-
-      const encrypted = await encryptPayload({
-        servers: FREE_DNS_SERVERS
-      });
-
-      return jsonResponse({ d: encrypted });
-    }
-
-    // -----------------------------------------------------
-    // تایید VIP
-    // -----------------------------------------------------
-
-    if (path.endsWith("/v1/vip") && method === "POST") {
-      if (
-        request.headers.get("X-BP-Auth") !== APP_TOKEN
-      ) {
-        return jsonResponse(
-          { ok: false, error: "UNAUTHORIZED" },
-          401
-        );
-      }
-
-      if (!env.VIP_KV) {
-        return jsonResponse({
-          ok: false,
-          error: "SERVER_CONFIG",
-          message: "دیتابیس VIP_KV متصل نیست."
-        }, 500);
-      }
-
-      let body;
-
-      try {
-        body = await request.json();
-      } catch {
-        return jsonResponse({
-          ok: false,
-          error: "INVALID_CODE"
-        }, 400);
-      }
-
-      const code = String(body.code || "")
-        .trim()
-        .toUpperCase();
-
-      const deviceId = String(body.deviceId || "")
-        .trim();
-
-      if (!code || deviceId.length < 4) {
-        return jsonResponse({
-          ok: false,
-          error: "INVALID_CODE"
-        }, 400);
-      }
-
-      const kvKey = `code:${code}`;
-
-      const record = await env.VIP_KV.get(
-        kvKey,
-        { type: "json" }
-      );
-
-      if (!record) {
-        return jsonResponse({
-          ok: false,
-          error: "INVALID_CODE"
-        }, 403);
-      }
-
-      const now = Date.now();
-
-      // بررسی انقضا و لغو اشتراک
-      if (
-        record.revoked ||
-        (record.expiresAtMs &&
-          now > record.expiresAtMs)
-      ) {
-        await env.VIP_KV.put(
-          `used:${code}`,
-          String(now)
-        );
-
-        await env.VIP_KV.delete(kvKey);
-
-        await incrementExpiredCount(env, 1);
-
-        return jsonResponse({
-          ok: false,
-          error: record.revoked
-            ? "REVOKED"
-            : "EXPIRED"
-        }, 403);
-      }
-
-      let needsSave = false;
-
-      // فعال‌سازی اولین دستگاه
-      if (!record.deviceId) {
-        const days = Number(record.days) || 30;
-
-        record.deviceId = deviceId;
-        record.activatedAt = now;
-        record.totalDays = days;
-        record.expiresAtMs = now + days * DAY_MS;
-
-        needsSave = true;
-      } else if (record.deviceId !== deviceId) {
-        return jsonResponse({
-          ok: false,
-          error: "DEVICE_MISMATCH"
-        }, 403);
-      }
-
-      // ثبت آخرین اتصال
-      if (
-        !record.lastSeenAt ||
-        now - record.lastSeenAt > 60000
-      ) {
-        record.lastSeenAt = now;
-        needsSave = true;
-      }
-
-      if (needsSave) {
-        await env.VIP_KV.put(
-          kvKey,
-          JSON.stringify(record)
-        );
-      }
-
-      const daysLeft = Math.max(
-        1,
-        Math.ceil(
-          (record.expiresAtMs - now) / DAY_MS
-        )
-      );
-
-      const encrypted = await encryptPayload({
-        ok: true,
-        plan: record.plan || "VIP PRO GAMING",
-        daysLeft,
-        expiresAt: formatDateFa(
-          record.expiresAtMs
-        ),
-        servers: VIP_DNS_SERVERS
-      });
-
-      return jsonResponse({ d: encrypted });
-    }
-
-    // -----------------------------------------------------
-    // API پنل مدیریت
-    // -----------------------------------------------------
-
-    if (path.endsWith("/v1/admin/api")) {
-      const key =
-        url.searchParams.get("key") ||
-        request.headers.get("X-Admin-Key");
-
-      if (key !== ADMIN_PASSWORD) {
-        return jsonResponse({
-          ok: false,
-          error: "رمز مدیریت اشتباه است"
-        }, 401);
-      }
-
-      if (!env.VIP_KV) {
-        return jsonResponse({
-          ok: false,
-          error: "VIP_KV متصل نیست"
-        }, 500);
-      }
-
-      // دریافت لیست اشتراک‌ها
-      if (method === "GET") {
-        const list = await env.VIP_KV.list({
-          prefix: "code:"
-        });
-
-        const now = Date.now();
-        const items = [];
-        let cleanedNow = 0;
-
-        for (const keyItem of list.keys) {
-          const item = await env.VIP_KV.get(
-            keyItem.name,
-            { type: "json" }
-          );
-
-          if (!item) continue;
-
-          if (
-            item.revoked ||
-            (item.expiresAtMs &&
-              now > item.expiresAtMs)
-          ) {
-            await env.VIP_KV.put(
-              `used:${item.code}`,
-              String(now)
-            );
-
-            await env.VIP_KV.delete(
-              keyItem.name
-            );
-
-            cleanedNow++;
-            continue;
-          }
-
-          items.push(item);
-        }
-
-        if (cleanedNow > 0) {
-          await incrementExpiredCount(
-            env,
-            cleanedNow
-          );
-        }
-
-        const stats =
-          (await env.VIP_KV.get(
-            "meta:stats",
-            { type: "json" }
-          )) || { expiredTotal: 0 };
-
-        items.sort((a, b) => {
-          return (b.createdAt || 0) -
-            (a.createdAt || 0);
-        });
-
-        return jsonResponse({
-          ok: true,
-          items,
-          now,
-          onlineWindowMs: ONLINE_WINDOW_MS,
-          expiredTotal:
-            Number(stats.expiredTotal) || 0,
-          cleanedNow
-        });
-      }
-
-      // عملیات مدیریت
-      if (method === "POST") {
-        let req;
-
-        try {
-          req = await request.json();
-        } catch {
-          return jsonResponse({
-            ok: false,
-            error: "INVALID_JSON"
-          }, 400);
-        }
-
-        const action = req.action;
-
-        // ساخت کد
-        if (action === "create") {
-          const days = Math.max(
-            1,
-            Math.min(
-              365,
-              Number(req.days) || 30
-            )
-          );
-
-          const note = String(req.note || "")
-            .trim()
-            .slice(0, 60);
-
-          const now = Date.now();
-
-          let code = generateVipCode();
-          let guard = 0;
-
-          while (
-            guard < 30 &&
-            (
-              await env.VIP_KV.get(
-                `code:${code}`
-              ) ||
-              await env.VIP_KV.get(
-                `used:${code}`
-              )
-            )
-          ) {
-            code = generateVipCode();
-            guard++;
-          }
-
-          // جلوگیری از استفاده مجدد کد
-          await env.VIP_KV.put(
-            `used:${code}`,
-            String(now)
-          );
-
-          const item = {
-            code,
-            plan: "VIP PRO GAMING",
-            days,
-            totalDays: days,
-            note,
-            deviceId: null,
-            createdAt: now,
-            activatedAt: null,
-            lastSeenAt: null,
-            expiresAtMs: null,
-            revoked: false
-          };
-
-          await env.VIP_KV.put(
-            `code:${code}`,
-            JSON.stringify(item)
-          );
-
-          return jsonResponse({
-            ok: true,
-            item
-          });
-        }
-
-        const targetCode = String(req.code || "")
-          .trim()
-          .toUpperCase();
-
-        if (!targetCode) {
-          return jsonResponse({
-            ok: false,
-            error: "INVALID_CODE"
-          }, 400);
-        }
-
-        const kvKey = `code:${targetCode}`;
-
-        const existing = await env.VIP_KV.get(
-          kvKey,
-          { type: "json" }
-        );
-
-        if (!existing) {
-          return jsonResponse({
-            ok: false,
-            error: "کد پیدا نشد"
-          }, 404);
-        }
-
-        // ریست دستگاه
-        if (action === "reset_device") {
-          existing.deviceId = null;
-          existing.lastSeenAt = null;
-
-          await env.VIP_KV.put(
-            kvKey,
-            JSON.stringify(existing)
-          );
-
-          return jsonResponse({ ok: true });
-        }
-
-        // تمدید اشتراک
-        if (action === "extend") {
-          const addDays = Math.max(
-            1,
-            Math.min(
-              365,
-              Number(req.days) || 30
-            )
-          );
-
-          if (existing.expiresAtMs) {
-            const base = Math.max(
-              Date.now(),
-              existing.expiresAtMs
-            );
-
-            existing.expiresAtMs =
-              base + addDays * DAY_MS;
-
-            existing.totalDays = Math.max(
-              Number(existing.totalDays) || 30,
-              Math.ceil(
-                (
-                  existing.expiresAtMs -
-                  (existing.activatedAt || Date.now())
-                ) / DAY_MS
-              )
-            );
-          } else {
-            existing.days =
-              (Number(existing.days) || 30) +
-              addDays;
-
-            existing.totalDays =
-              existing.days;
-          }
-
-          existing.revoked = false;
-
-          await env.VIP_KV.put(
-            kvKey,
-            JSON.stringify(existing)
-          );
-
-          return jsonResponse({ ok: true });
-        }
-
-        // حذف اشتراک
-        if (action === "delete") {
-          await env.VIP_KV.put(
-            `used:${targetCode}`,
-            String(Date.now())
-          );
-
-          await env.VIP_KV.delete(kvKey);
-
-          return jsonResponse({ ok: true });
-        }
-
-        return jsonResponse({
-          ok: false,
-          error: "UNKNOWN_ACTION"
-        }, 400);
-      }
-
-      return jsonResponse({
-        ok: false,
-        error: "METHOD_NOT_ALLOWED"
-      }, 405);
-    }
-
-    // -----------------------------------------------------
-    // صفحه پنل مدیریت
-    // -----------------------------------------------------
-
-    if (path.endsWith("/v1/admin")) {
-      const key = url.searchParams.get("key") || "";
-
-      if (key !== ADMIN_PASSWORD) {
-        return errorResponse(
-          "Unauthorized - رمز مدیریت اشتباه است",
-          401
-        );
-      }
-
-      return proxyHtml(
-        GITHUB_ADMIN_URL,
-        "admin-ui.htm"
-      );
-    }
-
-    // -----------------------------------------------------
-    // پاسخ پیش‌فرض
-    // -----------------------------------------------------
-
-    return new Response(
-      "BalochPing DNS API Running",
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "text/plain; charset=utf-8",
-          "Cache-Control": "no-store"
-        }
-      }
-    );
+    document.getElementById("note").value = "";
+
+    await copyText(data.item.code);
+    await load();
+  } catch {
+    alert("خطا در ارتباط با سرور");
+  } finally {
+    button.disabled = false;
+    button.textContent = "ساخت کد یکتا و کپی";
   }
-};
+}
+
+async function act(action, code) {
+  if (
+    action === "delete" &&
+    !confirm(
+      "کد " + code +
+      " حذف شود؟ این کد دیگر قابل استفاده نخواهد بود."
+    )
+  ) {
+    return;
+  }
+
+  try {
+    const response = await fetch(API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action,
+        code
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      alert(data.error || "عملیات انجام نشد");
+      return;
+    }
+
+    await load();
+  } catch {
+    alert("خطا در ارتباط با سرور");
+  }
+}
+
+document.querySelectorAll(".stat[data-filter]").forEach(element => {
+  element.addEventListener("click", () => {
+    setFilter(element.dataset.filter);
+  });
+});
+
+document.querySelectorAll(".f-pill").forEach(element => {
+  element.addEventListener("click", () => {
+    setFilter(element.dataset.pill);
+  });
+});
+
+document.getElementById("expiredBox").addEventListener("click", () => {
+  alert(
+    "تاکنون " + expiredTotal +
+    " اشتراک منقضی‌شده به‌صورت خودکار پاک شده است."
+  );
+});
+
+document.getElementById("searchInput").addEventListener(
+  "input",
+  renderList
+);
+
+document.getElementById("clearSearch").addEventListener("click", () => {
+  document.getElementById("searchInput").value = "";
+  renderList();
+});
+
+document.getElementById("refreshBtn").addEventListener("click", load);
+document.getElementById("createBtn").addEventListener("click", createCode);
+
+load();
+</script>
+
+</body>
+</html>
