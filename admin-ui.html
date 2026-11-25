@@ -42,6 +42,11 @@ button {
   cursor:pointer;
 }
 
+button:disabled {
+  opacity:.5;
+  cursor:not-allowed;
+}
+
 .app {
   max-width:1250px;
   margin:auto;
@@ -79,7 +84,6 @@ button {
   margin:0;
   font-size:18px;
   font-weight:950;
-  letter-spacing:.5px;
 }
 
 .brand p {
@@ -91,6 +95,7 @@ button {
 .header-actions {
   display:flex;
   gap:8px;
+  flex-wrap:wrap;
 }
 
 .btn {
@@ -131,17 +136,6 @@ button {
   margin-bottom:20px;
   position:relative;
   overflow:hidden;
-}
-
-.hero:after {
-  content:"BP";
-  position:absolute;
-  left:20px;
-  top:-25px;
-  font-size:130px;
-  font-weight:1000;
-  color:#ffffff04;
-  pointer-events:none;
 }
 
 .hero-label {
@@ -311,7 +305,6 @@ button {
 .search {
   flex:1;
   min-width:180px;
-  position:relative;
 }
 
 .search input {
@@ -376,6 +369,7 @@ button {
   font-weight:950;
   color:var(--yellow);
   letter-spacing:1px;
+  word-break:break-all;
 }
 
 .badge {
@@ -445,6 +439,7 @@ button {
   width:17px;
   height:17px;
   accent-color:var(--yellow);
+  margin-left:8px;
 }
 
 .bulk {
@@ -476,51 +471,6 @@ button {
   background:var(--panel);
   border:1px dashed var(--border);
   border-radius:18px;
-}
-
-.modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:#000b;
-  z-index:99;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-}
-
-.modal.show {
-  display:flex;
-}
-
-.modal-box {
-  width:100%;
-  max-width:420px;
-  background:#141620;
-  border:1px solid #343849;
-  border-radius:22px;
-  padding:22px;
-}
-
-.modal-box h3 {
-  margin:0 0 15px;
-  font-size:16px;
-}
-
-.modal-box p {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.8;
-}
-
-.modal-actions {
-  display:flex;
-  gap:8px;
-  margin-top:15px;
-}
-
-.modal-actions button {
-  flex:1;
 }
 
 .footer {
@@ -598,13 +548,14 @@ button {
 </section>
 
 <section class="stats">
+
   <div class="stat" data-filter="all">
     <div class="stat-top">
       <span>کل اشتراک‌ها</span>
       <div class="stat-icon">▦</div>
     </div>
     <div class="stat-number" id="totalCount">0</div>
-    <div class="stat-foot">اشتراک‌های موجود در پنل</div>
+    <div class="stat-foot">تمام کدهای موجود</div>
   </div>
 
   <div class="stat" data-filter="online">
@@ -613,7 +564,7 @@ button {
       <div class="stat-icon green">●</div>
     </div>
     <div class="stat-number green" id="onlineCount">0</div>
-    <div class="stat-foot">فعال در بازه آنلاین بودن</div>
+    <div class="stat-foot">کاربران متصل</div>
   </div>
 
   <div class="stat" data-filter="active">
@@ -622,7 +573,7 @@ button {
       <div class="stat-icon blue">✓</div>
     </div>
     <div class="stat-number blue" id="activeCount">0</div>
-    <div class="stat-foot">دارای دستگاه ثبت‌شده</div>
+    <div class="stat-foot">دارای دستگاه</div>
   </div>
 
   <div class="stat" data-filter="ready">
@@ -633,6 +584,7 @@ button {
     <div class="stat-number yellow" id="readyCount">0</div>
     <div class="stat-foot">کدهای استفاده‌نشده</div>
   </div>
+
 </section>
 
 <div class="layout">
@@ -659,7 +611,8 @@ button {
 
     <div class="field">
       <label>یادداشت مشتری</label>
-      <input id="note" maxlength="60" placeholder="آیدی تلگرام یا نام مشتری">
+      <input id="note" maxlength="60"
+        placeholder="آیدی تلگرام یا نام مشتری">
     </div>
 
     <button class="create-button" id="createBtn">
@@ -675,17 +628,30 @@ button {
       <span>TOOLS</span>
     </div>
 
-    <button class="btn" style="width:100%;margin-bottom:8px" id="selectAllBtn">
+    <button class="btn" style="width:100%;margin-bottom:8px"
+      id="selectAllBtn">
       انتخاب همه اشتراک‌ها
     </button>
 
-    <button class="btn" style="width:100%;margin-bottom:8px" id="clearSelectionBtn">
+    <button class="btn" style="width:100%;margin-bottom:8px"
+      id="clearSelectionBtn">
       پاک کردن انتخاب‌ها
     </button>
 
-    <button class="btn" style="width:100%" id="exportBtn2">
+    <button class="btn" style="width:100%;margin-bottom:8px"
+      id="exportBtn2">
       دریافت بکاپ اطلاعات
     </button>
+
+    <button class="btn btn-green"
+      style="width:100%;margin-bottom:8px"
+      id="extendAllBtn">
+      ✦ تمدید همه اشتراک‌ها
+    </button>
+
+    <p style="color:var(--muted);font-size:10px;line-height:1.8">
+      این گزینه به تمام اشتراک‌های موجود، تعداد روز انتخابی را اضافه می‌کند.
+    </p>
   </section>
 
 </aside>
@@ -694,7 +660,8 @@ button {
 
   <div class="toolbar">
     <div class="search">
-      <input id="search" placeholder="جستجوی کد، مشتری یا دستگاه...">
+      <input id="search"
+        placeholder="جستجوی کد، مشتری یا دستگاه...">
     </div>
 
     <select id="sort">
@@ -707,8 +674,12 @@ button {
 
   <div class="bulk" id="bulk">
     <span id="selectedCount">۰ انتخاب شده</span>
-    <button class="btn btn-green" id="bulkExtend">تمدید انتخاب‌شده‌ها</button>
-    <button class="btn btn-danger" id="bulkDelete">حذف انتخاب‌شده‌ها</button>
+    <button class="btn btn-green" id="bulkExtend">
+      تمدید انتخاب‌شده‌ها
+    </button>
+    <button class="btn btn-danger" id="bulkDelete">
+      حذف انتخاب‌شده‌ها
+    </button>
   </div>
 
   <div class="list-header">
@@ -727,16 +698,6 @@ button {
   BALOCH PING • VIP MANAGEMENT SYSTEM
 </div>
 
-</div>
-
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <h3 id="modalTitle">جزئیات اشتراک</h3>
-    <div id="modalContent"></div>
-    <div class="modal-actions">
-      <button class="btn" id="modalClose">بستن</button>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -766,28 +727,28 @@ function online(item) {
 
 function remaining(item) {
   if (!item.expiresAtMs) return 0;
-  return Math.max(0, item.expiresAtMs - serverNow);
+  return Math.max(0,item.expiresAtMs-serverNow);
 }
 
 function daysLeft(item) {
-  return Math.ceil(remaining(item) / 86400000);
+  return Math.ceil(remaining(item)/86400000);
 }
 
 function ago(timestamp) {
   if (!timestamp) return "ثبت نشده";
 
   const minutes = Math.floor(
-    Math.max(0, serverNow - timestamp) / 60000
+    Math.max(0,serverNow-timestamp)/60000
   );
 
   if (minutes < 2) return "هم‌اکنون";
-  if (minutes < 60) return minutes + " دقیقه پیش";
+  if (minutes < 60) return minutes+" دقیقه پیش";
 
-  const hours = Math.floor(minutes / 60);
+  const hours = Math.floor(minutes/60);
 
-  if (hours < 24) return hours + " ساعت پیش";
+  if (hours < 24) return hours+" ساعت پیش";
 
-  return Math.floor(hours / 24) + " روز پیش";
+  return Math.floor(hours/24)+" روز پیش";
 }
 
 function status(item) {
@@ -797,36 +758,35 @@ function status(item) {
 }
 
 function statusLabel(item) {
-  const s = status(item);
+  const s=status(item);
 
-  return s === "online"
-    ? "آنلاین"
-    : s === "active"
-    ? "فعال"
-    : "آماده";
+  if (s==="online") return "آنلاین";
+  if (s==="active") return "فعال";
+
+  return "آماده";
 }
 
-function notify(text, color = "#10e870") {
-  $("message").textContent = text;
-  $("message").style.color = color;
+function notify(text,color="#10e870") {
+  $("message").textContent=text;
+  $("message").style.color=color;
 }
 
-async function api(action, data = {}) {
-  const response = await fetch(API, {
-    method: action ? "POST" : "GET",
-    cache: "no-store",
-    headers: action
+async function api(action,data={}) {
+  const response=await fetch(API,{
+    method:action?"POST":"GET",
+    cache:"no-store",
+    headers:action
       ? {"Content-Type":"application/json"}
       : {},
-    body: action
+    body:action
       ? JSON.stringify({action,...data})
       : undefined
   });
 
-  const result = await response.json();
+  const result=await response.json();
 
-  if (!response.ok || !result.ok) {
-    throw new Error(result.error || "خطای سرور");
+  if(!response.ok || !result.ok) {
+    throw new Error(result.error||"خطای سرور");
   }
 
   return result;
@@ -835,9 +795,9 @@ async function api(action, data = {}) {
 async function copy(text) {
   try {
     await navigator.clipboard.writeText(text);
-    notify("کپی شد: " + text);
+    notify("کپی شد: "+text);
   } catch {
-    notify("کد: " + text, "#ffe082");
+    notify("کد: "+text,"#ffe082");
   }
 }
 
@@ -845,75 +805,66 @@ function copyMessage(item) {
   return [
     "🎮 BALOCH PING VIP",
     "",
-    "کد اشتراک: " + item.code,
-    "مدت: " + (item.days || 30) + " روز",
+    "کد اشتراک: "+item.code,
+    "مدت: "+(item.days||30)+" روز",
     "",
     "برای فعال‌سازی، کد را در برنامه وارد کنید."
   ].join("\n");
 }
 
-function create(tag, className, text) {
-  const el = document.createElement(tag);
+function create(tag,className,text) {
+  const el=document.createElement(tag);
 
-  if (className) el.className = className;
-  if (text !== undefined) el.textContent = text;
+  if(className) el.className=className;
+  if(text!==undefined) el.textContent=text;
 
   return el;
 }
 
 function updateStats() {
-  const onlineCount = items.filter(online).length;
-  const activeCount = items.filter(i => i.deviceId).length;
-  const readyCount = items.filter(i => !i.deviceId).length;
-
-  $("totalCount").textContent = items.length;
-  $("onlineCount").textContent = onlineCount;
-  $("activeCount").textContent = activeCount;
-  $("readyCount").textContent = readyCount;
+  $("totalCount").textContent=items.length;
+  $("onlineCount").textContent=items.filter(online).length;
+  $("activeCount").textContent=items.filter(i=>i.deviceId).length;
+  $("readyCount").textContent=items.filter(i=>!i.deviceId).length;
 }
 
 function getFiltered() {
-  const query = $("search").value.trim().toLowerCase();
+  const query=$("search").value.trim().toLowerCase();
 
-  let result = items.filter(item => {
-    if (filter === "online" && !online(item)) return false;
-    if (filter === "active" && !item.deviceId) return false;
-    if (filter === "ready" && item.deviceId) return false;
+  let result=items.filter(item=>{
+    if(filter==="online"&&!online(item)) return false;
+    if(filter==="active"&&!item.deviceId) return false;
+    if(filter==="ready"&&item.deviceId) return false;
 
-    if (filter === "expiring" &&
-        (!item.deviceId || daysLeft(item) > 7)) {
-      return false;
-    }
-
-    const text = [
+    const text=[
       item.code,
       item.note,
       item.deviceId
     ].join(" ").toLowerCase();
 
-    return !query || text.includes(query);
+    return !query||text.includes(query);
   });
 
-  const sort = $("sort").value;
+  const sort=$("sort").value;
 
-  if (sort === "newest") {
-    result.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+  if(sort==="newest") {
+    result.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   }
 
-  if (sort === "oldest") {
-    result.sort((a,b) => (a.createdAt || 0) - (b.createdAt || 0));
+  if(sort==="oldest") {
+    result.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
   }
 
-  if (sort === "expiry") {
-    result.sort((a,b) =>
-      (a.expiresAtMs || Infinity) -
-      (b.expiresAtMs || Infinity)
+  if(sort==="expiry") {
+    result.sort((a,b)=>
+      (a.expiresAtMs||Infinity)-
+      (b.expiresAtMs||Infinity)
     );
   }
 
-  if (sort === "online") {
-    result.sort((a,b) =>
-      (b.lastSeenAt || 0) - (a.lastSeenAt || 0)
+  if(sort==="online") {
+    result.sort((a,b)=>
+      (b.lastSeenAt||0)-(a.lastSeenAt||0)
     );
   }
 
@@ -923,82 +874,80 @@ function getFiltered() {
 function render() {
   updateStats();
 
-  const list = $("list");
-  const filtered = getFiltered();
+  const list=$("list");
+  const filtered=getFiltered();
 
-  $("listCount").textContent =
-    filtered.length + " اشتراک";
+  $("listCount").textContent=filtered.length+" اشتراک";
+  $("bulk").classList.toggle("show",selected.size>0);
+  $("selectedCount").textContent=selected.size+" انتخاب شده";
 
-  $("bulk").classList.toggle("show", selected.size > 0);
-  $("selectedCount").textContent =
-    selected.size + " انتخاب شده";
-
-  if (!filtered.length) {
-    list.innerHTML =
-      '<div class="empty">اشتراکی با این شرایط پیدا نشد.</div>';
+  if(!filtered.length) {
+    list.replaceChildren(
+      create("div","empty","اشتراکی پیدا نشد.")
+    );
     return;
   }
 
   list.replaceChildren();
 
-  filtered.forEach(item => {
-    const card = create("div","subscription");
-    const top = create("div","sub-top");
+  filtered.forEach(item=>{
+    const card=create("div","subscription");
+    const top=create("div","sub-top");
+    const left=create("div","");
 
-    const left = create("div","");
-    const checkbox = create("input","checkbox");
+    const checkbox=create("input","checkbox");
+    checkbox.type="checkbox";
+    checkbox.checked=selected.has(item.code);
 
-    checkbox.type = "checkbox";
-    checkbox.checked = selected.has(item.code);
-
-    checkbox.addEventListener("change", () => {
-      if (checkbox.checked) selected.add(item.code);
+    checkbox.addEventListener("change",()=>{
+      if(checkbox.checked) selected.add(item.code);
       else selected.delete(item.code);
 
       render();
     });
 
-    const code = create("span","sub-code",item.code);
-
+    const code=create("span","sub-code",item.code);
     left.append(checkbox,code);
 
-    const badge = create(
+    const badge=create(
       "span",
-      "badge badge-" + status(item),
+      "badge badge-"+status(item),
       statusLabel(item)
     );
 
     top.append(left,badge);
 
-    const info = create("div","sub-info");
+    const info=create("div","sub-info");
 
-    info.textContent = [
-      item.note || "بدون یادداشت",
-      item.deviceId ? "دستگاه ثبت‌شده" : "فعال‌نشده",
-      item.deviceId ? ago(item.lastSeenAt) : "در انتظار فعال‌سازی",
+    info.textContent=[
+      item.note||"بدون یادداشت",
+      item.deviceId?"دستگاه ثبت‌شده":"فعال‌نشده",
+      item.deviceId?ago(item.lastSeenAt):"در انتظار فعال‌سازی",
       item.expiresAtMs
-        ? daysLeft(item) + " روز باقی‌مانده"
-        : (item.days || 30) + " روز اعتبار"
+        ?daysLeft(item)+" روز باقی‌مانده"
+        :(item.days||30)+" روز اعتبار"
     ].join(" • ");
 
     card.append(top,info);
 
-    if (item.deviceId && item.expiresAtMs) {
-      const total =
-        (Number(item.totalDays) || Number(item.days) || 30) *
+    if(item.deviceId&&item.expiresAtMs) {
+      const total=
+        (Number(item.totalDays)||Number(item.days)||30)*
         86400000;
 
-      const percent = Math.max(
+      const percent=Math.max(
         0,
-        Math.min(100,Math.round(remaining(item)/total*100))
+        Math.min(100,
+          Math.round(remaining(item)/total*100)
+        )
       );
 
-      const progress = create("div","progress");
-      const fill = create("div","");
+      const progress=create("div","progress");
+      const fill=create("div","");
 
-      fill.style.width = percent + "%";
+      fill.style.width=percent+"%";
 
-      if (daysLeft(item) <= 3) {
+      if(daysLeft(item)<=3) {
         progress.classList.add("low");
       }
 
@@ -1006,32 +955,32 @@ function render() {
       card.appendChild(progress);
     }
 
-    const actions = create("div","sub-actions");
+    const actions=create("div","sub-actions");
 
-    const copyBtn = create("button","btn btn-green","کپی کد");
-    copyBtn.onclick = () => copy(item.code);
+    const copyBtn=create("button","btn btn-green","کپی کد");
+    copyBtn.onclick=()=>copy(item.code);
 
-    const messageBtn = create("button","btn","متن مشتری");
-    messageBtn.onclick = () => copy(copyMessage(item));
+    const messageBtn=create("button","btn","متن مشتری");
+    messageBtn.onclick=()=>copy(copyMessage(item));
 
-    const extendBtn = create("button","btn","+۳۰ روز");
-    extendBtn.onclick = () => extend(item.code,30);
+    const extendBtn=create("button","btn","+۳۰ روز");
+    extendBtn.onclick=()=>extend(item.code,30);
 
-    const customBtn = create("button","btn","تمدید دلخواه");
-    customBtn.onclick = () => customExtend(item.code);
+    const customBtn=create("button","btn","تمدید دلخواه");
+    customBtn.onclick=()=>customExtend(item.code);
 
-    const resetBtn = create("button","btn","ریست دستگاه");
-    resetBtn.onclick = () => resetDevice(item.code);
+    const resetBtn=create("button","btn","ریست دستگاه");
+    resetBtn.onclick=()=>resetDevice(item.code);
 
-    const detailBtn = create("button","btn","جزئیات");
-    detailBtn.onclick = () => details(item);
+    const detailBtn=create("button","btn","جزئیات");
+    detailBtn.onclick=()=>details(item);
 
-    const deleteBtn = create("button","btn btn-danger","حذف");
-    deleteBtn.onclick = () => remove(item.code);
+    const deleteBtn=create("button","btn btn-danger","حذف");
+    deleteBtn.onclick=()=>remove(item.code);
 
     actions.append(
-      copyBtn,messageBtn,extendBtn,customBtn,
-      resetBtn,detailBtn,deleteBtn
+      copyBtn,messageBtn,extendBtn,
+      customBtn,resetBtn,detailBtn,deleteBtn
     );
 
     card.appendChild(actions);
@@ -1040,41 +989,40 @@ function render() {
 }
 
 async function load() {
-  $("refreshBtn").disabled = true;
+  $("refreshBtn").disabled=true;
 
   try {
-    const data = await api();
+    const data=await api();
 
-    items = data.items || [];
-    serverNow = data.now || Date.now();
-    onlineWindow = data.onlineWindowMs || 1800000;
+    items=data.items||[];
+    serverNow=data.now||Date.now();
+    onlineWindow=data.onlineWindowMs||1800000;
 
     render();
   } catch(error) {
-    $("list").textContent =
-      "خطا در دریافت اطلاعات: " + error.message;
+    $("list").textContent=
+      "خطا در دریافت اطلاعات: "+error.message;
   } finally {
-    $("refreshBtn").disabled = false;
+    $("refreshBtn").disabled=false;
   }
 }
 
 async function createCode() {
-  $("createBtn").disabled = true;
+  $("createBtn").disabled=true;
 
   try {
-    const data = await api("create",{
+    const data=await api("create",{
       days:Number($("days").value),
       note:$("note").value.trim()
     });
 
-    $("note").value = "";
-
+    $("note").value="";
     await copy(data.item.code);
     await load();
   } catch(error) {
     notify(error.message,"#ff5d70");
   } finally {
-    $("createBtn").disabled = false;
+    $("createBtn").disabled=false;
   }
 }
 
@@ -1089,13 +1037,13 @@ async function extend(code,days) {
 }
 
 function customExtend(code) {
-  const days = prompt("چند روز به اشتراک اضافه شود؟","30");
+  const days=prompt("چند روز اضافه شود؟","30");
 
-  if (days === null) return;
+  if(days===null) return;
 
-  const number = Number(days);
+  const number=Number(days);
 
-  if (!Number.isInteger(number) || number < 1 || number > 365) {
+  if(!Number.isInteger(number)||number<1||number>365) {
     alert("تعداد روز باید بین ۱ تا ۳۶۵ باشد.");
     return;
   }
@@ -1104,7 +1052,7 @@ function customExtend(code) {
 }
 
 async function resetDevice(code) {
-  if (!confirm("دستگاه این اشتراک ریست شود؟")) return;
+  if(!confirm("دستگاه این اشتراک ریست شود؟")) return;
 
   try {
     await api("reset_device",{code});
@@ -1115,7 +1063,7 @@ async function resetDevice(code) {
 }
 
 async function remove(code) {
-  if (!confirm("این اشتراک حذف شود؟")) return;
+  if(!confirm("این اشتراک حذف شود؟")) return;
 
   try {
     await api("delete",{code});
@@ -1127,130 +1075,216 @@ async function remove(code) {
 }
 
 function details(item) {
-  $("modalTitle").textContent = "جزئیات اشتراک";
-
-  const content = $("modalContent");
-  content.replaceChildren();
-
-  const rows = {
+  const rows={
     "کد اشتراک":item.code,
-    "یادداشت":item.note || "ندارد",
+    "یادداشت":item.note||"ندارد",
     "وضعیت":statusLabel(item),
-    "مدت اولیه":(item.days || 30) + " روز",
-    "مدت کل":(item.totalDays || item.days || 30) + " روز",
-    "شناسه دستگاه":item.deviceId || "ثبت نشده",
+    "مدت اولیه":(item.days||30)+" روز",
+    "مدت کل":(item.totalDays||item.days||30)+" روز",
+    "شناسه دستگاه":item.deviceId||"ثبت نشده",
     "تاریخ ساخت":item.createdAt
-      ? new Date(item.createdAt).toLocaleDateString("fa-IR")
-      : "نامشخص",
+      ?new Date(item.createdAt).toLocaleDateString("fa-IR")
+      :"نامشخص",
     "تاریخ فعال‌سازی":item.activatedAt
-      ? new Date(item.activatedAt).toLocaleDateString("fa-IR")
-      : "فعال نشده",
+      ?new Date(item.activatedAt).toLocaleDateString("fa-IR")
+      :"فعال نشده",
     "تاریخ انقضا":item.expiresAtMs
-      ? new Date(item.expiresAtMs).toLocaleDateString("fa-IR")
-      : "پس از فعال‌سازی",
+      ?new Date(item.expiresAtMs).toLocaleDateString("fa-IR")
+      :"پس از فعال‌سازی",
     "آخرین اتصال":ago(item.lastSeenAt)
   };
 
-  Object.entries(rows).forEach(([label,value]) => {
-    const p = create("p","");
-    p.textContent = label + ": " + value;
-    content.appendChild(p);
-  });
+  const lines=Object.entries(rows)
+    .map(([key,value])=>key+": "+value)
+    .join("\n");
 
-  $("modal").classList.add("show");
+  alert(lines);
 }
 
 async function bulkExtend() {
-  if (!selected.size) return;
+  if(!selected.size) return;
 
-  const days = prompt("چند روز تمدید شود؟","30");
-  if (days === null) return;
+  const days=prompt("چند روز تمدید شود؟","30");
+  if(days===null) return;
 
-  const number = Number(days);
+  const number=Number(days);
 
-  if (!Number.isInteger(number) || number < 1 || number > 365) {
-    alert("عدد معتبر وارد کنید.");
+  if(!Number.isInteger(number)||number<1||number>365) {
+    alert("عدد باید بین ۱ تا ۳۶۵ باشد.");
     return;
   }
 
-  if (!confirm("اشتراک‌های انتخاب‌شده تمدید شوند؟")) return;
+  if(!confirm("اشتراک‌های انتخاب‌شده تمدید شوند؟")) return;
 
-  for (const code of selected) {
+  let success=0;
+  let failed=0;
+
+  for(const code of selected) {
     try {
       await api("extend",{code,days:number});
-    } catch(error) {
-      console.error(code,error);
+      success++;
+    } catch {
+      failed++;
     }
   }
 
   selected.clear();
   await load();
+
+  alert(
+    "تمدید انتخاب‌شده‌ها تمام شد.\n"+
+    "موفق: "+success+"\n"+
+    "ناموفق: "+failed
+  );
 }
 
 async function bulkDelete() {
-  if (!selected.size) return;
+  if(!selected.size) return;
 
-  if (!confirm(
-    selected.size + " اشتراک حذف شود؟ این عملیات برگشت‌پذیر نیست."
+  if(!confirm(
+    selected.size+
+    " اشتراک حذف شود؟ این عملیات برگشت‌پذیر نیست."
   )) return;
 
-  for (const code of selected) {
+  let success=0;
+  let failed=0;
+
+  for(const code of selected) {
     try {
       await api("delete",{code});
-    } catch(error) {
-      console.error(code,error);
+      success++;
+    } catch {
+      failed++;
     }
   }
 
   selected.clear();
   await load();
+
+  alert(
+    "حذف تمام شد.\n"+
+    "موفق: "+success+"\n"+
+    "ناموفق: "+failed
+  );
+}
+
+/* تمدید تمام اشتراک‌ها */
+async function extendAllSubscriptions() {
+  if(!items.length) {
+    alert("هیچ اشتراکی برای تمدید وجود ندارد.");
+    return;
+  }
+
+  const days=prompt(
+    "چند روز به تمام اشتراک‌ها اضافه شود؟",
+    "30"
+  );
+
+  if(days===null) return;
+
+  const number=Number(days);
+
+  if(
+    !Number.isInteger(number)||
+    number<1||
+    number>365
+  ) {
+    alert("تعداد روز باید بین ۱ تا ۳۶۵ باشد.");
+    return;
+  }
+
+  const confirmed=confirm(
+    "به تمام "+items.length+
+    " اشتراک موجود، "+number+
+    " روز اضافه شود؟"
+  );
+
+  if(!confirmed) return;
+
+  const button=$("extendAllBtn");
+  button.disabled=true;
+  button.textContent="در حال تمدید همه...";
+
+  let success=0;
+  let failed=0;
+
+  try {
+    for(const item of items) {
+      try {
+        await api("extend",{
+          code:item.code,
+          days:number
+        });
+
+        success++;
+      } catch(error) {
+        failed++;
+        console.error("خطا در تمدید:",item.code,error);
+      }
+    }
+
+    await load();
+
+    alert(
+      "عملیات تمدید همه تمام شد.\n\n"+
+      "موفق: "+success+"\n"+
+      "ناموفق: "+failed
+    );
+
+  } finally {
+    button.disabled=false;
+    button.textContent="✦ تمدید همه اشتراک‌ها";
+  }
 }
 
 function exportCSV() {
-  const headers = [
+  const headers=[
     "Code","Note","Status","Days","Device ID",
     "Created","Activated","Expires","Last Seen"
   ];
 
-  const rows = items.map(item => [
+  const rows=items.map(item=>[
     item.code,
-    item.note || "",
+    item.note||"",
     statusLabel(item),
-    item.days || 30,
-    item.deviceId || "",
-    item.createdAt || "",
-    item.activatedAt || "",
-    item.expiresAtMs || "",
-    item.lastSeenAt || ""
+    item.days||30,
+    item.deviceId||"",
+    item.createdAt||"",
+    item.activatedAt||"",
+    item.expiresAtMs||"",
+    item.lastSeenAt||""
   ]);
 
-  const csv = [headers,...rows]
-    .map(row => row.map(value =>
-      '"' + String(value).replace(/"/g,'""') + '"'
+  const csv=[headers,...rows]
+    .map(row=>row.map(value=>
+      '"'+String(value).replace(/"/g,'""')+'"'
     ).join(","))
     .join("\r\n");
 
-  const blob = new Blob(
-    ["\uFEFF" + csv],
+  const blob=new Blob(
+    ["\uFEFF"+csv],
     {type:"text/csv;charset=utf-8;"}
   );
 
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
 
-  link.href = url;
-  link.download = "balochping-vip-backup.csv";
+  link.href=url;
+  link.download="balochping-vip-backup.csv";
   link.click();
 
   URL.revokeObjectURL(url);
 }
 
-document.querySelectorAll(".stat").forEach(element => {
-  element.addEventListener("click",() => {
-    filter = element.dataset.filter;
+document.querySelectorAll(".stat").forEach(element=>{
+  element.addEventListener("click",()=>{
+    filter=element.dataset.filter;
 
-    document.querySelectorAll(".stat").forEach(stat => {
-      stat.classList.toggle("active-filter",stat === element);
+    document.querySelectorAll(".stat").forEach(stat=>{
+      stat.classList.toggle(
+        "active-filter",
+        stat===element
+      );
     });
 
     render();
@@ -1262,12 +1296,12 @@ $("sort").addEventListener("change",render);
 $("refreshBtn").addEventListener("click",load);
 $("createBtn").addEventListener("click",createCode);
 
-$("selectAllBtn").addEventListener("click",() => {
-  getFiltered().forEach(item => selected.add(item.code));
+$("selectAllBtn").addEventListener("click",()=>{
+  getFiltered().forEach(item=>selected.add(item.code));
   render();
 });
 
-$("clearSelectionBtn").addEventListener("click",() => {
+$("clearSelectionBtn").addEventListener("click",()=>{
   selected.clear();
   render();
 });
@@ -1275,18 +1309,13 @@ $("clearSelectionBtn").addEventListener("click",() => {
 $("bulkExtend").addEventListener("click",bulkExtend);
 $("bulkDelete").addEventListener("click",bulkDelete);
 
+$("extendAllBtn").addEventListener(
+  "click",
+  extendAllSubscriptions
+);
+
 $("exportBtn").addEventListener("click",exportCSV);
 $("exportBtn2").addEventListener("click",exportCSV);
-
-$("modalClose").addEventListener("click",() => {
-  $("modal").classList.remove("show");
-});
-
-$("modal").addEventListener("click",event => {
-  if (event.target === $("modal")) {
-    $("modal").classList.remove("show");
-  }
-});
 
 load();
 </script>
