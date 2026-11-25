@@ -4,328 +4,1321 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BALOCH PING | VIP Control Center</title>
+
 <style>
-:root{--bg:#08090d;--panel:#11131b;--panel2:#171a24;--border:#252938;--yellow:#f5c400;--green:#10e870;--blue:#36cfff;--red:#ff5d70;--text:#f4f6fb;--muted:#8992a8}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:radial-gradient(circle at 85% 0%,#1c1b10 0,transparent 30%),var(--bg);color:var(--text);font-family:system-ui,Tahoma,sans-serif;min-height:100vh}
-button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
-.app{max-width:1250px;margin:auto;padding:20px}
-.header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:25px}
-.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#ffe77a,#d69e00);color:#090909;font-size:24px;font-weight:1000;box-shadow:0 0 30px #f5c40022}
-.brand h1{margin:0;font-size:18px;font-weight:950}.brand p{margin:4px 0 0;color:var(--muted);font-size:11px}
-.header-actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:1px solid var(--border);border-radius:12px;padding:10px 15px;background:var(--panel2);color:var(--text);font-size:12px;font-weight:800}
-.btn-primary{background:linear-gradient(135deg,#ffe36b,#e9b400);color:#111;border:0}.btn-danger{background:#32151c;color:#ff8290;border-color:#54232d}.btn-green{background:#10291d;color:var(--green);border-color:#1d5637}.btn-blue{background:#102530;color:var(--blue);border-color:#214958}
-.hero{background:radial-gradient(circle at 10% 50%,#f5c40016,transparent 35%),linear-gradient(135deg,#171a23,#101118);border:1px solid #33313a;border-radius:24px;padding:25px;margin-bottom:20px;position:relative;overflow:hidden}
-.hero-label{color:var(--yellow);font-size:11px;font-weight:900;letter-spacing:2px}.hero h2{font-size:25px;margin:10px 0}.hero p{color:var(--muted);font-size:13px;margin:0}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:18px;cursor:pointer;transition:.2s}.stat:hover{border-color:#5b5125;transform:translateY(-2px)}.stat.active-filter{border-color:var(--yellow);background:#1b1a13}
-.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px}.stat-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:#222531;font-size:17px}
-.stat-number{font-size:30px;font-weight:950;margin-top:13px}.stat-foot{font-size:10px;color:var(--muted);margin-top:5px}
-.green{color:var(--green)}.yellow{color:var(--yellow)}.blue{color:var(--blue)}.red{color:var(--red)}
-.layout{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:16px}
-.panel-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.panel-title h3{margin:0;font-size:14px;font-weight:900}.panel-title span{color:var(--muted);font-size:10px}
-.field{margin-bottom:13px}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:7px}
-.field input,.field select{width:100%;padding:12px;border-radius:12px;background:#090b11;border:1px solid var(--border);color:white;outline:none}
-.field input:focus,.field select:focus{border-color:var(--yellow)}
-.create-button{width:100%;padding:14px;border-radius:13px;font-weight:950;border:0;background:linear-gradient(135deg,#ffe36b,#e9b400);color:#111}
-.message{font-size:11px;line-height:1.8;margin-top:10px;color:var(--green);word-break:break-word}
-.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.search{flex:1;min-width:180px}.search input{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:12px 15px;color:white;outline:none}
-.toolbar select{background:var(--panel);border:1px solid var(--border);border-radius:13px;color:white;padding:11px}
-.list-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.list-header h3{font-size:14px;margin:0}.list-header span{color:var(--muted);font-size:11px}
-.subscription{background:var(--panel);border:1px solid var(--border);border-radius:17px;padding:16px;margin-bottom:11px;transition:border-color .2s}.subscription:hover{border-color:#4a4530}
-.sub-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.sub-code{font-family:monospace;font-size:17px;font-weight:950;color:var(--yellow);letter-spacing:1px;word-break:break-all}
-.badge{font-size:10px;padding:5px 9px;border-radius:30px;font-weight:900;white-space:nowrap}.badge-online{background:#103322;color:var(--green)}.badge-active{background:#102b37;color:var(--blue)}.badge-ready{background:#302713;color:var(--yellow)}.badge-expired{background:#351820;color:var(--red)}
-.sub-info{display:flex;flex-wrap:wrap;gap:7px 15px;color:var(--muted);font-size:11px;margin:12px 0;line-height:1.8}
-.progress{height:5px;background:#252833;border-radius:20px;overflow:hidden;margin:10px 0 14px}.progress div{height:100%;background:linear-gradient(90deg,var(--yellow),var(--green));border-radius:20px}.progress.low div{background:linear-gradient(90deg,#ff4d5e,#ff9d43)}
-.sub-actions{display:flex;flex-wrap:wrap;gap:7px}.sub-actions button{padding:8px 11px;font-size:10px;border-radius:9px}
-.checkbox{width:17px;height:17px;accent-color:var(--yellow);margin-left:8px}
-.bulk{display:none;background:#1c1b13;border:1px solid #51451c;border-radius:14px;padding:12px;margin-bottom:12px;align-items:center;gap:8px;flex-wrap:wrap}.bulk.show{display:flex}.bulk span{font-size:11px;color:var(--yellow);margin-left:auto}
-.empty{text-align:center;padding:45px 15px;color:var(--muted);background:var(--panel);border:1px dashed var(--border);border-radius:18px}
-.footer{text-align:center;color:#555d70;font-size:10px;padding:20px 0}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.hero{padding:20px}.hero h2{font-size:21px}}
-@media(max-width:420px){.app{padding:12px}.brand h1{font-size:15px}.header-actions .btn{padding:9px}.stat{padding:14px}.stat-number{font-size:25px}}
+:root {
+  --bg:#08090d;
+  --panel:#11131b;
+  --panel2:#171a24;
+  --border:#252938;
+  --yellow:#f5c400;
+  --green:#10e870;
+  --blue:#36cfff;
+  --red:#ff5d70;
+  --text:#f4f6fb;
+  --muted:#8992a8;
+}
+
+* {
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body {
+  margin:0;
+  background:
+    radial-gradient(circle at 85% 0%,#1c1b10 0,transparent 30%),
+    var(--bg);
+  color:var(--text);
+  font-family:system-ui,Tahoma,sans-serif;
+  min-height:100vh;
+}
+
+button,input,select {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+}
+
+button:disabled {
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.app {
+  max-width:1250px;
+  margin:auto;
+  padding:20px;
+}
+
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo {
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,#ffe77a,#d69e00);
+  color:#090909;
+  font-size:24px;
+  font-weight:1000;
+  box-shadow:0 0 30px #f5c40022;
+}
+
+.brand h1 {
+  margin:0;
+  font-size:18px;
+  font-weight:950;
+}
+
+.brand p {
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.header-actions {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.btn {
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px 15px;
+  background:var(--panel2);
+  color:var(--text);
+  font-size:12px;
+  font-weight:800;
+}
+
+.btn-primary {
+  background:linear-gradient(135deg,#ffe36b,#e9b400);
+  color:#111;
+  border:0;
+}
+
+.btn-danger {
+  background:#32151c;
+  color:#ff8290;
+  border-color:#54232d;
+}
+
+.btn-green {
+  background:#10291d;
+  color:var(--green);
+  border-color:#1d5637;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 10% 50%,#f5c40016,transparent 35%),
+    linear-gradient(135deg,#171a23,#101118);
+  border:1px solid #33313a;
+  border-radius:24px;
+  padding:25px;
+  margin-bottom:20px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-label {
+  color:var(--yellow);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.hero h2 {
+  font-size:25px;
+  margin:10px 0;
+}
+
+.hero p {
+  color:var(--muted);
+  font-size:13px;
+  margin:0;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.stat {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.stat:hover {
+  border-color:#5b5125;
+  transform:translateY(-2px);
+}
+
+.stat.active-filter {
+  border-color:var(--yellow);
+  background:#1b1a13;
+}
+
+.stat-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.stat-icon {
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:#222531;
+  font-size:17px;
+}
+
+.stat-number {
+  font-size:30px;
+  font-weight:950;
+  margin-top:13px;
+}
+
+.stat-foot {
+  font-size:10px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.green {color:var(--green)}
+.yellow {color:var(--yellow)}
+.blue {color:var(--blue)}
+.red {color:var(--red)}
+
+.layout {
+  display:grid;
+  grid-template-columns:340px 1fr;
+  gap:18px;
+  align-items:start;
+}
+
+.panel {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:16px;
+}
+
+.panel-title {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.panel-title h3 {
+  margin:0;
+  font-size:14px;
+  font-weight:900;
+}
+
+.panel-title span {
+  color:var(--muted);
+  font-size:10px;
+}
+
+.field {
+  margin-bottom:13px;
+}
+
+.field label {
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:7px;
+}
+
+.field input,
+.field select {
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  background:#090b11;
+  border:1px solid var(--border);
+  color:white;
+  outline:none;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color:var(--yellow);
+}
+
+.create-button {
+  width:100%;
+  padding:14px;
+  border-radius:13px;
+  font-weight:950;
+  border:0;
+  background:linear-gradient(135deg,#ffe36b,#e9b400);
+  color:#111;
+}
+
+.message {
+  font-size:11px;
+  line-height:1.8;
+  margin-top:10px;
+  color:var(--green);
+  word-break:break-word;
+}
+
+.toolbar {
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+.search {
+  flex:1;
+  min-width:180px;
+}
+
+.search input {
+  width:100%;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:12px 15px;
+  color:white;
+  outline:none;
+}
+
+.toolbar select {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:13px;
+  color:white;
+  padding:11px;
+}
+
+.list-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.list-header h3 {
+  font-size:14px;
+  margin:0;
+}
+
+.list-header span {
+  color:var(--muted);
+  font-size:11px;
+}
+
+.subscription {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:16px;
+  margin-bottom:11px;
+  transition:border-color .2s;
+}
+
+.subscription:hover {
+  border-color:#4a4530;
+}
+
+.sub-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.sub-code {
+  font-family:monospace;
+  font-size:17px;
+  font-weight:950;
+  color:var(--yellow);
+  letter-spacing:1px;
+  word-break:break-all;
+}
+
+.badge {
+  font-size:10px;
+  padding:5px 9px;
+  border-radius:30px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.badge-online {
+  background:#103322;
+  color:var(--green);
+}
+
+.badge-active {
+  background:#102b37;
+  color:var(--blue);
+}
+
+.badge-ready {
+  background:#302713;
+  color:var(--yellow);
+}
+
+.sub-info {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px 15px;
+  color:var(--muted);
+  font-size:11px;
+  margin:12px 0;
+  line-height:1.8;
+}
+
+.progress {
+  height:5px;
+  background:#252833;
+  border-radius:20px;
+  overflow:hidden;
+  margin:10px 0 14px;
+}
+
+.progress div {
+  height:100%;
+  background:linear-gradient(90deg,var(--yellow),var(--green));
+  border-radius:20px;
+}
+
+.progress.low div {
+  background:linear-gradient(90deg,#ff4d5e,#ff9d43);
+}
+
+.sub-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.sub-actions button {
+  padding:8px 11px;
+  font-size:10px;
+  border-radius:9px;
+}
+
+.checkbox {
+  width:17px;
+  height:17px;
+  accent-color:var(--yellow);
+  margin-left:8px;
+}
+
+.bulk {
+  display:none;
+  background:#1c1b13;
+  border:1px solid #51451c;
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:12px;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.bulk.show {
+  display:flex;
+}
+
+.bulk span {
+  font-size:11px;
+  color:var(--yellow);
+  margin-left:auto;
+}
+
+.empty {
+  text-align:center;
+  padding:45px 15px;
+  color:var(--muted);
+  background:var(--panel);
+  border:1px dashed var(--border);
+  border-radius:18px;
+}
+
+.footer {
+  text-align:center;
+  color:#555d70;
+  font-size:10px;
+  padding:20px 0;
+}
+
+@media(max-width:850px) {
+  .layout {
+    grid-template-columns:1fr;
+  }
+
+  .stats {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .hero {
+    padding:20px;
+  }
+
+  .hero h2 {
+    font-size:21px;
+  }
+}
+
+@media(max-width:420px) {
+  .app {
+    padding:12px;
+  }
+
+  .brand h1 {
+    font-size:15px;
+  }
+
+  .header-actions .btn {
+    padding:9px;
+  }
+
+  .stat {
+    padding:14px;
+  }
+
+  .stat-number {
+    font-size:25px;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
 <header class="header">
-  <div class="brand"><div class="logo">B</div><div><h1>BALOCH PING</h1><p>VIP CONTROL CENTER</p></div></div>
-  <div class="header-actions"><button class="btn" id="refreshBtn">↻ بروزرسانی</button><button class="btn btn-primary" id="exportBtn">خروجی CSV</button></div>
+  <div class="brand">
+    <div class="logo">B</div>
+    <div>
+      <h1>BALOCH PING</h1>
+      <p>VIP CONTROL CENTER</p>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button class="btn" id="refreshBtn">↻ بروزرسانی</button>
+    <button class="btn btn-primary" id="exportBtn">خروجی CSV</button>
+  </div>
 </header>
-<section class="hero"><div class="hero-label">ADMIN CONTROL SYSTEM</div><h2>مدیریت هوشمند اشتراک‌ها</h2><p>کنترل، مدیریت و بررسی اشتراک‌های VIP بلوچ پینگ</p></section>
-<section class="stats">
-  <div class="stat active-filter" data-filter="all"><div class="stat-top"><span>کل اشتراک‌ها</span><div class="stat-icon">▦</div></div><div class="stat-number" id="totalCount">0</div><div class="stat-foot">تمام کدهای موجود</div></div>
-  <div class="stat" data-filter="online"><div class="stat-top"><span>کاربران آنلاین</span><div class="stat-icon green">●</div></div><div class="stat-number green" id="onlineCount">0</div><div class="stat-foot">کاربران متصل</div></div>
-  <div class="stat" data-filter="active"><div class="stat-top"><span>فعال‌شده‌ها</span><div class="stat-icon blue">✓</div></div><div class="stat-number blue" id="activeCount">0</div><div class="stat-foot">دارای دستگاه</div></div>
-  <div class="stat" data-filter="ready"><div class="stat-top"><span>آماده فعال‌سازی</span><div class="stat-icon yellow">✦</div></div><div class="stat-number yellow" id="readyCount">0</div><div class="stat-foot">کدهای استفاده‌نشده</div></div>
+
+<section class="hero">
+  <div class="hero-label">ADMIN CONTROL SYSTEM</div>
+  <h2>مدیریت هوشمند اشتراک‌ها</h2>
+  <p>کنترل، مدیریت و بررسی اشتراک‌های VIP بلوچ پینگ</p>
 </section>
+
+<section class="stats">
+
+  <div class="stat" data-filter="all">
+    <div class="stat-top">
+      <span>کل اشتراک‌ها</span>
+      <div class="stat-icon">▦</div>
+    </div>
+    <div class="stat-number" id="totalCount">0</div>
+    <div class="stat-foot">تمام کدهای موجود</div>
+  </div>
+
+  <div class="stat" data-filter="online">
+    <div class="stat-top">
+      <span>کاربران آنلاین</span>
+      <div class="stat-icon green">●</div>
+    </div>
+    <div class="stat-number green" id="onlineCount">0</div>
+    <div class="stat-foot">کاربران متصل</div>
+  </div>
+
+  <div class="stat" data-filter="active">
+    <div class="stat-top">
+      <span>فعال‌شده‌ها</span>
+      <div class="stat-icon blue">✓</div>
+    </div>
+    <div class="stat-number blue" id="activeCount">0</div>
+    <div class="stat-foot">دارای دستگاه</div>
+  </div>
+
+  <div class="stat" data-filter="ready">
+    <div class="stat-top">
+      <span>آماده فعال‌سازی</span>
+      <div class="stat-icon yellow">✦</div>
+    </div>
+    <div class="stat-number yellow" id="readyCount">0</div>
+    <div class="stat-foot">کدهای استفاده‌نشده</div>
+  </div>
+
+</section>
+
 <div class="layout">
+
 <aside>
+
   <section class="panel">
-    <div class="panel-title"><h3>＋ ساخت اشتراک VIP</h3><span>NEW CODE</span></div>
-    <div class="field"><label>واحد مدت اعتبار</label><select id="durationUnit"><option value="minutes">دقیقه</option><option value="hours">ساعت</option><option value="days" selected>روز</option></select></div>
-    <div class="field"><label>مدت اشتراک</label><input id="durationValue" type="number" min="1" max="525600" value="30" inputmode="numeric"></div>
-    <div class="field"><label>معادل مدت</label><div id="durationPreview" style="font-size:12px;color:var(--yellow);padding:4px 2px">۳۰ روز</div></div>
-    <button class="create-button" id="createBtn">ساخت کد و کپی خودکار</button>
+    <div class="panel-title">
+      <h3>＋ ساخت اشتراک VIP</h3>
+      <span>NEW CODE</span>
+    </div>
+
+    <div class="field">
+      <label>مدت اشتراک</label>
+      <select id="days">
+        <option value="7">۷ روزه</option>
+        <option value="30" selected>۳۰ روزه</option>
+        <option value="60">۶۰ روزه</option>
+        <option value="90">۹۰ روزه</option>
+        <option value="180">۱۸۰ روزه</option>
+        <option value="365">۳۶۵ روزه</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>یادداشت مشتری</label>
+      <input id="note" maxlength="60"
+        placeholder="آیدی تلگرام یا نام مشتری">
+    </div>
+
+    <button class="create-button" id="createBtn">
+      ساخت کد و کپی خودکار
+    </button>
+
     <div class="message" id="message"></div>
   </section>
+
   <section class="panel">
-    <div class="panel-title"><h3>ابزارهای مدیریت</h3><span>TOOLS</span></div>
-    <button class="btn" style="width:100%;margin-bottom:8px" id="selectAllBtn">انتخاب همه اشتراک‌ها</button>
-    <button class="btn" style="width:100%;margin-bottom:8px" id="clearSelectionBtn">پاک کردن انتخاب‌ها</button>
-    <button class="btn" style="width:100%;margin-bottom:8px" id="exportBtn2">دریافت بکاپ اطلاعات</button>
-    <button class="btn btn-green" style="width:100%;margin-bottom:8px" id="extendAllBtn">✦ تمدید همه اشتراک‌ها</button>
-    <p style="color:var(--muted);font-size:10px;line-height:1.8">تمدید گروهی بر اساس روز انجام می‌شود. برای تغییر دقیق زمان هر اشتراک، از گزینه تنظیم اعتبار داخل کارت استفاده کنید.</p>
+    <div class="panel-title">
+      <h3>ابزارهای مدیریت</h3>
+      <span>TOOLS</span>
+    </div>
+
+    <button class="btn" style="width:100%;margin-bottom:8px"
+      id="selectAllBtn">
+      انتخاب همه اشتراک‌ها
+    </button>
+
+    <button class="btn" style="width:100%;margin-bottom:8px"
+      id="clearSelectionBtn">
+      پاک کردن انتخاب‌ها
+    </button>
+
+    <button class="btn" style="width:100%;margin-bottom:8px"
+      id="exportBtn2">
+      دریافت بکاپ اطلاعات
+    </button>
+
+    <button class="btn btn-green"
+      style="width:100%;margin-bottom:8px"
+      id="extendAllBtn">
+      ✦ تمدید همه اشتراک‌ها
+    </button>
+
+    <p style="color:var(--muted);font-size:10px;line-height:1.8">
+      این گزینه به تمام اشتراک‌های موجود، تعداد روز انتخابی را اضافه می‌کند.
+    </p>
   </section>
+
 </aside>
+
 <main>
-  <div class="toolbar"><div class="search"><input id="search" placeholder="جستجوی کد یا دستگاه..."></div><select id="sort"><option value="newest">جدیدترین</option><option value="oldest">قدیمی‌ترین</option><option value="expiry">نزدیک‌ترین انقضا</option><option value="online">آخرین اتصال</option></select></div>
-  <div class="bulk" id="bulk"><span id="selectedCount">۰ انتخاب شده</span><button class="btn btn-green" id="bulkExtend">تمدید انتخاب‌شده‌ها</button><button class="btn btn-danger" id="bulkDelete">حذف انتخاب‌شده‌ها</button></div>
-  <div class="list-header"><h3>لیست اشتراک‌ها</h3><span id="listCount">در حال بارگذاری...</span></div>
-  <div id="list"><div class="empty">در حال دریافت اطلاعات...</div></div>
+
+  <div class="toolbar">
+    <div class="search">
+      <input id="search"
+        placeholder="جستجوی کد، مشتری یا دستگاه...">
+    </div>
+
+    <select id="sort">
+      <option value="newest">جدیدترین</option>
+      <option value="oldest">قدیمی‌ترین</option>
+      <option value="expiry">نزدیک‌ترین انقضا</option>
+      <option value="online">آخرین اتصال</option>
+    </select>
+  </div>
+
+  <div class="bulk" id="bulk">
+    <span id="selectedCount">۰ انتخاب شده</span>
+    <button class="btn btn-green" id="bulkExtend">
+      تمدید انتخاب‌شده‌ها
+    </button>
+    <button class="btn btn-danger" id="bulkDelete">
+      حذف انتخاب‌شده‌ها
+    </button>
+  </div>
+
+  <div class="list-header">
+    <h3>لیست اشتراک‌ها</h3>
+    <span id="listCount">در حال بارگذاری...</span>
+  </div>
+
+  <div id="list">
+    <div class="empty">در حال دریافت اطلاعات...</div>
+  </div>
+
 </main>
 </div>
-<div class="footer">BALOCH PING • VIP MANAGEMENT SYSTEM</div>
+
+<div class="footer">
+  BALOCH PING • VIP MANAGEMENT SYSTEM
+</div>
+
 </div>
 
 <script>
 "use strict";
-const adminKey=new URLSearchParams(location.search).get("key")||"";
-const API="/v1/admin/api?key="+encodeURIComponent(adminKey);
-let items=[],selected=new Set(),filter="all",serverNow=Date.now(),onlineWindow=1800000;
-const $=id=>document.getElementById(id);
-const MINUTE=60000,DAY=86400000;
 
-function online(item){return Boolean(item.deviceId&&item.lastSeenAt&&serverNow-item.lastSeenAt<=onlineWindow)}
-function remaining(item){return item.expiresAtMs?Math.max(0,item.expiresAtMs-serverNow):0}
-function isExpired(item){return Boolean(item.expiresAtMs&&item.expiresAtMs<=serverNow)}
-function fmtDuration(ms){
-  if(ms<=0)return "منقضی شده";
-  const total=Math.ceil(ms/1000),days=Math.floor(total/86400),hours=Math.floor((total%86400)/3600),mins=Math.floor((total%3600)/60),secs=total%60;
-  if(days>0)return `${days} روز ${hours} ساعت`;
-  if(hours>0)return `${hours} ساعت ${mins} دقیقه`;
-  if(mins>0)return `${mins} دقیقه ${secs} ثانیه`;
-  return `${secs} ثانیه`;
+const adminKey =
+  new URLSearchParams(location.search).get("key") || "";
+
+const API =
+  "/v1/admin/api?key=" + encodeURIComponent(adminKey);
+
+let items = [];
+let selected = new Set();
+let filter = "all";
+let serverNow = Date.now();
+let onlineWindow = 1800000;
+
+const $ = id => document.getElementById(id);
+
+function online(item) {
+  return Boolean(
+    item.deviceId &&
+    item.lastSeenAt &&
+    serverNow - item.lastSeenAt <= onlineWindow
+  );
 }
-function status(item){
-  if(isExpired(item))return "expired";
-  if(!item.deviceId)return "ready";
-  if(online(item))return "online";
+
+function remaining(item) {
+  if (!item.expiresAtMs) return 0;
+  return Math.max(0,item.expiresAtMs-serverNow);
+}
+
+function daysLeft(item) {
+  return Math.ceil(remaining(item)/86400000);
+}
+
+function ago(timestamp) {
+  if (!timestamp) return "ثبت نشده";
+
+  const minutes = Math.floor(
+    Math.max(0,serverNow-timestamp)/60000
+  );
+
+  if (minutes < 2) return "هم‌اکنون";
+  if (minutes < 60) return minutes+" دقیقه پیش";
+
+  const hours = Math.floor(minutes/60);
+
+  if (hours < 24) return hours+" ساعت پیش";
+
+  return Math.floor(hours/24)+" روز پیش";
+}
+
+function status(item) {
+  if (!item.deviceId) return "ready";
+  if (online(item)) return "online";
   return "active";
 }
-function statusLabel(item){
+
+function statusLabel(item) {
   const s=status(item);
-  return s==="online"?"آنلاین":s==="active"?"فعال":s==="expired"?"منقضی":"آماده";
+
+  if (s==="online") return "آنلاین";
+  if (s==="active") return "فعال";
+
+  return "آماده";
 }
-function notify(text,color="#10e870"){$("message").textContent=text;$("message").style.color=color}
-async function api(action,data={}){
-  const response=await fetch(API,{method:action?"POST":"GET",cache:"no-store",headers:action?{"Content-Type":"application/json"}:{},body:action?JSON.stringify({action,...data}):undefined});
-  const result=await response.json();
-  if(!response.ok||!result.ok)throw new Error(result.error||"خطای سرور");
-  return result;
+
+function notify(text,color="#10e870") {
+  $("message").textContent=text;
+  $("message").style.color=color;
 }
-async function copy(text){
-  try{await navigator.clipboard.writeText(text);notify("کپی شد: "+text)}
-  catch{notify("کد: "+text,"#ffe082")}
-}
-function create(tag,className,text){
-  const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el;
-}
-function updateStats(){
-  $("totalCount").textContent=items.length;
-  $("onlineCount").textContent=items.filter(i=>!isExpired(i)&&online(i)).length;
-  $("activeCount").textContent=items.filter(i=>i.deviceId&&!isExpired(i)).length;
-  $("readyCount").textContent=items.filter(i=>!i.deviceId&&!isExpired(i)).length;
-}
-function getFiltered(){
-  const query=$("search").value.trim().toLowerCase();
-  let result=items.filter(item=>{
-    if(filter==="online"&&(!online(item)||isExpired(item)))return false;
-    if(filter==="active"&&(!item.deviceId||isExpired(item)))return false;
-    if(filter==="ready"&&(item.deviceId||isExpired(item)))return false;
-    return !query||[item.code,item.deviceId].join(" ").toLowerCase().includes(query);
+
+async function api(action,data={}) {
+  const response=await fetch(API,{
+    method:action?"POST":"GET",
+    cache:"no-store",
+    headers:action
+      ? {"Content-Type":"application/json"}
+      : {},
+    body:action
+      ? JSON.stringify({action,...data})
+      : undefined
   });
-  const sort=$("sort").value;
-  if(sort==="newest")result.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-  if(sort==="oldest")result.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
-  if(sort==="expiry")result.sort((a,b)=>(a.expiresAtMs||Infinity)-(b.expiresAtMs||Infinity));
-  if(sort==="online")result.sort((a,b)=>(b.lastSeenAt||0)-(a.lastSeenAt||0));
+
+  const result=await response.json();
+
+  if(!response.ok || !result.ok) {
+    throw new Error(result.error||"خطای سرور");
+  }
+
   return result;
 }
-function render(){
-  updateStats();const list=$("list"),filtered=getFiltered();
+
+async function copy(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    notify("کپی شد: "+text);
+  } catch {
+    notify("کد: "+text,"#ffe082");
+  }
+}
+
+function copyMessage(item) {
+  return [
+    "🎮 BALOCH PING VIP",
+    "",
+    "کد اشتراک: "+item.code,
+    "مدت: "+(item.days||30)+" روز",
+    "",
+    "برای فعال‌سازی، کد را در برنامه وارد کنید."
+  ].join("\n");
+}
+
+function create(tag,className,text) {
+  const el=document.createElement(tag);
+
+  if(className) el.className=className;
+  if(text!==undefined) el.textContent=text;
+
+  return el;
+}
+
+function updateStats() {
+  $("totalCount").textContent=items.length;
+  $("onlineCount").textContent=items.filter(online).length;
+  $("activeCount").textContent=items.filter(i=>i.deviceId).length;
+  $("readyCount").textContent=items.filter(i=>!i.deviceId).length;
+}
+
+function getFiltered() {
+  const query=$("search").value.trim().toLowerCase();
+
+  let result=items.filter(item=>{
+    if(filter==="online"&&!online(item)) return false;
+    if(filter==="active"&&!item.deviceId) return false;
+    if(filter==="ready"&&item.deviceId) return false;
+
+    const text=[
+      item.code,
+      item.note,
+      item.deviceId
+    ].join(" ").toLowerCase();
+
+    return !query||text.includes(query);
+  });
+
+  const sort=$("sort").value;
+
+  if(sort==="newest") {
+    result.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  }
+
+  if(sort==="oldest") {
+    result.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+  }
+
+  if(sort==="expiry") {
+    result.sort((a,b)=>
+      (a.expiresAtMs||Infinity)-
+      (b.expiresAtMs||Infinity)
+    );
+  }
+
+  if(sort==="online") {
+    result.sort((a,b)=>
+      (b.lastSeenAt||0)-(a.lastSeenAt||0)
+    );
+  }
+
+  return result;
+}
+
+function render() {
+  updateStats();
+
+  const list=$("list");
+  const filtered=getFiltered();
+
   $("listCount").textContent=filtered.length+" اشتراک";
   $("bulk").classList.toggle("show",selected.size>0);
   $("selectedCount").textContent=selected.size+" انتخاب شده";
-  if(!filtered.length){list.replaceChildren(create("div","empty","اشتراکی پیدا نشد."));return}
+
+  if(!filtered.length) {
+    list.replaceChildren(
+      create("div","empty","اشتراکی پیدا نشد.")
+    );
+    return;
+  }
+
   list.replaceChildren();
+
   filtered.forEach(item=>{
-    const card=create("div","subscription"),top=create("div","sub-top"),left=create("div","");
-    const checkbox=create("input","checkbox");checkbox.type="checkbox";checkbox.checked=selected.has(item.code);
-    checkbox.addEventListener("change",()=>{checkbox.checked?selected.add(item.code):selected.delete(item.code);render()});
-    left.append(checkbox,create("span","sub-code",item.code));
-    top.append(left,create("span","badge badge-"+status(item),statusLabel(item)));
-    card.append(top);
+    const card=create("div","subscription");
+    const top=create("div","sub-top");
+    const left=create("div","");
+
+    const checkbox=create("input","checkbox");
+    checkbox.type="checkbox";
+    checkbox.checked=selected.has(item.code);
+
+    checkbox.addEventListener("change",()=>{
+      if(checkbox.checked) selected.add(item.code);
+      else selected.delete(item.code);
+
+      render();
+    });
+
+    const code=create("span","sub-code",item.code);
+    left.append(checkbox,code);
+
+    const badge=create(
+      "span",
+      "badge badge-"+status(item),
+      statusLabel(item)
+    );
+
+    top.append(left,badge);
+
     const info=create("div","sub-info");
-    const duration=item.durationMinutes?fmtDuration(item.durationMinutes*MINUTE):((item.days||30)+" روز");
-    const expiry=item.expiresAtMs?new Date(item.expiresAtMs).toLocaleString("fa-IR"):"شروع پس از اولین فعال‌سازی";
-    info.textContent=[item.deviceId?"دستگاه ثبت‌شده":"فعال‌نشده",item.deviceId?ago(item.lastSeenAt):"در انتظار فعال‌سازی","مدت: "+duration,"باقی‌مانده: "+(item.expiresAtMs?fmtDuration(remaining(item)):"هنوز فعال نشده"),"انقضا: "+expiry].join(" • ");
-    card.append(info);
-    if(item.deviceId&&item.expiresAtMs&&!isExpired(item)){
-      const total=(Number(item.durationMinutes)>0?Number(item.durationMinutes)*MINUTE:(Number(item.totalDays)||Number(item.days)||30)*DAY);
-      const percent=Math.max(0,Math.min(100,Math.round(remaining(item)/Math.max(total,1)*100)));
-      const progress=create("div","progress"),fill=create("div","");
-      fill.style.width=percent+"%";if(remaining(item)<=3*DAY)progress.classList.add("low");progress.append(fill);card.append(progress);
+
+    info.textContent=[
+      item.note||"بدون یادداشت",
+      item.deviceId?"دستگاه ثبت‌شده":"فعال‌نشده",
+      item.deviceId?ago(item.lastSeenAt):"در انتظار فعال‌سازی",
+      item.expiresAtMs
+        ?daysLeft(item)+" روز باقی‌مانده"
+        :(item.days||30)+" روز اعتبار"
+    ].join(" • ");
+
+    card.append(top,info);
+
+    if(item.deviceId&&item.expiresAtMs) {
+      const total=
+        (Number(item.totalDays)||Number(item.days)||30)*
+        86400000;
+
+      const percent=Math.max(
+        0,
+        Math.min(100,
+          Math.round(remaining(item)/total*100)
+        )
+      );
+
+      const progress=create("div","progress");
+      const fill=create("div","");
+
+      fill.style.width=percent+"%";
+
+      if(daysLeft(item)<=3) {
+        progress.classList.add("low");
+      }
+
+      progress.appendChild(fill);
+      card.appendChild(progress);
     }
+
     const actions=create("div","sub-actions");
-    const addButton=(label,cls,fn)=>{const b=create("button","btn "+(cls||""),label);b.onclick=fn;actions.append(b)};
-    addButton("کپی کد","btn-green",()=>copy(item.code));
-    addButton("+۳۰ روز","",()=>extend(item.code,30));
-    addButton("تمدید دلخواه","",()=>customExtend(item.code));
-    addButton("تنظیم اعتبار","btn-blue",()=>editDuration(item));
-    addButton("تنظیم تاریخ انقضا","btn-blue",()=>editExpiry(item));
-    addButton("ریست دستگاه","",()=>resetDevice(item.code));
-    addButton("جزئیات","",()=>details(item));
-    addButton("حذف","btn-danger",()=>remove(item.code));
-    card.append(actions);list.append(card);
+
+    const copyBtn=create("button","btn btn-green","کپی کد");
+    copyBtn.onclick=()=>copy(item.code);
+
+    const messageBtn=create("button","btn","متن مشتری");
+    messageBtn.onclick=()=>copy(copyMessage(item));
+
+    const extendBtn=create("button","btn","+۳۰ روز");
+    extendBtn.onclick=()=>extend(item.code,30);
+
+    const customBtn=create("button","btn","تمدید دلخواه");
+    customBtn.onclick=()=>customExtend(item.code);
+
+    const resetBtn=create("button","btn","ریست دستگاه");
+    resetBtn.onclick=()=>resetDevice(item.code);
+
+    const detailBtn=create("button","btn","جزئیات");
+    detailBtn.onclick=()=>details(item);
+
+    const deleteBtn=create("button","btn btn-danger","حذف");
+    deleteBtn.onclick=()=>remove(item.code);
+
+    actions.append(
+      copyBtn,messageBtn,extendBtn,
+      customBtn,resetBtn,detailBtn,deleteBtn
+    );
+
+    card.appendChild(actions);
+    list.appendChild(card);
   });
 }
-function ago(timestamp){
-  if(!timestamp)return "ثبت نشده";
-  const minutes=Math.floor(Math.max(0,serverNow-timestamp)/MINUTE);
-  if(minutes<2)return "هم‌اکنون";if(minutes<60)return minutes+" دقیقه پیش";
-  const hours=Math.floor(minutes/60);if(hours<24)return hours+" ساعت پیش";
-  return Math.floor(hours/24)+" روز پیش";
-}
-async function load(){
+
+async function load() {
   $("refreshBtn").disabled=true;
-  try{const data=await api();items=data.items||[];serverNow=data.now||Date.now();onlineWindow=data.onlineWindowMs||1800000;render()}
-  catch(error){$("list").textContent="خطا در دریافت اطلاعات: "+error.message}
-  finally{$("refreshBtn").disabled=false}
+
+  try {
+    const data=await api();
+
+    items=data.items||[];
+    serverNow=data.now||Date.now();
+    onlineWindow=data.onlineWindowMs||1800000;
+
+    render();
+  } catch(error) {
+    $("list").textContent=
+      "خطا در دریافت اطلاعات: "+error.message;
+  } finally {
+    $("refreshBtn").disabled=false;
+  }
 }
-function durationToMinutes(){
-  const n=Number($("durationValue").value),unit=$("durationUnit").value;
-  if(!Number.isFinite(n)||n<1)return 0;
-  const multiplier=unit==="hours"?60:unit==="days"?1440:1;
-  return Math.floor(n*multiplier);
-}
-function updateDurationPreview(){
-  const mins=durationToMinutes();
-  $("durationPreview").textContent=mins?fmtDuration(mins*MINUTE):"مدت معتبر وارد کنید";
-  $("durationValue").max=$("durationUnit").value==="days"?365:$("durationUnit").value==="hours"?8760:525600;
-}
-async function createCode(){
-  const minutes=durationToMinutes();
-  if(!minutes||minutes>525600){notify("مدت باید بین ۱ دقیقه تا ۳۶۵ روز باشد.","#ff5d70");return}
+
+async function createCode() {
   $("createBtn").disabled=true;
-  try{
-    const data=await api("create",{minutes});
-    await copy(data.item.code);notify("اشتراک ساخته شد و کد کپی شد.");
+
+  try {
+    const data=await api("create",{
+      days:Number($("days").value),
+      note:$("note").value.trim()
+    });
+
+    $("note").value="";
+    await copy(data.item.code);
     await load();
-  }catch(error){notify(error.message,"#ff5d70")}
-  finally{$("createBtn").disabled=false}
+  } catch(error) {
+    notify(error.message,"#ff5d70");
+  } finally {
+    $("createBtn").disabled=false;
+  }
 }
-async function extend(code,days){
-  try{await api("extend",{code,days});notify("اشتراک تمدید شد.");await load()}
-  catch(error){alert(error.message)}
+
+async function extend(code,days) {
+  try {
+    await api("extend",{code,days});
+    notify("اشتراک تمدید شد.");
+    await load();
+  } catch(error) {
+    alert(error.message);
+  }
 }
-function customExtend(code){
-  const days=prompt("چند روز اضافه شود؟","30");if(days===null)return;
-  const n=Number(days);if(!Number.isInteger(n)||n<1||n>365){alert("عدد باید بین ۱ تا ۳۶۵ روز باشد.");return}
-  extend(code,n);
+
+function customExtend(code) {
+  const days=prompt("چند روز اضافه شود؟","30");
+
+  if(days===null) return;
+
+  const number=Number(days);
+
+  if(!Number.isInteger(number)||number<1||number>365) {
+    alert("تعداد روز باید بین ۱ تا ۳۶۵ باشد.");
+    return;
+  }
+
+  extend(code,number);
 }
-async function editDuration(item){
-  const value=prompt("مدت اعتبار جدید را به دقیقه وارد کنید (مثلاً ۱ برای تست، ۱۴۴۰ برای یک روز):",String(item.durationMinutes||((item.days||30)*1440)));
-  if(value===null)return;
-  const minutes=Number(value);
-  if(!Number.isInteger(minutes)||minutes<1||minutes>525600){alert("مدت باید بین ۱ تا ۵۲۵۶۰۰ دقیقه باشد.");return}
-  if(!confirm("مدت اشتراک تنظیم شود؟ اگر اشتراک فعال شده باشد، زمان انقضا از همین لحظه محاسبه می‌شود."))return;
-  try{await api("set_duration_minutes",{code:item.code,minutes});await load();notify("مدت اشتراک تنظیم شد.")}
-  catch(error){alert("تنظیم مدت ناموفق بود: "+error.message)}
+
+async function resetDevice(code) {
+  if(!confirm("دستگاه این اشتراک ریست شود؟")) return;
+
+  try {
+    await api("reset_device",{code});
+    await load();
+  } catch(error) {
+    alert(error.message);
+  }
 }
-async function editExpiry(item){
-  const current=item.expiresAtMs?new Date(item.expiresAtMs):new Date(Date.now()+DAY);
-  const local=new Date(current.getTime()-current.getTimezoneOffset()*60000).toISOString().slice(0,16);
-  const value=prompt("تاریخ و ساعت انقضا را وارد کنید (YYYY-MM-DDTHH:mm):",local);
-  if(value===null)return;
-  const parsed=Date.parse(value);
-  if(!Number.isFinite(parsed)||parsed<=Date.now()){alert("تاریخ انقضا باید در آینده باشد.");return}
-  if(!confirm("تاریخ انقضای این اشتراک تغییر کند؟"))return;
-  try{await api("set_expiry",{code:item.code,expiresAt:parsed});await load();notify("تاریخ انقضا تنظیم شد.")}
-  catch(error){alert("تنظیم تاریخ ناموفق بود: "+error.message)}
+
+async function remove(code) {
+  if(!confirm("این اشتراک حذف شود؟")) return;
+
+  try {
+    await api("delete",{code});
+    selected.delete(code);
+    await load();
+  } catch(error) {
+    alert(error.message);
+  }
 }
-async function resetDevice(code){
-  if(!confirm("دستگاه این اشتراک ریست شود؟"))return;
-  try{await api("reset_device",{code});await load()}catch(error){alert(error.message)}
-}
-async function remove(code){
-  if(!confirm("این اشتراک حذف شود؟"))return;
-  try{await api("delete",{code});selected.delete(code);await load()}catch(error){alert(error.message)}
-}
-function details(item){
+
+function details(item) {
   const rows={
     "کد اشتراک":item.code,
+    "یادداشت":item.note||"ندارد",
     "وضعیت":statusLabel(item),
-    "مدت ثبت‌شده":item.durationMinutes?fmtDuration(item.durationMinutes*MINUTE):((item.days||30)+" روز"),
+    "مدت اولیه":(item.days||30)+" روز",
+    "مدت کل":(item.totalDays||item.days||30)+" روز",
     "شناسه دستگاه":item.deviceId||"ثبت نشده",
-    "تاریخ ساخت":item.createdAt?new Date(item.createdAt).toLocaleString("fa-IR"):"نامشخص",
-    "تاریخ فعال‌سازی":item.activatedAt?new Date(item.activatedAt).toLocaleString("fa-IR"):"فعال نشده",
-    "تاریخ انقضا":item.expiresAtMs?new Date(item.expiresAtMs).toLocaleString("fa-IR"):"پس از فعال‌سازی",
-    "زمان باقی‌مانده":item.expiresAtMs?fmtDuration(remaining(item)):"هنوز فعال نشده",
+    "تاریخ ساخت":item.createdAt
+      ?new Date(item.createdAt).toLocaleDateString("fa-IR")
+      :"نامشخص",
+    "تاریخ فعال‌سازی":item.activatedAt
+      ?new Date(item.activatedAt).toLocaleDateString("fa-IR")
+      :"فعال نشده",
+    "تاریخ انقضا":item.expiresAtMs
+      ?new Date(item.expiresAtMs).toLocaleDateString("fa-IR")
+      :"پس از فعال‌سازی",
     "آخرین اتصال":ago(item.lastSeenAt)
   };
-  alert(Object.entries(rows).map(([k,v])=>k+": "+v).join("\n"));
+
+  const lines=Object.entries(rows)
+    .map(([key,value])=>key+": "+value)
+    .join("\n");
+
+  alert(lines);
 }
-async function bulkExtend(){
-  if(!selected.size)return;
-  const days=prompt("چند روز تمدید شود؟","30");if(days===null)return;
-  const n=Number(days);if(!Number.isInteger(n)||n<1||n>365){alert("عدد باید بین ۱ تا ۳۶۵ باشد.");return}
-  if(!confirm("اشتراک‌های انتخاب‌شده تمدید شوند؟"))return;
-  let success=0,failed=0;
-  for(const code of selected){try{await api("extend",{code,days:n});success++}catch{failed++}}
-  selected.clear();await load();alert("تمدید تمام شد.\nموفق: "+success+"\nناموفق: "+failed);
+
+async function bulkExtend() {
+  if(!selected.size) return;
+
+  const days=prompt("چند روز تمدید شود؟","30");
+  if(days===null) return;
+
+  const number=Number(days);
+
+  if(!Number.isInteger(number)||number<1||number>365) {
+    alert("عدد باید بین ۱ تا ۳۶۵ باشد.");
+    return;
+  }
+
+  if(!confirm("اشتراک‌های انتخاب‌شده تمدید شوند؟")) return;
+
+  let success=0;
+  let failed=0;
+
+  for(const code of selected) {
+    try {
+      await api("extend",{code,days:number});
+      success++;
+    } catch {
+      failed++;
+    }
+  }
+
+  selected.clear();
+  await load();
+
+  alert(
+    "تمدید انتخاب‌شده‌ها تمام شد.\n"+
+    "موفق: "+success+"\n"+
+    "ناموفق: "+failed
+  );
 }
-async function bulkDelete(){
-  if(!selected.size)return;
-  if(!confirm(selected.size+" اشتراک حذف شود؟ این عملیات برگشت‌پذیر نیست."))return;
-  let success=0,failed=0;
-  for(const code of selected){try{await api("delete",{code});success++}catch{failed++}}
-  selected.clear();await load();alert("حذف تمام شد.\nموفق: "+success+"\nناموفق: "+failed);
+
+async function bulkDelete() {
+  if(!selected.size) return;
+
+  if(!confirm(
+    selected.size+
+    " اشتراک حذف شود؟ این عملیات برگشت‌پذیر نیست."
+  )) return;
+
+  let success=0;
+  let failed=0;
+
+  for(const code of selected) {
+    try {
+      await api("delete",{code});
+      success++;
+    } catch {
+      failed++;
+    }
+  }
+
+  selected.clear();
+  await load();
+
+  alert(
+    "حذف تمام شد.\n"+
+    "موفق: "+success+"\n"+
+    "ناموفق: "+failed
+  );
 }
-async function extendAllSubscriptions(){
-  if(!items.length){alert("هیچ اشتراکی وجود ندارد.");return}
-  const days=prompt("چند روز به تمام اشتراک‌ها اضافه شود؟","30");if(days===null)return;
-  const n=Number(days);if(!Number.isInteger(n)||n<1||n>365){alert("عدد باید بین ۱ تا ۳۶۵ باشد.");return}
-  if(!confirm("به تمام "+items.length+" اشتراک، "+n+" روز اضافه شود؟"))return;
-  const button=$("extendAllBtn");button.disabled=true;button.textContent="در حال تمدید...";
-  let success=0,failed=0;
-  try{
-    for(const item of items){try{await api("extend",{code:item.code,days:n});success++}catch{failed++}}
-    await load();alert("تمدید تمام شد.\nموفق: "+success+"\nناموفق: "+failed);
-  }finally{button.disabled=false;button.textContent="✦ تمدید همه اشتراک‌ها"}
+
+/* تمدید تمام اشتراک‌ها */
+async function extendAllSubscriptions() {
+  if(!items.length) {
+    alert("هیچ اشتراکی برای تمدید وجود ندارد.");
+    return;
+  }
+
+  const days=prompt(
+    "چند روز به تمام اشتراک‌ها اضافه شود؟",
+    "30"
+  );
+
+  if(days===null) return;
+
+  const number=Number(days);
+
+  if(
+    !Number.isInteger(number)||
+    number<1||
+    number>365
+  ) {
+    alert("تعداد روز باید بین ۱ تا ۳۶۵ باشد.");
+    return;
+  }
+
+  const confirmed=confirm(
+    "به تمام "+items.length+
+    " اشتراک موجود، "+number+
+    " روز اضافه شود؟"
+  );
+
+  if(!confirmed) return;
+
+  const button=$("extendAllBtn");
+  button.disabled=true;
+  button.textContent="در حال تمدید همه...";
+
+  let success=0;
+  let failed=0;
+
+  try {
+    for(const item of items) {
+      try {
+        await api("extend",{
+          code:item.code,
+          days:number
+        });
+
+        success++;
+      } catch(error) {
+        failed++;
+        console.error("خطا در تمدید:",item.code,error);
+      }
+    }
+
+    await load();
+
+    alert(
+      "عملیات تمدید همه تمام شد.\n\n"+
+      "موفق: "+success+"\n"+
+      "ناموفق: "+failed
+    );
+
+  } finally {
+    button.disabled=false;
+    button.textContent="✦ تمدید همه اشتراک‌ها";
+  }
 }
-function exportCSV(){
-  const headers=["Code","Status","DurationMinutes","DeviceID","Created","Activated","Expires","LastSeen"];
-  const rows=items.map(i=>[i.code,statusLabel(i),i.durationMinutes||((i.days||30)*1440),i.deviceId||"",i.createdAt||"",i.activatedAt||"",i.expiresAtMs||"",i.lastSeenAt||""]);
-  const csv=[headers,...rows].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");
-  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
-  const url=URL.createObjectURL(blob),link=document.createElement("a");
-  link.href=url;link.download="balochping-vip-backup.csv";link.click();URL.revokeObjectURL(url);
+
+function exportCSV() {
+  const headers=[
+    "Code","Note","Status","Days","Device ID",
+    "Created","Activated","Expires","Last Seen"
+  ];
+
+  const rows=items.map(item=>[
+    item.code,
+    item.note||"",
+    statusLabel(item),
+    item.days||30,
+    item.deviceId||"",
+    item.createdAt||"",
+    item.activatedAt||"",
+    item.expiresAtMs||"",
+    item.lastSeenAt||""
+  ]);
+
+  const csv=[headers,...rows]
+    .map(row=>row.map(value=>
+      '"'+String(value).replace(/"/g,'""')+'"'
+    ).join(","))
+    .join("\r\n");
+
+  const blob=new Blob(
+    ["\uFEFF"+csv],
+    {type:"text/csv;charset=utf-8;"}
+  );
+
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+
+  link.href=url;
+  link.download="balochping-vip-backup.csv";
+  link.click();
+
+  URL.revokeObjectURL(url);
 }
-document.querySelectorAll(".stat").forEach(el=>el.addEventListener("click",()=>{
-  filter=el.dataset.filter;document.querySelectorAll(".stat").forEach(s=>s.classList.toggle("active-filter",s===el));render();
-}));
-$("search").addEventListener("input",render);$("sort").addEventListener("change",render);
-$("refreshBtn").addEventListener("click",load);$("createBtn").addEventListener("click",createCode);
-$("durationUnit").addEventListener("change",updateDurationPreview);$("durationValue").addEventListener("input",updateDurationPreview);
-$("selectAllBtn").addEventListener("click",()=>{getFiltered().forEach(i=>selected.add(i.code));render()});
-$("clearSelectionBtn").addEventListener("click",()=>{selected.clear();render()});
-$("bulkExtend").addEventListener("click",bulkExtend);$("bulkDelete").addEventListener("click",bulkDelete);
-$("extendAllBtn").addEventListener("click",extendAllSubscriptions);
-$("exportBtn").addEventListener("click",exportCSV);$("exportBtn2").addEventListener("click",exportCSV);
-updateDurationPreview();load();
+
+document.querySelectorAll(".stat").forEach(element=>{
+  element.addEventListener("click",()=>{
+    filter=element.dataset.filter;
+
+    document.querySelectorAll(".stat").forEach(stat=>{
+      stat.classList.toggle(
+        "active-filter",
+        stat===element
+      );
+    });
+
+    render();
+  });
+});
+
+$("search").addEventListener("input",render);
+$("sort").addEventListener("change",render);
+$("refreshBtn").addEventListener("click",load);
+$("createBtn").addEventListener("click",createCode);
+
+$("selectAllBtn").addEventListener("click",()=>{
+  getFiltered().forEach(item=>selected.add(item.code));
+  render();
+});
+
+$("clearSelectionBtn").addEventListener("click",()=>{
+  selected.clear();
+  render();
+});
+
+$("bulkExtend").addEventListener("click",bulkExtend);
+$("bulkDelete").addEventListener("click",bulkDelete);
+
+$("extendAllBtn").addEventListener(
+  "click",
+  extendAllSubscriptions
+);
+
+$("exportBtn").addEventListener("click",exportCSV);
+$("exportBtn2").addEventListener("click",exportCSV);
+
+load();
 </script>
+
 </body>
 </html>
