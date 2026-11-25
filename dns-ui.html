@@ -91,15 +91,15 @@
     border-color: rgba(16,232,112,0.75);
   }
 
-  /* کارت VIP لوکس */
+  /* کارت VIP مشکی-طلایی دقیقاً هم‌سطح نسخه بومی */
   .vip-hero {
     position: relative;
     overflow: hidden;
     border-radius: 24px;
     padding: 16px;
     margin-bottom: 12px;
-    background: linear-gradient(135deg, #1f170d 0%, #11131c 52%, #08090d 100%);
-    border: 1.3px solid rgba(245,183,0,0.78);
+    background: linear-gradient(135deg, #1f170d 0%, #12131c 52%, #08090d 100%);
+    border: 1.25px solid rgba(245,183,0,0.82);
     box-shadow: 0 10px 28px rgba(0,0,0,0.45);
   }
   .vip-hero::before {
@@ -107,24 +107,32 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at 88% 15%, rgba(245,183,0,0.22), transparent 56%),
-      radial-gradient(circle at 14% 82%, rgba(16,232,112,0.10), transparent 46%);
+      radial-gradient(circle at 88% 15%, rgba(245,183,0,0.22), transparent 58%),
+      radial-gradient(circle at 14% 80%, rgba(16,232,112,0.09), transparent 46%);
     pointer-events: none;
   }
   .vip-hero::after {
     content: "";
     position: absolute;
     top: 0; left: 12%; right: 12%; height: 1.5px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.34), transparent);
     pointer-events: none;
   }
-  .vip-inner { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 13px; }
+  .vip-radar {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .vip-inner { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 14px; }
   .row-between { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   .row { display: flex; align-items: center; gap: 8px; }
   .crown-box {
     width: 44px; height: 44px; border-radius: 14px;
-    background: linear-gradient(135deg, rgba(245,183,0,0.32), #1a1408);
-    border: 1px solid rgba(245,183,0,0.75);
+    background: linear-gradient(135deg, rgba(245,183,0,0.30), #1a1408);
+    border: 1.1px solid rgba(245,183,0,0.75);
+    color: var(--gold-light);
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .pass-tag {
@@ -140,29 +148,38 @@
   .badge-active {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 10px; border-radius: 999px; font-size: 10px; font-weight: 900; letter-spacing: 0.8px;
-    color: var(--emerald); background: rgba(16,232,112,0.14); border: 1px solid rgba(16,232,112,0.55);
+    color: var(--emerald); background: rgba(16,232,112,0.14); border: 0.9px solid rgba(16,232,112,0.55);
   }
-  .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .dot { width: 5.5px; height: 5.5px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
   .chips { display: flex; gap: 6px; }
   .chip {
     flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
     padding: 6px 5px; border-radius: 10px; font-size: 10px; font-weight: 700; color: #e2e8f0;
-    background: rgba(0,0,0,0.36); border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.36); border: 0.9px solid rgba(255,255,255,0.12);
     white-space: nowrap;
   }
-  .btn-row { display: flex; gap: 8px; }
+  .chip.gold { border-color: rgba(245,183,0,0.38); }
+  .chip.emerald { border-color: rgba(16,232,112,0.38); }
+  .chip.cyan { border-color: rgba(0,229,255,0.38); }
+
+  .btn-row { display: flex; gap: 10px; }
   .btn-gold {
     flex: 1.1; display: flex; align-items: center; justify-content: center; gap: 6px;
     padding: 11px 10px; border-radius: 14px; border: none; font-size: 12.5px; font-weight: 900;
-    color: #140e00; background: linear-gradient(90deg, #ffe699, #f5b700, #d98a00);
+    color: #140e00;
+    background: linear-gradient(90deg, #ffe699 0%, #f5b700 52%, #d98a00 100%);
     cursor: pointer;
   }
+  .btn-gold:active { transform: scale(0.985); }
   .btn-outline-gold {
     flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 10px; border-radius: 14px; font-size: 12.5px; font-weight: 800;
-    color: var(--gold-light); background: rgba(255,255,255,0.06); border: 1.1px solid rgba(245,183,0,0.65);
+    padding: 10.5px 10px; border-radius: 14px; font-size: 12.5px; font-weight: 800;
+    color: var(--gold-light);
+    background: rgba(255,255,255,0.06);
+    border: 1.1px solid rgba(245,183,0,0.65);
     cursor: pointer;
   }
+  .btn-outline-gold:active { transform: scale(0.985); }
   .btn-danger {
     padding: 9px 14px; border-radius: 13px; font-size: 12px; font-weight: 700;
     color: #ff8a8a; background: rgba(255,82,82,0.10); border: 1px solid rgba(255,82,82,0.35);
@@ -196,8 +213,8 @@
     cursor: pointer; transition: transform .08s ease;
   }
   .srv-card:active { transform: scale(0.985); }
-  .srv-card.vip { background: var(--vip-card); border-color: rgba(245,183,0,0.38); }
-  .srv-card.vip.unlocked { border-color: rgba(245,183,0,0.68); }
+  .srv-card.vip { background: var(--vip-card); border-color: rgba(245,183,0,0.35); }
+  .srv-card.vip.unlocked { border: 1.4px solid rgba(245,183,0,0.65); }
   .srv-card.connected { background: rgba(155,135,245,0.18); border: 1.5px solid var(--primary); }
   .srv-card.vip.connected { background: #0e241c; border: 1.5px solid var(--emerald); }
 
@@ -206,43 +223,48 @@
     background: #1a1d29; border: 1.2px solid rgba(255,255,255,0.2); flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
   }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .thumb-badge {
-    position: absolute; top: 4px; right: 4px;
-    padding: 2px 5px; border-radius: 6px; font-size: 8.5px; font-weight: 900;
-    background: rgba(0,0,0,0.82);
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1; }
+  .thumb-code {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--gold-light);
   }
-  .thumb-badge.free { color: var(--emerald); border: 1px solid rgba(16,232,112,0.8); }
-  .thumb-badge.vip { color: var(--gold-light); border: 1px solid rgba(245,183,0,0.8); }
+  .thumb-badge {
+    position: absolute; top: 4px; right: 4px; z-index: 2;
+    padding: 2px 5px; border-radius: 6px; font-size: 8.5px; font-weight: 900;
+    background: rgba(0,0,0,0.80);
+  }
+  .thumb-badge.free { color: var(--emerald); border: 0.7px solid rgba(16,232,112,0.8); }
+  .thumb-badge.vip { color: var(--gold-light); border: 0.7px solid rgba(245,183,0,0.8); }
 
   .srv-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
   .srv-pill {
     align-self: flex-start; display: inline-flex; align-items: center; gap: 5px;
     padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
-    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1;
+    background: rgba(255,255,255,0.07); border: 0.7px solid rgba(255,255,255,0.12); color: #cbd5e1;
   }
   .srv-card.vip .srv-pill { background: rgba(245,183,0,0.14); border-color: rgba(245,183,0,0.45); color: var(--gold-light); }
   .srv-card.connected .srv-pill { background: rgba(155,135,245,0.2); border-color: var(--primary); color: var(--primary); }
   .srv-card.vip.connected .srv-pill { background: rgba(16,232,112,0.16); border-color: var(--emerald); color: var(--emerald); }
 
   .srv-name { font-size: 14px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .srv-sub { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .srv-card.connected .srv-sub { color: var(--primary); }
-  .srv-card.vip.connected .srv-sub { color: var(--emerald); }
+  .srv-sub { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.3px; }
+  .srv-card.vip .srv-sub { color: rgba(255,224,130,0.80); font-weight: 600; }
+  .srv-card.vip.unlocked .srv-sub { color: #a6b0c3; }
+  .srv-card.connected .srv-sub { color: var(--primary); font-weight: 600; }
+  .srv-card.vip.connected .srv-sub { color: var(--emerald); font-weight: 600; }
 
   .status-icon {
-    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
   }
   .status-icon.ring { width: 22px; height: 22px; border: 1.5px solid #64748b; }
   .status-icon.ring.vip { border-color: rgba(245,183,0,0.7); }
   .status-icon.lock {
-    background: linear-gradient(145deg, rgba(245,183,0,0.22), rgba(245,183,0,0.06));
-    border: 1.1px solid rgba(245,183,0,0.68);
-    box-shadow: 0 0 12px rgba(245,183,0,0.14);
+    background: rgba(245,183,0,0.16);
+    border: 1px solid rgba(245,183,0,0.65);
     color: var(--gold-light);
   }
-  .status-icon.check { width: 28px; height: 28px; background: var(--primary); color: #0a0b10; }
+  .status-icon.check { width: 26px; height: 26px; background: var(--primary); color: #0a0b10; }
   .status-icon.check.vip { background: var(--emerald); color: #04140b; }
 
   /* پنجره ورود کد VIP */
@@ -290,7 +312,10 @@
 <div class="tabs">
   <div id="tabFree" class="tab free-on" onclick="setTab(false)">رایگان (3)</div>
   <div id="tabVip" class="tab" onclick="setTab(true)">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17l1-10 5 4 3-7 3 7 5-4 1 10H3zm1 2h16v2H4v-2z"/></svg>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/>
+      <rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/>
+    </svg>
     <span id="tabVipTxt">سرورهای VIP</span>
   </div>
 </div>
@@ -303,7 +328,10 @@
     <div class="row-between">
       <div class="row">
         <div class="crown-box" style="width:38px;height:38px;border-radius:11px">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffe082"><path d="M3 17l1-10 5 4 3-7 3 7 5-4 1 10H3zm1 2h16v2H4v-2z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffe082">
+            <path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/>
+            <rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/>
+          </svg>
         </div>
         <div>
           <div style="font-size:15.5px;font-weight:800">فعال‌سازی اشتراک VIP</div>
@@ -322,39 +350,48 @@
     <div id="modalErr" class="err-box" style="display:none"></div>
     <button id="activateBtn" class="btn-activate" onclick="submitVipCode()">فعال‌سازی و باز کردن سرورهای VIP</button>
     <button class="btn-outline-gold" style="width:100%" onclick="openBuy()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="#ffe082"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="#ffe082"><path d="M13.44 1.92L4.8 13.2h6.72l-1.44 8.88L19.2 10.56h-6.72z"/></svg>
       <span>هنوز کد ندارید؟ خرید اشتراک از تلگرام</span>
     </button>
   </div>
 </div>
 
 <script>
-// === آیکون‌های برداری تمیز و هماهنگ با تم گیمینگ ===
+// === آیکون‌های برداری دقیقاً منطبق با نسخه اصلی اندروید (بدون هیچ ایموجی) ===
 const ICONS = {
-  lock: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"/></svg>',
+  // قفل توپُر متریال (دقیقاً Icons.Rounded.Lock)
+  lock: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>',
+  // تیک اتصال
   check: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
-  boltDark: '<svg width="15" height="15" viewBox="0 0 24 24" fill="#140e00"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>',
-  keyGold: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffe082" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M11 12l9-9"/><path d="M17 6l3 3"/><path d="M14.5 8.5l2.5 2.5"/></svg>',
-  crownSmall: '<svg width="14" height="14" viewBox="0 0 24 24" fill="#ffe082"><path d="M3 17l1-10 5 4 3-7 3 7 5-4 1 10H3zm1 2h16v2H4v-2z"/></svg>',
-  refresh: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffe082" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>'
+  // رعدوبرق مشکی توپُر دکمه خرید اشتراک
+  boltDark: '<svg width="16" height="16" viewBox="0 0 24 24" fill="#140e00"><path d="M13.44 1.92L4.8 13.2h6.72l-1.44 8.88L19.2 10.56h-6.72z"/></svg>',
+  // کلید افقی صاف (دقیقاً GamingKeyIcon نسخه قبلی)
+  keyGold: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffe082" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.2" cy="12" r="4.4"/><line x1="11.6" y1="12" x2="21.2" y2="12"/><line x1="17.8" y1="12" x2="17.8" y2="16.2"/><line x1="20.6" y1="12" x2="20.6" y2="15.3"/></svg>',
+  // تاج گیمینگ
+  crownBig: '<svg width="22" height="22" viewBox="0 0 24 24" fill="#ffe082"><path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/><rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/></svg>',
+  crownSmall: '<svg width="15" height="15" viewBox="0 0 24 24" fill="#ffe082"><path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/><rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/></svg>',
+  // آیکون بروزرسانی
+  refresh: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffe082" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>',
+  // خطوط راداری ظریف پس‌زمینه کارت VIP
+  radarBg: '<svg class="vip-radar" viewBox="0 0 360 180" preserveAspectRatio="xMaxYMid slice"><circle cx="332" cy="90" r="62" fill="none" stroke="rgba(245,183,0,0.06)" stroke-width="1.2"/><circle cx="332" cy="90" r="124" fill="none" stroke="rgba(245,183,0,0.055)" stroke-width="1.2"/><circle cx="332" cy="90" r="186" fill="none" stroke="rgba(245,183,0,0.045)" stroke-width="1.2"/></svg>'
 };
 
-// === تنظیمات سریع (هر تغییری اینجا بدهی بدون بیلد روی همه گوشی‌ها اعمال می‌شود) ===
+// === تنظیمات سریع (بدون بیلد روی همه گوشی‌ها اعمال می‌شود) ===
 const CONFIG = {
   TELEGRAM_URL: "https://t.me/Balochping_ir",
   FREE_SERVERS: [
-    { id: "free_tr", title: "TURKIYE", sub: "سرور رایگان ترکیه • اتصال پایدار", tag: "FREE ROUTE", accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png", emoji: "🇹🇷" },
-    { id: "free_ae", title: "UAE",     sub: "سرور رایگان امارات • خاورمیانه",  tag: "FREE ROUTE", accent: "#10e870", flag: "https://flagcdn.com/w160/ae.png", emoji: "🇦🇪" },
-    { id: "free_de", title: "GERMANY", sub: "سرور رایگان آلمان • سرور اروپا",   tag: "FREE ROUTE", accent: "#f5b700", flag: "https://flagcdn.com/w160/de.png", emoji: "🇩🇪" }
+    { id: "free_tr", code: "TR", title: "TURKIYE", sub: "سرور رایگان ترکیه • اتصال پایدار", tag: "FREE ROUTE", accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png" },
+    { id: "free_ae", code: "AE", title: "UAE",     sub: "سرور رایگان امارات • خاورمیانه",  tag: "FREE ROUTE", accent: "#10e870", flag: "https://flagcdn.com/w160/ae.png" },
+    { id: "free_de", code: "DE", title: "GERMANY", sub: "سرور رایگان آلمان • سرور اروپا",   tag: "FREE ROUTE", accent: "#f5b700", flag: "https://flagcdn.com/w160/de.png" }
   ],
   VIP_SERVERS: [
-    { id: "vip_tr_1", title: "TURKIYE 1", sub: "PRIMARY GAMING ROUTE", tag: "VIP TURBO",    accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png", emoji: "🇹🇷" },
-    { id: "vip_tr_2", title: "TURKIYE 2", sub: "ALTERNATE ROUTE",      tag: "STABLE ROUTE", accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png", emoji: "🇹🇷" },
-    { id: "vip_de_1", title: "GERMANY 1", sub: "EUROPE GATEWAY",       tag: "PRO ROUTE",    accent: "#f5b700", flag: "https://flagcdn.com/w160/de.png", emoji: "🇩🇪" },
-    { id: "vip_ae_1", title: "UAE 1",     sub: "MIDDLE EAST CORE",     tag: "LOW PING",     accent: "#10e870", flag: "https://flagcdn.com/w160/ae.png", emoji: "🇦🇪" },
-    { id: "vip_ae_2", title: "UAE 2",     sub: "BACKUP GATEWAY",       tag: "DIRECT ROUTE", accent: "#00e5ff", flag: "https://flagcdn.com/w160/ae.png", emoji: "🇦🇪" },
-    { id: "vip_qa_1", title: "QATAR 1",   sub: "GULF CONNECT",         tag: "FAST ROUTE",   accent: "#8a1538", flag: "https://flagcdn.com/w160/qa.png", emoji: "🇶🇦" },
-    { id: "vip_bh_1", title: "BAHRAIN 1", sub: "GULF EDGE",            tag: "ESPORTS",      accent: "#ef4444", flag: "https://flagcdn.com/w160/bh.png", emoji: "🇧🇭" }
+    { id: "vip_tr_1", code: "TR", title: "TURKIYE 1", sub: "PRIMARY GAMING ROUTE", tag: "VIP TURBO",    accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png" },
+    { id: "vip_tr_2", code: "TR", title: "TURKIYE 2", sub: "ALTERNATE ROUTE",      tag: "STABLE ROUTE", accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png" },
+    { id: "vip_de_1", code: "DE", title: "GERMANY 1", sub: "EUROPE GATEWAY",       tag: "PRO ROUTE",    accent: "#f5b700", flag: "https://flagcdn.com/w160/de.png" },
+    { id: "vip_ae_1", code: "AE", title: "UAE 1",     sub: "MIDDLE EAST CORE",     tag: "LOW PING",     accent: "#10e870", flag: "https://flagcdn.com/w160/ae.png" },
+    { id: "vip_ae_2", code: "AE", title: "UAE 2",     sub: "BACKUP GATEWAY",       tag: "DIRECT ROUTE", accent: "#00e5ff", flag: "https://flagcdn.com/w160/ae.png" },
+    { id: "vip_qa_1", code: "QA", title: "QATAR 1",   sub: "GULF CONNECT",         tag: "FAST ROUTE",   accent: "#8a1538", flag: "https://flagcdn.com/w160/qa.png" },
+    { id: "vip_bh_1", code: "BH", title: "BAHRAIN 1", sub: "GULF EDGE",            tag: "ESPORTS",      accent: "#ef4444", flag: "https://flagcdn.com/w160/bh.png" }
   ]
 };
 
@@ -470,7 +507,7 @@ function render() {
     const dash = 188.5;
     const off = dash * (1 - pct);
     banner.innerHTML =
-      '<div class="vip-hero"><div class="vip-inner">' +
+      '<div class="vip-hero">' + ICONS.radarBg + '<div class="vip-inner">' +
         '<div class="row-between">' +
           '<span class="badge-active"><span class="dot" style="background:#10e870"></span>ACTIVE</span>' +
           '<span class="pass-tag">BALOCH PING • PRO PASS ' + ICONS.crownSmall + '</span>' +
@@ -488,7 +525,7 @@ function render() {
             '<div style="font-size:16px;font-weight:800">اشتراک VIP نامحدود</div>' +
             '<div class="serial-bar" dir="ltr">ID ' + (appState.vip.codeMasked || "") + (appState.vip.expiresAt ? (" • EXP " + appState.vip.expiresAt) : "") + '</div>' +
             '<div class="row" style="gap:6px;flex-wrap:wrap">' +
-              '<span class="mini-tag">∞ حجم نامحدود</span>' +
+              '<span class="mini-tag">حجم نامحدود</span>' +
               '<span class="mini-tag gray">' + CONFIG.VIP_SERVERS.length + ' سرور اختصاصی</span>' +
             '</div>' +
           '</div>' +
@@ -501,18 +538,18 @@ function render() {
       '</div></div>';
   } else {
     banner.innerHTML =
-      '<div class="vip-hero"><div class="vip-inner">' +
+      '<div class="vip-hero">' + ICONS.radarBg + '<div class="vip-inner">' +
         '<div class="row-between">' +
           '<div class="row" style="gap:10px">' +
-            '<div class="crown-box"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ffe082"><path d="M3 17l1-10 5 4 3-7 3 7 5-4 1 10H3zm1 2h16v2H4v-2z"/></svg></div>' +
+            '<div class="crown-box">' + ICONS.crownBig + '</div>' +
             '<div><div class="pass-tag">PRO GAMING PASS</div><div class="hero-title">سرورهای اختصاصی و کم‌پینگ VIP</div></div>' +
           '</div>' +
           '<span class="badge-gold">۱ کاربره</span>' +
         '</div>' +
         '<div class="chips">' +
-          '<div class="chip"><span class="dot" style="background:#f5b700"></span>حجم نامحدود</div>' +
-          '<div class="chip"><span class="dot" style="background:#10e870"></span>پینگ اختصاصی</div>' +
-          '<div class="chip"><span class="dot" style="background:#00e5ff"></span>تک‌کاربره</div>' +
+          '<div class="chip gold"><span class="dot" style="background:#f5b700"></span>حجم نامحدود</div>' +
+          '<div class="chip emerald"><span class="dot" style="background:#10e870"></span>پینگ اختصاصی</div>' +
+          '<div class="chip cyan"><span class="dot" style="background:#00e5ff"></span>تک‌کاربره</div>' +
         '</div>' +
         (appState.vipNotice ? '<div class="notice">' + appState.vipNotice + '</div>' : '') +
         '<div class="btn-row">' +
@@ -540,6 +577,7 @@ function render() {
     return (
       '<div class="' + cls + '" onclick="clickServer(\'' + s.id + '\',\'' + s.title + '\',' + isVip + ')">' +
         '<div class="thumb" style="border-color:' + (connected ? (isVip ? '#10e870' : '#9b87f5') : (isVip ? 'rgba(245,183,0,0.75)' : s.accent)) + '">' +
+          '<span class="thumb-code">' + s.code + '</span>' +
           '<img src="' + s.flag + '" alt="' + s.title + '" onerror="this.style.display=\'none\'">' +
           '<span class="thumb-badge ' + badgeCls + '">' + badgeTxt + '</span>' +
         '</div>' +
