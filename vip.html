@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<style>
+  :root {
+    --primary: #F5B800;
+    --accent: #F5B800;
+    --bg: #08080B;
+    --text: #FFFFFF;
+    --on-primary: #111116;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: Tahoma, system-ui, -apple-system, sans-serif;
+  }
+  .page {
+    min-height: 100vh; display: flex; flex-direction: column;
+    padding: 14px 20px 18px;
+  }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 900; }
+  .badge-icon {
+    width: 34px; height: 34px; border-radius: 11px;
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .close-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.14);
+    color: var(--text); text-decoration: none;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .hero {
+    border-radius: 24px; padding: 18px 16px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 26%, var(--bg)), color-mix(in srgb, var(--primary) 42%, var(--bg)));
+    border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+    box-shadow: 0 10px 34px color-mix(in srgb, var(--primary) 20%, transparent);
+  }
+  .hero-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .hero-icon {
+    width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.22);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-title { font-size: 17px; font-weight: 900; margin: 0 0 4px; }
+  .hero-sub { font-size: 12px; opacity: 0.85; line-height: 1.6; margin: 0; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tile {
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 14px; padding: 11px 6px; text-align: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .tile svg { display: block; margin: 0 auto 6px; }
+  .buy-btn {
+    margin-top: 20px; width: 100%; height: 54px; border-radius: 18px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    color: var(--on-primary); text-decoration: none;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 15.5px; font-weight: 900;
+    box-shadow: 0 8px 26px color-mix(in srgb, var(--primary) 32%, transparent);
+  }
+  .spacer { flex: 1; }
+  .trust {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    padding-top: 18px; text-align: center;
+  }
+  .trust-item { font-size: 11px; opacity: 0.72; }
+  .trust-circle {
+    width: 32px; height: 32px; border-radius: 50%; margin: 0 auto 5px;
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    display: flex; align-items: center; justify-content: center;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="brand">
+        <div class="badge-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent)"><path d="M3 17L2 7l6 4 4-7 4 7 6-4-1 10H3zm1 2h16v2H4v-2z"/></svg>
+        </div>
+        <span>بلوچ پینگ VIP</span>
+      </div>
+      <a class="close-btn" href="balochping://close">✕</a>
+    </div>
+
+    <div class="hero">
+      <div class="hero-head">
+        <div class="hero-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M3 17L2 7l6 4 4-7 4 7 6-4-1 10H3zm1 2h16v2H4v-2z"/></svg>
+        </div>
+        <div>
+          <p class="hero-title">اشتراک اختصاصی گیمینگ</p>
+          <p class="hero-sub">اتصال پایدار به سرورهای اختصاصی با کمترین پینگ در بازی‌های آنلاین</p>
+        </div>
+      </div>
+      <div class="tiles">
+        <div class="tile">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 14l4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+          پینگ پایین
+        </div>
+        <div class="tile">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          آی پی ثابت
+        </div>
+        <div class="tile">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
+          آپدیت خودکار
+        </div>
+      </div>
+    </div>
+
+    <a class="buy-btn" href="https://t.me/Balochping_ir">
+      <span>خرید اشتراک</span>
+      <span>←</span>
+    </a>
+
+    <div class="spacer"></div>
+
+    <div class="trust">
+      <div class="trust-item">
+        <div class="trust-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3v4zM3 19a2 2 0 0 0 2 2h1v-6H3v4z"/></svg></div>
+        پشتیبانی
+      </div>
+      <div class="trust-item">
+        <div class="trust-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        امنیت اتصال
+      </div>
+      <div class="trust-item">
+        <div class="trust-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        تحویل آنی
+      </div>
+    </div>
+  </div>
+</body>
+</html>
