@@ -1,6 +1,6 @@
 {
-  "min_version": "1.5.7",
-  "latest_version": "1.5.7",
+  "min_version": "1.5.6",
+  "latest_version": "1.5.6",
   "message": "این نسخه منقضی شده است. برای ادامه استفاده، نسخه جدید BalochPing را دانلود و نصب کنید.",
   "download_url": "https://github.com/balochping/BalochPing-Releases/releases/latest",
   "maintenance": false,
