@@ -3,7 +3,7 @@
   "latest_version": "1.5.6",
   "message": "این نسخه منقضی شده است. برای ادامه استفاده، نسخه جدید BalochPing را دانلود و نصب کنید.",
   "download_url": "https://github.com/balochping/BalochPing-Releases/releases/latest",
-  "maintenance": false,
+  "maintenance": true,
   "maintenance_title": "در حال بروزرسانی سرورها",
   "maintenance_message": "اپلیکیشن و سرورها در حال بروزرسانی و بهینه‌سازی هستند. لطفاً چند دقیقه دیگر دوباره تلاش کنید.",
   "admin_pin": "1405"
