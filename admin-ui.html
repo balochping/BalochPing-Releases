@@ -101,12 +101,24 @@ const MINUTE=60000,DAY=86400000;
 function online(item){return Boolean(item.deviceId&&item.lastSeenAt&&serverNow-item.lastSeenAt<=onlineWindow)}
 function remaining(item){return item.expiresAtMs?Math.max(0,item.expiresAtMs-serverNow):0}
 function isExpired(item){return Boolean(item.expiresAtMs&&item.expiresAtMs<=serverNow)}
+function getTotalDurationMs(item){
+  const baseMs=Number(item.durationMinutes)>0?Number(item.durationMinutes)*MINUTE:(Number(item.days)||30)*DAY;
+  if(item.activatedAt&&item.expiresAtMs){
+    const spanMs=item.expiresAtMs-item.activatedAt;
+    if(spanMs>baseMs)return spanMs;
+  }
+  if(item.expiresAtMs){
+    const rem=remaining(item);
+    if(rem>baseMs)return rem;
+  }
+  return baseMs;
+}
 function fmtDuration(ms){
   if(ms<=0)return "منقضی شده";
   const total=Math.ceil(ms/1000),days=Math.floor(total/86400),hours=Math.floor((total%86400)/3600),mins=Math.floor((total%3600)/60),secs=total%60;
-  if(days>0)return `${days} روز ${hours} ساعت`;
-  if(hours>0)return `${hours} ساعت ${mins} دقیقه`;
-  if(mins>0)return `${mins} دقیقه ${secs} ثانیه`;
+  if(days>0)return hours>0?`${days} روز ${hours} ساعت`:`${days} روز`;
+  if(hours>0)return mins>0?`${hours} ساعت ${mins} دقیقه`:`${hours} ساعت`;
+  if(mins>0)return secs>0?`${mins} دقیقه ${secs} ثانیه`:`${mins} دقیقه`;
   return `${secs} ثانیه`;
 }
 function status(item){
@@ -169,13 +181,13 @@ function render(){
     top.append(left,create("span","badge badge-"+status(item),statusLabel(item)));
     card.append(top);
     const info=create("div","sub-info");
-    const duration=item.durationMinutes?fmtDuration(item.durationMinutes*MINUTE):((item.days||30)+" روز");
+    const totalMs=getTotalDurationMs(item);
+    const duration=fmtDuration(totalMs);
     const expiry=item.expiresAtMs?new Date(item.expiresAtMs).toLocaleString("fa-IR"):"شروع پس از اولین فعال‌سازی";
     info.textContent=[item.deviceId?"دستگاه ثبت‌شده":"فعال‌نشده",item.deviceId?ago(item.lastSeenAt):"در انتظار فعال‌سازی","مدت: "+duration,"باقی‌مانده: "+(item.expiresAtMs?fmtDuration(remaining(item)):"هنوز فعال نشده"),"انقضا: "+expiry].join(" • ");
     card.append(info);
     if(item.deviceId&&item.expiresAtMs&&!isExpired(item)){
-      const total=(Number(item.durationMinutes)>0?Number(item.durationMinutes)*MINUTE:(Number(item.totalDays)||Number(item.days)||30)*DAY);
-      const percent=Math.max(0,Math.min(100,Math.round(remaining(item)/Math.max(total,1)*100)));
+      const percent=Math.max(0,Math.min(100,Math.round(remaining(item)/Math.max(totalMs,1)*100)));
       const progress=create("div","progress"),fill=create("div","");
       fill.style.width=percent+"%";if(remaining(item)<=3*DAY)progress.classList.add("low");progress.append(fill);card.append(progress);
     }
@@ -253,7 +265,7 @@ async function editExpiry(item){
   const parsed=Date.parse(value);
   if(!Number.isFinite(parsed)||parsed<=Date.now()){alert("تاریخ انقضا باید در آینده باشد.");return}
   if(!confirm("تاریخ انقضای این اشتراک تغییر کند؟"))return;
-  try{await api("set_expiry",{code:item.code,expiresAt:parsed});await load();notify("تاریخ انقضا تنظیم شد.")}
+  try{await api("set_expiry",{code:item.code,expiresAtMs:parsed});await load();notify("تاریخ انقضا تنظیم شد.")}
   catch(error){alert("تنظیم تاریخ ناموفق بود: "+error.message)}
 }
 async function resetDevice(code){
@@ -268,7 +280,7 @@ function details(item){
   const rows={
     "کد اشتراک":item.code,
     "وضعیت":statusLabel(item),
-    "مدت ثبت‌شده":item.durationMinutes?fmtDuration(item.durationMinutes*MINUTE):((item.days||30)+" روز"),
+    "مدت ثبت‌شده":fmtDuration(getTotalDurationMs(item)),
     "شناسه دستگاه":item.deviceId||"ثبت نشده",
     "تاریخ ساخت":item.createdAt?new Date(item.createdAt).toLocaleString("fa-IR"):"نامشخص",
     "تاریخ فعال‌سازی":item.activatedAt?new Date(item.activatedAt).toLocaleString("fa-IR"):"فعال نشده",
@@ -308,7 +320,7 @@ async function extendAllSubscriptions(){
 }
 function exportCSV(){
   const headers=["Code","Status","DurationMinutes","DeviceID","Created","Activated","Expires","LastSeen"];
-  const rows=items.map(i=>[i.code,statusLabel(i),i.durationMinutes||((i.days||30)*1440),i.deviceId||"",i.createdAt||"",i.activatedAt||"",i.expiresAtMs||"",i.lastSeenAt||""]);
+  const rows=items.map(i=>[i.code,statusLabel(i),Math.round(getTotalDurationMs(i)/MINUTE),i.deviceId||"",i.createdAt||"",i.activatedAt||"",i.expiresAtMs||"",i.lastSeenAt||""]);
   const csv=[headers,...rows].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");
   const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
   const url=URL.createObjectURL(blob),link=document.createElement("a");
