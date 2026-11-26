@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<style>
+  :root {
+    --gold: #f5b700;
+    --gold-light: #ffe082;
+    --emerald: #10e870;
+    --danger: #ff5252;
+    --muted: #8b93a7;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    color: #fff;
+    font-family: system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+  }
+
+  /* دقیقاً همان کارت VIP مشکی-طلایی با رادار و نورپردازی */
+  .vip-hero {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    padding: 15px 16px;
+    background: linear-gradient(135deg, #1f170d 0%, #12131c 52%, #08090d 100%);
+    border: 1.25px solid rgba(245,183,0,0.82);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .vip-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 88% 15%, rgba(245,183,0,0.22), transparent 58%),
+      radial-gradient(circle at 14% 80%, rgba(16,232,112,0.09), transparent 46%);
+    pointer-events: none;
+  }
+  .vip-hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 12%;
+    right: 12%;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.34), transparent);
+    pointer-events: none;
+  }
+  .vip-radar {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .vip-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .row-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .badge-active {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    color: var(--emerald);
+    background: rgba(16,232,112,0.14);
+    border: 0.9px solid rgba(16,232,112,0.55);
+  }
+  .dot {
+    width: 5.5px;
+    height: 5.5px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    background: var(--emerald);
+  }
+  .pass-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    font-weight: 900;
+    color: var(--gold-light);
+    letter-spacing: 0.9px;
+  }
+
+  .gauge-wrap {
+    position: relative;
+    width: 74px;
+    height: 74px;
+    flex-shrink: 0;
+  }
+  .gauge-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .gauge-num {
+    font-size: 21px;
+    font-weight: 900;
+    line-height: 22px;
+    color: #fff;
+  }
+  .gauge-lbl {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--gold-light);
+  }
+
+  .info-col {
+    flex: 1;
+    min-width: 0;
+  }
+  .sub-title {
+    font-size: 15.5px;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .serial-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--gold-light);
+    margin: 5px 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .usage-track {
+    width: 100%;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.09);
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .usage-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ffe082 0%, #f5b700 60%, #10e870 100%);
+    width: {{TRAFFIC_PERCENT}}%;
+  }
+
+  .mini-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 9.5px;
+    font-weight: 700;
+    background: rgba(245,183,0,0.14);
+    border: 1px solid rgba(245,183,0,0.45);
+    color: var(--gold-light);
+  }
+  .mini-tag.gray {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.16);
+    color: #e2e8f0;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-outline-gold {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 10px;
+    border-radius: 14px;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--gold-light);
+    background: rgba(255,255,255,0.06);
+    border: 1.1px solid rgba(245,183,0,0.65);
+    text-decoration: none;
+  }
+  .btn-outline-gold:active {
+    transform: scale(0.985);
+  }
+  .btn-danger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 16px;
+    border-radius: 13px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ff8a8a;
+    background: rgba(255,82,82,0.10);
+    border: 1px solid rgba(255,82,82,0.35);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn-danger:active {
+    transform: scale(0.985);
+  }
+
+  .spinning {
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body data-height="226">
+  <div class="vip-hero">
+    <svg class="vip-radar" viewBox="0 0 360 180" preserveAspectRatio="xMaxYMid slice">
+      <circle cx="332" cy="90" r="62" fill="none" stroke="rgba(245,183,0,0.06)" stroke-width="1.2"/>
+      <circle cx="332" cy="90" r="124" fill="none" stroke="rgba(245,183,0,0.055)" stroke-width="1.2"/>
+      <circle cx="332" cy="90" r="186" fill="none" stroke="rgba(245,183,0,0.045)" stroke-width="1.2"/>
+    </svg>
+
+    <div class="vip-inner">
+      <div class="row-between">
+        <span class="badge-active"><span class="dot"></span>ACTIVE</span>
+        <span class="pass-tag">
+          <span>BALOCH PING • PRO PASS</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="#ffe082">
+            <path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/>
+            <rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="row" style="gap:14px">
+        <div class="gauge-wrap">
+          <svg width="74" height="74" viewBox="0 0 74 74">
+            <circle cx="37" cy="37" r="30" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="5.5"/>
+            <circle cx="37" cy="37" r="30" fill="none" stroke="url(#gGrad)" stroke-width="5.5" stroke-linecap="round"
+                    stroke-dasharray="188.5" stroke-dashoffset="{{DAYS_DASH_OFFSET}}" transform="rotate(-90 37 37)"/>
+            <defs>
+              <linearGradient id="gGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffe082"/>
+                <stop offset="60%" stop-color="#f5b700"/>
+                <stop offset="100%" stop-color="#10e870"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="gauge-text">
+            <span class="gauge-num">{{DAYS_LEFT}}</span>
+            <span class="gauge-lbl">{{DAYS_LABEL}}</span>
+          </div>
+        </div>
+
+        <div class="info-col">
+          <div class="sub-title">{{SUB_NAME_UPPER}}</div>
+          <div class="serial-bar" dir="ltr">DATA • {{TRAFFIC_TEXT}}</div>
+          <div class="usage-track">
+            <div class="usage-fill"></div>
+          </div>
+          <div class="row" style="gap:6px;flex-wrap:wrap">
+            <span class="mini-tag">مصرف {{TRAFFIC_PERCENT}}٪</span>
+            <span class="mini-tag gray">{{SERVER_COUNT_LABEL}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <a class="btn-outline-gold" href="balochping://sub/refresh">
+          <svg class="{{REFRESH_CLASS}}" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffe082" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/>
+          </svg>
+          <span>{{REFRESH_TEXT}}</span>
+        </a>
+        <a class="btn-danger" href="balochping://sub/menu">منو</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
