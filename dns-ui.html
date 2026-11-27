@@ -3,125 +3,608 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#090a0f">
-<title>BALOCH PING • DNS</title>
 <style>
-:root{--bg:#090a0f;--card:#141620;--gold:#f5b700;--gold2:#ffe082;--green:#10e870;--cyan:#00e5ff;--purple:#9b87f5;--muted:#8b93a7;--border:rgba(255,255,255,.09);--red:#ff626b}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-body{margin:0;padding:14px 15px 35px;background:radial-gradient(ellipse at 50% -15%,rgba(155,135,245,.12),transparent 55%),var(--bg);color:#fff;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
-.header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 15px}
-.title{font-size:21px;font-weight:900;letter-spacing:-.4px;margin:0;background:linear-gradient(110deg,#fff,#c9c2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.subtitle{font-size:12px;color:var(--muted);margin-top:4px}.subtitle.vip-active{color:var(--green)}.subtitle.vip-idle{color:var(--gold2)}.subtitle.err{color:var(--red)}
-button{font:inherit;cursor:pointer}.pill-btn{border:1px solid var(--purple);background:rgba(155,135,245,.15);color:white;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800}
-.tabs{display:flex;gap:6px;padding:4px;border-radius:16px;background:#0e0f15;border:1px solid #232634;margin-bottom:13px}
-.tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 6px;border-radius:12px;font-size:12px;font-weight:800;color:var(--muted);border:1px solid transparent}
-.tab.free-on{background:rgba(155,135,245,.2);border-color:rgba(155,135,245,.65);color:white}
-.tab.vip-on{background:rgba(245,183,0,.16);border-color:rgba(245,183,0,.65);color:white}.tab.vip-on.active{background:rgba(16,232,112,.15);border-color:rgba(16,232,112,.65)}
-.vip-hero{position:relative;overflow:hidden;border-radius:25px;padding:16px;margin-bottom:13px;background:radial-gradient(circle at 100% 0,rgba(245,183,0,.16),transparent 48%),linear-gradient(145deg,#1b170f,#101119 55%,#090a0e);border:1px solid rgba(245,183,0,.8);box-shadow:0 14px 35px #0006,inset 0 1px #ffffff0c}
-.vip-hero:after{content:"";position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,#ffffff55,transparent)}
-.vip-inner{position:relative;z-index:1;display:flex;flex-direction:column;gap:14px}.row-between{display:flex;align-items:center;justify-content:space-between;gap:8px}.row{display:flex;align-items:center;gap:8px}
-.crown-box{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#f5b7004d,#1a1408);border:1px solid #f5b700b0;color:var(--gold2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.pass-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:900;color:var(--gold2);letter-spacing:.7px}.hero-title{font-size:15px;font-weight:900;margin-top:3px}
-.badge-gold,.badge-active{padding:5px 10px;border-radius:999px;font-size:10px;font-weight:900;white-space:nowrap}
-.badge-gold{color:var(--gold2);background:#f5b70020;border:1px solid #f5b70080}.badge-active{color:var(--green);background:#10e87020;border:1px solid #10e87080}
-.dot{width:6px;height:6px;border-radius:50%;display:inline-block;flex-shrink:0}
-.chips{display:flex;gap:6px}.chip{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:7px 4px;border-radius:10px;font-size:10px;font-weight:800;background:#0005;border:1px solid #ffffff20;white-space:nowrap}.chip.gold{border-color:#f5b70060}.chip.emerald{border-color:#10e87060}.chip.cyan{border-color:#00e5ff60}
-.btn-row{display:flex;gap:9px;flex-wrap:wrap}.btn-gold,.btn-outline-gold{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 9px;border-radius:14px;font-size:12px;font-weight:900}
-.btn-gold{color:#140e00;border:0;background:linear-gradient(100deg,#ffe699,#f5b700 55%,#d98a00);box-shadow:0 5px 18px #f5b7001c}
-.btn-outline-gold{color:var(--gold2);background:#ffffff09;border:1px solid #f5b700a6}
-.btn-danger{padding:9px 13px;border-radius:13px;font-size:12px;font-weight:800;color:#ff8a8a;background:#ff52521a;border:1px solid #ff525259}
-.gauge-wrap{position:relative;width:74px;height:74px;flex-shrink:0}.gauge-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}.gauge-num{font-size:21px;font-weight:900;line-height:22px}.gauge-lbl{font-size:9px;font-weight:800;color:var(--gold2)}
-.serial-bar{display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap;padding:5px 8px;border-radius:8px;font-family:monospace;font-size:10px;font-weight:800;background:#0007;border:1px solid #ffffff1c;color:var(--gold2);margin:5px 0}
-.mini-tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:9px;font-weight:800;background:#f5b70020;border:1px solid #f5b70070;color:var(--gold2)}.mini-tag.gray{background:#ffffff0a;border-color:#ffffff25;color:#e2e8f0}
-.notice{font-size:11px;color:#ffcf65;font-weight:800;padding:9px 10px;border-radius:10px;background:#f5b70012;border:1px solid #f5b70035}
-.list{display:flex;flex-direction:column;gap:10px}.srv-card{position:relative;overflow:hidden;display:flex;align-items:center;gap:11px;padding:12px;border-radius:19px;background:linear-gradient(145deg,#171923,#11131b);border:1px solid var(--border);box-shadow:0 5px 15px #0002;transition:transform .15s,border-color .2s,background .2s}
-.srv-card:active{transform:scale(.985)}.srv-card.vip{background:linear-gradient(145deg,#191610,#11121a);border-color:#f5b70045}.srv-card.vip.unlocked{box-shadow:inset 0 0 0 1px #f5b70008}.srv-card.connected{background:#1b1830;border:1.5px solid var(--purple)}.srv-card.vip.connected{background:linear-gradient(145deg,#10231b,#0c1512);border:1.5px solid var(--green);box-shadow:0 0 22px #10e87012}
-.srv-card:before{content:"";position:absolute;right:0;top:0;width:3px;height:100%;background:transparent}.srv-card.connected:before{background:var(--purple)}.srv-card.vip.connected:before{background:var(--green)}
-.thumb{position:relative;width:86px;height:53px;border-radius:13px;overflow:hidden;background:#1a1d29;border:1px solid #ffffff35;flex-shrink:0;display:flex;align-items:center;justify-content:center}.thumb img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}.thumb-code{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;letter-spacing:1px;color:var(--gold2);text-shadow:0 2px 6px #000}
-.thumb-badge{position:absolute;top:4px;right:4px;z-index:2;padding:2px 5px;border-radius:6px;font-size:8px;font-weight:900;background:#000c}.thumb-badge.free{color:var(--green);border:1px solid #10e870b5}.thumb-badge.vip{color:var(--gold2);border:1px solid #f5b700b5}
-.srv-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.srv-pill{align-self:flex-start;display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:999px;font-size:9px;font-weight:900;letter-spacing:.3px;background:#ffffff0b;border:1px solid #ffffff20;color:#cbd5e1}
-.srv-card.vip .srv-pill{background:#f5b70020;border-color:#f5b70060;color:var(--gold2)}.srv-card.connected .srv-pill{background:#9b87f526;border-color:var(--purple);color:var(--purple)}.srv-card.vip.connected .srv-pill{background:#10e87020;border-color:var(--green);color:var(--green)}
-.srv-name{font-size:13px;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.srv-sub{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.srv-card.vip .srv-sub{color:#ffe082c9}.srv-card.connected .srv-sub{color:var(--purple);font-weight:700}.srv-card.vip.connected .srv-sub{color:var(--green);font-weight:700}
-.status-icon{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}.status-icon.ring{width:21px;height:21px;border:1.5px solid #64748b}.status-icon.ring.vip{border-color:#f5b700b5}.status-icon.lock{background:#f5b70025;border:1px solid #f5b700a6;color:var(--gold2)}.status-icon.check{width:26px;height:26px;background:var(--purple);color:#090a0f}.status-icon.check.vip{background:var(--green);color:#04140b}
-.modal-bg{position:fixed;inset:0;z-index:999;background:#000b;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);display:none;align-items:center;justify-content:center;padding:18px}.modal-bg.open{display:flex}
-.modal{width:100%;max-width:390px;border-radius:24px;padding:18px;background:radial-gradient(circle at 100% 0,#f5b7001e,transparent 45%),linear-gradient(180deg,#1a1722,#0b0c11);border:1.5px solid var(--gold);box-shadow:0 24px 70px #0009;display:flex;flex-direction:column;gap:13px;animation:modalIn .22s ease-out}
-.code-input{width:100%;padding:14px;border-radius:14px;text-align:center;background:#07080c;border:1.3px solid #f5b700a6;color:var(--gold2);font-family:monospace;font-size:16px;font-weight:900;letter-spacing:1.4px;outline:none;user-select:text;-webkit-user-select:text;transition:border-color .2s,box-shadow .2s}.code-input:focus{border-color:var(--gold2);box-shadow:0 0 0 3px #f5b70017}
-.err-box{padding:9px 10px;border-radius:10px;font-size:11px;font-weight:700;background:#ff525224;border:1px solid #ff525280;color:#ff8a8a}
-.btn-activate{width:100%;padding:12px;border-radius:14px;border:0;font-size:12px;font-weight:900;color:#04140b;background:linear-gradient(90deg,#10e870,#00c853);box-shadow:0 5px 18px #10e8701f}.btn-activate:disabled{background:#262a36;color:#7b8396;box-shadow:none}
-@keyframes modalIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  :root {
+    --bg: #0a0b10;
+    --card: #131520;
+    --vip-card: #14121b;
+    --gold: #f5b700;
+    --gold-light: #ffe082;
+    --emerald: #10e870;
+    --cyan: #00e5ff;
+    --danger: #ff5252;
+    --primary: #9b87f5;
+    --muted: #8b93a7;
+    --border: rgba(255,255,255,0.08);
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  body {
+    margin: 0;
+    padding: 12px 16px 135px;
+    background: var(--bg);
+    color: #fff;
+    font-family: system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .title { font-size: 20px; font-weight: 800; margin: 0; }
+  .subtitle { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .subtitle.vip-active { color: var(--emerald); }
+  .subtitle.vip-idle { color: var(--gold-light); }
+  .subtitle.err { color: var(--danger); }
+  .pill-btn {
+    border-radius: 999px;
+    padding: 6px 13px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid var(--primary);
+    background: rgba(155,135,245,0.18);
+    color: #fff;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .tabs {
+    display: flex;
+    gap: 6px;
+    padding: 4px;
+    border-radius: 16px;
+    background: #0e0f15;
+    border: 1px solid #232634;
+    margin-bottom: 12px;
+  }
+  .tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 6px;
+    border-radius: 12px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--muted);
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .tab.free-on {
+    background: rgba(155,135,245,0.18);
+    border-color: rgba(155,135,245,0.65);
+    color: #fff;
+  }
+  .tab.vip-on {
+    background: rgba(245,183,0,0.18);
+    border-color: rgba(245,183,0,0.75);
+    color: #fff;
+  }
+  .tab.vip-on.active {
+    background: rgba(16,232,112,0.18);
+    border-color: rgba(16,232,112,0.75);
+  }
+
+  /* کارت VIP مشکی-طلایی دقیقاً هم‌سطح نسخه بومی */
+  .vip-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #1f170d 0%, #12131c 52%, #08090d 100%);
+    border: 1.25px solid rgba(245,183,0,0.82);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+  }
+  .vip-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 88% 15%, rgba(245,183,0,0.22), transparent 58%),
+      radial-gradient(circle at 14% 80%, rgba(16,232,112,0.09), transparent 46%);
+    pointer-events: none;
+  }
+  .vip-hero::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 12%; right: 12%; height: 1.5px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.34), transparent);
+    pointer-events: none;
+  }
+  .vip-radar {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .vip-inner { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 14px; }
+  .row-between { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .row { display: flex; align-items: center; gap: 8px; }
+  .crown-box {
+    width: 44px; height: 44px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(245,183,0,0.30), #1a1408);
+    border: 1.1px solid rgba(245,183,0,0.75);
+    color: var(--gold-light);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .pass-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10.5px; font-weight: 900; color: var(--gold-light); letter-spacing: 0.9px;
+  }
+  .hero-title { font-size: 15px; font-weight: 800; color: #fff; margin-top: 2px; }
+  .badge-gold {
+    padding: 4px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 800;
+    color: var(--gold-light); background: rgba(245,183,0,0.14); border: 1px solid rgba(245,183,0,0.5);
+    white-space: nowrap;
+  }
+  .badge-active {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px; font-size: 10px; font-weight: 900; letter-spacing: 0.8px;
+    color: var(--emerald); background: rgba(16,232,112,0.14); border: 0.9px solid rgba(16,232,112,0.55);
+  }
+  .dot { width: 5.5px; height: 5.5px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .chips { display: flex; gap: 6px; }
+  .chip {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 6px 5px; border-radius: 10px; font-size: 10px; font-weight: 700; color: #e2e8f0;
+    background: rgba(0,0,0,0.36); border: 0.9px solid rgba(255,255,255,0.12);
+    white-space: nowrap;
+  }
+  .chip.gold { border-color: rgba(245,183,0,0.38); }
+  .chip.emerald { border-color: rgba(16,232,112,0.38); }
+  .chip.cyan { border-color: rgba(0,229,255,0.38); }
+
+  .btn-row { display: flex; gap: 10px; }
+  .btn-gold {
+    flex: 1.1; display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 11px 10px; border-radius: 14px; border: none; font-size: 12.5px; font-weight: 900;
+    color: #140e00;
+    background: linear-gradient(90deg, #ffe699 0%, #f5b700 52%, #d98a00 100%);
+    cursor: pointer;
+  }
+  .btn-gold:active { transform: scale(0.985); }
+  .btn-outline-gold {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10.5px 10px; border-radius: 14px; font-size: 12.5px; font-weight: 800;
+    color: var(--gold-light);
+    background: rgba(255,255,255,0.06);
+    border: 1.1px solid rgba(245,183,0,0.65);
+    cursor: pointer;
+  }
+  .btn-outline-gold:active { transform: scale(0.985); }
+  .btn-danger {
+    padding: 9px 14px; border-radius: 13px; font-size: 12px; font-weight: 700;
+    color: #ff8a8a; background: rgba(255,82,82,0.10); border: 1px solid rgba(255,82,82,0.35);
+    cursor: pointer;
+  }
+  .gauge-wrap { position: relative; width: 74px; height: 74px; flex-shrink: 0; }
+  .gauge-text {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .gauge-num { font-size: 21px; font-weight: 900; line-height: 22px; }
+  .gauge-lbl { font-size: 9.5px; font-weight: 700; color: var(--gold-light); }
+  .serial-bar {
+    display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    padding: 4px 8px; border-radius: 8px; font-family: monospace; font-size: 10.5px; font-weight: 700;
+    background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.1); color: var(--gold-light);
+    margin: 5px 0;
+  }
+  .mini-tag {
+    display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 9.5px; font-weight: 700;
+    background: rgba(245,183,0,0.14); border: 1px solid rgba(245,183,0,0.45); color: var(--gold-light);
+  }
+  .mini-tag.gray { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); color: #e2e8f0; }
+
+  /* کارت سرورها */
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  .srv-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; border-radius: 18px;
+    background: var(--card); border: 1px solid var(--border);
+    cursor: pointer; transition: transform .08s ease;
+  }
+  .srv-card:active { transform: scale(0.985); }
+  .srv-card.vip { background: var(--vip-card); border-color: rgba(245,183,0,0.35); }
+  .srv-card.vip.unlocked { border: 1.4px solid rgba(245,183,0,0.65); }
+  .srv-card.connected { background: rgba(155,135,245,0.18); border: 1.5px solid var(--primary); }
+  .srv-card.vip.connected { background: #0e241c; border: 1.5px solid var(--emerald); }
+
+  .thumb {
+    position: relative; width: 92px; height: 54px; border-radius: 12px; overflow: hidden;
+    background: #1a1d29; border: 1.2px solid rgba(255,255,255,0.2); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1; }
+  .thumb-code {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--gold-light);
+  }
+  .thumb-badge {
+    position: absolute; top: 4px; right: 4px; z-index: 2;
+    padding: 2px 5px; border-radius: 6px; font-size: 8.5px; font-weight: 900;
+    background: rgba(0,0,0,0.80);
+  }
+  .thumb-badge.free { color: var(--emerald); border: 0.7px solid rgba(16,232,112,0.8); }
+  .thumb-badge.vip { color: var(--gold-light); border: 0.7px solid rgba(245,183,0,0.8); }
+
+  .srv-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .srv-pill {
+    align-self: flex-start; display: inline-flex; align-items: center; gap: 5px;
+    padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 800; letter-spacing: 0.4px;
+    background: rgba(255,255,255,0.07); border: 0.7px solid rgba(255,255,255,0.12); color: #cbd5e1;
+  }
+  .srv-card.vip .srv-pill { background: rgba(245,183,0,0.14); border-color: rgba(245,183,0,0.45); color: var(--gold-light); }
+  .srv-card.connected .srv-pill { background: rgba(155,135,245,0.2); border-color: var(--primary); color: var(--primary); }
+  .srv-card.vip.connected .srv-pill { background: rgba(16,232,112,0.16); border-color: var(--emerald); color: var(--emerald); }
+
+  .srv-name { font-size: 14px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .srv-sub { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.3px; }
+  .srv-card.vip .srv-sub { color: rgba(255,224,130,0.80); font-weight: 600; }
+  .srv-card.vip.unlocked .srv-sub { color: #a6b0c3; }
+  .srv-card.connected .srv-sub { color: var(--primary); font-weight: 600; }
+  .srv-card.vip.connected .srv-sub { color: var(--emerald); font-weight: 600; }
+
+  .status-icon {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .status-icon.ring { width: 22px; height: 22px; border: 1.5px solid #64748b; }
+  .status-icon.ring.vip { border-color: rgba(245,183,0,0.7); }
+  .status-icon.lock {
+    background: rgba(245,183,0,0.16);
+    border: 1px solid rgba(245,183,0,0.65);
+    color: var(--gold-light);
+  }
+  .status-icon.check { width: 26px; height: 26px; background: var(--primary); color: #0a0b10; }
+  .status-icon.check.vip { background: var(--emerald); color: #04140b; }
+
+  /* پنجره ورود کد VIP */
+  .modal-bg {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.74); backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center; padding: 18px;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    width: 100%; max-width: 390px; border-radius: 24px; padding: 18px;
+    background: linear-gradient(180deg, #1a1626, #0b0c11);
+    border: 1.5px solid var(--gold);
+    display: flex; flex-direction: column; gap: 13px;
+  }
+  .code-input {
+    width: 100%; padding: 14px; border-radius: 14px; text-align: center;
+    background: #07080c; border: 1.3px solid rgba(245,183,0,0.65);
+    color: var(--gold-light); font-family: monospace; font-size: 16px; font-weight: 800; letter-spacing: 1.5px;
+    outline: none; user-select: text; -webkit-user-select: text;
+  }
+  .err-box {
+    padding: 8px 10px; border-radius: 10px; font-size: 11.5px; font-weight: 600;
+    background: rgba(255,82,82,0.14); border: 1px solid rgba(255,82,82,0.5); color: #ff8a8a;
+  }
+  .btn-activate {
+    width: 100%; padding: 12px; border-radius: 14px; border: none;
+    font-size: 13px; font-weight: 900; color: #04140b;
+    background: linear-gradient(90deg, #10e870, #00c853); cursor: pointer;
+  }
+  .btn-activate:disabled { background: #262a36; color: #7b8396; }
+  .notice { font-size: 11px; color: #ff8a8a; font-weight: 600; }
 </style>
 </head>
 <body>
-<div class="header"><div><h1 class="title">DNS Server</h1><div id="subtitle" class="subtitle">در حال بارگذاری...</div></div><div id="headerAction"></div></div>
-<div class="tabs"><div id="tabFree" class="tab free-on" onclick="setTab(false)">رایگان (3)</div><div id="tabVip" class="tab" onclick="setTab(true)"><span>♛</span><span id="tabVipTxt">سرورهای VIP</span></div></div>
-<div id="vipBannerSlot"></div><div id="serverList" class="list"></div>
-<div id="vipModal" class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">
-<div class="row-between"><div class="row"><div class="crown-box" style="width:38px;height:38px;border-radius:11px">♛</div><div><div style="font-size:15px;font-weight:900">فعال‌سازی اشتراک VIP</div><div style="font-size:11px;color:#ffe082">تک‌کاربره • تایید آنلاین</div></div></div><button onclick="closeModal()" style="border:0;color:white;background:#ffffff12;border-radius:50%;width:30px;height:30px">✕</button></div>
-<div style="font-size:12px;color:#b3bacb;line-height:1.8">کد اختصاصی اشتراک را وارد کنید تا پس از تایید، سرورهای VIP برای شما باز شوند.</div>
-<input id="codeInput" class="code-input" dir="ltr" placeholder="BP-8492-X7" maxlength="32" oninput="this.value=this.value.toUpperCase().replace(/\s+/g,'');updateModalBtn()">
-<div id="modalErr" class="err-box" style="display:none"></div>
-<button id="activateBtn" class="btn-activate" onclick="submitVipCode()">فعال‌سازی و باز کردن سرورهای VIP</button>
-<button class="btn-outline-gold" style="width:100%" onclick="openBuy()">⚡ خرید اشتراک از تلگرام</button>
-</div></div>
+
+<div class="header">
+  <div>
+    <h1 class="title">DNS Server</h1>
+    <div id="subtitle" class="subtitle">در حال بارگذاری...</div>
+  </div>
+  <div id="headerAction"></div>
+</div>
+
+<div class="tabs">
+  <div id="tabFree" class="tab free-on" onclick="setTab(false)">رایگان (3)</div>
+  <div id="tabVip" class="tab" onclick="setTab(true)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/>
+      <rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/>
+    </svg>
+    <span id="tabVipTxt">سرورهای VIP</span>
+  </div>
+</div>
+
+<div id="vipBannerSlot"></div>
+<div id="serverList" class="list"></div>
+
+<div id="vipModal" class="modal-bg" onclick="if(event.target===this) closeModal()">
+  <div class="modal">
+    <div class="row-between">
+      <div class="row">
+        <div class="crown-box" style="width:38px;height:38px;border-radius:11px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffe082">
+            <path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/>
+            <rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-size:15.5px;font-weight:800">فعال‌سازی اشتراک VIP</div>
+          <div style="font-size:11px;color:#ffe082">تک‌کاربره • تایید آنلاین و فوری</div>
+        </div>
+      </div>
+      <div onclick="closeModal()" style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+    <div style="font-size:12px;color:#b3bacb;line-height:1.6">
+      پس از خرید اشتراک، کد اختصاصی دریافت‌شده را در کادر زیر وارد کنید تا تمام سرورهای VIP بلافاصله برای شما باز شوند.
+    </div>
+    <input id="codeInput" class="code-input" dir="ltr" placeholder="مثال: BP-8492-X7" maxlength="32"
+      oninput="this.value=this.value.toUpperCase().replace(/\s+/g,''); updateModalBtn()">
+    <div id="modalErr" class="err-box" style="display:none"></div>
+    <button id="activateBtn" class="btn-activate" onclick="submitVipCode()">فعال‌سازی و باز کردن سرورهای VIP</button>
+    <button class="btn-outline-gold" style="width:100%" onclick="openBuy()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="#ffe082"><path d="M13.44 1.92L4.8 13.2h6.72l-1.44 8.88L19.2 10.56h-6.72z"/></svg>
+      <span>هنوز کد ندارید؟ خرید اشتراک از تلگرام</span>
+    </button>
+  </div>
+</div>
+
 <script>
-const CONFIG={
- TELEGRAM_URL:"https://t.me/Balochping_ir",
- FREE_SERVERS:[
-  {id:"free_tr",code:"TR",title:"TURKIYE",sub:"سرور رایگان ترکیه • اتصال پایدار",tag:"FREE ROUTE",accent:"#e30a17",flag:"https://flagcdn.com/w160/tr.png"},
-  {id:"free_ae",code:"AE",title:"UAE",sub:"سرور رایگان امارات • خاورمیانه",tag:"FREE ROUTE",accent:"#10e870",flag:"https://flagcdn.com/w160/ae.png"},
-  {id:"free_de",code:"DE",title:"GERMANY",sub:"سرور رایگان آلمان • سرور اروپا",tag:"FREE ROUTE",accent:"#f5b700",flag:"https://flagcdn.com/w160/de.png"}
- ],
- VIP_SERVERS:[
-  {id:"vip_tr_1",code:"TR",title:"TURKIYE 1",sub:"PRIMARY GAMING ROUTE",tag:"VIP TURBO",accent:"#e30a17",flag:"https://flagcdn.com/w160/tr.png"},
-  {id:"vip_tr_2",code:"TR",title:"TURKIYE 2",sub:"ALTERNATE ROUTE",tag:"STABLE ROUTE",accent:"#e30a17",flag:"https://flagcdn.com/w160/tr.png"},
-  {id:"vip_de_1",code:"DE",title:"GERMANY 1",sub:"EUROPE GATEWAY",tag:"PRO ROUTE",accent:"#f5b700",flag:"https://flagcdn.com/w160/de.png"},
-  {id:"vip_ae_1",code:"AE",title:"UAE 1",sub:"MIDDLE EAST CORE",tag:"LOW PING",accent:"#10e870",flag:"https://flagcdn.com/w160/ae.png"},
-  {id:"vip_ae_2",code:"AE",title:"UAE 2",sub:"BACKUP GATEWAY",tag:"DIRECT ROUTE",accent:"#00e5ff",flag:"https://flagcdn.com/w160/ae.png"},
-  {id:"vip_qa_1",code:"QA",title:"QATAR 1",sub:"GULF CONNECT",tag:"FAST ROUTE",accent:"#8a1538",flag:"https://flagcdn.com/w160/qa.png"},
-  {id:"vip_bh_1",code:"BH",title:"BAHRAIN 1",sub:"GULF EDGE",tag:"ESPORTS",accent:"#ef4444",flag:"https://flagcdn.com/w160/bh.png"}
- ]};
-let selectedVipTab=false,modalOpen=false;
-let appState={activeId:null,isSyncing:false,syncFailed:false,isVerifyingVip:false,isActivating:false,vipNotice:"",vipError:"",savedCode:"",vip:{active:false,codeMasked:"",daysLeft:0,expiresAt:"",serverIds:[]}};
-function native(){return window.BPNative||null}
-window.onNativeState=function(raw){try{const next=typeof raw==="string"?JSON.parse(raw):raw;const was=appState.vip?.active;appState=next||appState;if(!was&&appState.vip?.active&&modalOpen){modalOpen=false;selectedVipTab=true;document.getElementById("vipModal").classList.remove("open")}render()}catch(e){}};
-function setTab(v){selectedVipTab=v;render()}
-function openModal(){modalOpen=true;const i=document.getElementById("codeInput");if(!i.value&&appState.savedCode)i.value=appState.savedCode;document.getElementById("vipModal").classList.add("open");if(native()?.clearVipError)native().clearVipError();updateModalBtn()}
-function closeModal(){if(appState.isActivating)return;modalOpen=false;document.getElementById("vipModal").classList.remove("open")}
-function updateModalBtn(){const b=document.getElementById("activateBtn"),v=document.getElementById("codeInput").value.trim();b.disabled=!v||!!appState.isActivating;b.textContent=appState.isActivating?"در حال بررسی آنلاین...":"فعال‌سازی و باز کردن سرورهای VIP"}
-function submitVipCode(){const v=document.getElementById("codeInput").value.trim();if(v&&!appState.isActivating&&native()?.activateVip)native().activateVip(v)}
-function openBuy(){if(native()?.openUrl)native().openUrl(CONFIG.TELEGRAM_URL);else window.open(CONFIG.TELEGRAM_URL,"_blank")}
-function clickServer(id,title,vip){if(vip&&!appState.vip?.active){openModal();return}if(appState.activeId===id){native()?.disconnect()}else{native()?.connect(id,title,vip)}}
-const I={lock:'<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zM9 6a3 3 0 0 1 6 0v2H9z"/></svg>',check:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>'};
-function render(){
- const vip=!!appState.vip?.active,days=Math.max(0,Number(appState.vip?.daysLeft)||0),sub=document.getElementById("subtitle");
- sub.className="subtitle";
- if(appState.isSyncing&&!selectedVipTab)sub.textContent="در حال دریافت سرورهای رمزنگاری‌شده...";
- else if(appState.syncFailed&&!selectedVipTab){sub.textContent="خطا در ارتباط با سرور • اینترنت را بررسی کنید";sub.classList.add("err")}
- else if(selectedVipTab&&vip){sub.textContent="اشتراک VIP فعال • "+days+" روز باقی‌مانده";sub.classList.add("vip-active")}
- else if(selectedVipTab){sub.textContent=CONFIG.VIP_SERVERS.length+" سرور اختصاصی VIP • حجم نامحدود";sub.classList.add("vip-idle")}
- else sub.textContent=CONFIG.FREE_SERVERS.length+" سرور رایگان • ترکیه، امارات و آلمان";
- const ha=document.getElementById("headerAction");ha.innerHTML=appState.activeId?'<button class="pill-btn" onclick="native()&&native().disconnect()">قطع اتصال</button>':appState.syncFailed?'<button class="pill-btn" onclick="native()&&native().retrySync()">تلاش مجدد</button>':'';
- document.getElementById("tabFree").textContent="رایگان ("+CONFIG.FREE_SERVERS.length+")";document.getElementById("tabFree").className="tab"+(!selectedVipTab?" free-on":"");
- document.getElementById("tabVip").className="tab"+(selectedVipTab?(" vip-on"+(vip?" active":"")):"");document.getElementById("tabVipTxt").textContent=vip?"VIP فعال ("+CONFIG.VIP_SERVERS.length+")":"سرورهای VIP";
- const banner=document.getElementById("vipBannerSlot");
- if(!selectedVipTab)banner.innerHTML="";
- else if(vip){
-  const pct=Math.max(0,Math.min(1,days/30)),dash=188.5,off=dash*(1-pct);
-  banner.innerHTML='<div class="vip-hero"><div class="vip-inner"><div class="row-between"><span class="badge-active">● ACTIVE</span><span class="pass-tag">BALOCH PING • PRO PASS ♛</span></div><div class="row" style="gap:14px"><div class="gauge-wrap"><svg width="74" height="74" viewBox="0 0 74 74"><circle cx="37" cy="37" r="30" fill="none" stroke="#ffffff17" stroke-width="5.5"/><circle cx="37" cy="37" r="30" fill="none" stroke="url(#grad)" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="'+dash+'" stroke-dashoffset="'+off+'" transform="rotate(-90 37 37)"/><defs><linearGradient id="grad"><stop stop-color="#ffe082"/><stop offset=".6" stop-color="#f5b700"/><stop offset="1" stop-color="#10e870"/></linearGradient></defs></svg><div class="gauge-text"><span class="gauge-num">'+days+'</span><span class="gauge-lbl">روز مانده</span></div></div><div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:900">اشتراک VIP نامحدود</div><div class="serial-bar" dir="ltr">ID '+(appState.vip.codeMasked||"—")+(appState.vip.expiresAt?" • EXP "+appState.vip.expiresAt:"")+'</div><div class="row" style="flex-wrap:wrap"><span class="mini-tag">حجم نامحدود</span><span class="mini-tag gray">'+CONFIG.VIP_SERVERS.length+' سرور اختصاصی</span></div></div></div>'+(days<=3?'<div class="notice">'+(days===0?"اعتبار اشتراک به پایان رسیده است.":"اعتبار اشتراک رو به پایان است؛ برای تمدید اقدام کنید.")+'</div>':'')+'<div class="btn-row"><button class="btn-outline-gold" onclick="native()&&native().refreshVip()">↻ بروزرسانی سرورها</button>'+(days<=5?'<button class="btn-gold" onclick="openBuy()">تمدید</button>':'')+'<button class="btn-danger" onclick="native()&&native().logoutVip()">خروج از حساب</button></div></div></div>';
- }else{
-  banner.innerHTML='<div class="vip-hero"><div class="vip-inner"><div class="row-between"><div class="row"><div class="crown-box">♛</div><div><div class="pass-tag">PRO GAMING PASS</div><div class="hero-title">سرورهای اختصاصی VIP</div></div></div><span class="badge-gold">۱ کاربره</span></div><div class="chips"><div class="chip gold">● حجم نامحدود</div><div class="chip emerald">● اعتبار یک‌ماهه</div><div class="chip cyan">● تک‌کاربره</div></div>'+(appState.vipNotice?'<div class="notice">'+escapeHtml(appState.vipNotice)+'</div>':'')+'<div class="btn-row"><button class="btn-gold" onclick="openBuy()">⚡ خرید اشتراک</button><button class="btn-outline-gold" onclick="openModal()">⌁ ورود به حساب</button></div></div></div>';
- }
- const items=selectedVipTab?CONFIG.VIP_SERVERS:CONFIG.FREE_SERVERS;
- document.getElementById("serverList").innerHTML=items.map(s=>{
-  const isVip=selectedVipTab,locked=isVip&&!vip,connected=!locked&&appState.activeId===s.id,cls="srv-card"+(isVip?" vip":"")+(isVip&&!locked?" unlocked":"")+(connected?" connected":"");
-  const color=connected?(isVip?"#10e870":"#9b87f5"):(isVip?"#f5b700":s.accent),status=locked?'<div class="status-icon lock">'+I.lock+'</div>':connected?'<div class="status-icon check'+(isVip?" vip":"")+'">'+I.check+'</div>':'<div class="status-icon ring'+(isVip?" vip":"")+'"></div>';
-  return '<div class="'+cls+'" onclick="clickServer(\''+s.id+'\',\''+s.title+'\','+isVip+')"><div class="thumb" style="border-color:'+color+'"><span class="thumb-code">'+s.code+'</span><img src="'+s.flag+'" alt="'+s.title+'" onerror="this.style.display=\\'none\\'"><span class="thumb-badge '+(isVip?"vip":"free")+'">'+(isVip?"VIP":"FREE")+'</span></div><div class="srv-info"><span class="srv-pill"><span class="dot" style="background:'+color+'"></span>'+(connected?"CONNECTED":s.tag)+'</span><div class="srv-name">'+s.title+'</div><div class="srv-sub">'+(connected?"متصل":s.sub)+'</div></div>'+status+'</div>';
- }).join("");
- const err=document.getElementById("modalErr");if(appState.vipError){err.textContent=appState.vipError;err.style.display="block"}else err.style.display="none";updateModalBtn();
+// === آیکون‌های برداری دقیقاً منطبق با نسخه اصلی اندروید (بدون هیچ ایموجی) ===
+const ICONS = {
+  // قفل توپُر متریال (دقیقاً Icons.Rounded.Lock)
+  lock: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>',
+  // تیک اتصال
+  check: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  // رعدوبرق مشکی توپُر دکمه خرید اشتراک
+  boltDark: '<svg width="16" height="16" viewBox="0 0 24 24" fill="#140e00"><path d="M13.44 1.92L4.8 13.2h6.72l-1.44 8.88L19.2 10.56h-6.72z"/></svg>',
+  // کلید افقی صاف (دقیقاً GamingKeyIcon نسخه قبلی)
+  keyGold: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffe082" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.2" cy="12" r="4.4"/><line x1="11.6" y1="12" x2="21.2" y2="12"/><line x1="17.8" y1="12" x2="17.8" y2="16.2"/><line x1="20.6" y1="12" x2="20.6" y2="15.3"/></svg>',
+  // تاج گیمینگ
+  crownBig: '<svg width="22" height="22" viewBox="0 0 24 24" fill="#ffe082"><path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/><rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/></svg>',
+  crownSmall: '<svg width="15" height="15" viewBox="0 0 24 24" fill="#ffe082"><path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/><rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/></svg>',
+  // آیکون بروزرسانی
+  refresh: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffe082" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>',
+  // خطوط راداری ظریف پس‌زمینه کارت VIP
+  radarBg: '<svg class="vip-radar" viewBox="0 0 360 180" preserveAspectRatio="xMaxYMid slice"><circle cx="332" cy="90" r="62" fill="none" stroke="rgba(245,183,0,0.06)" stroke-width="1.2"/><circle cx="332" cy="90" r="124" fill="none" stroke="rgba(245,183,0,0.055)" stroke-width="1.2"/><circle cx="332" cy="90" r="186" fill="none" stroke="rgba(245,183,0,0.045)" stroke-width="1.2"/></svg>'
+};
+
+// === تنظیمات سریع (بدون بیلد روی همه گوشی‌ها اعمال می‌شود) ===
+const CONFIG = {
+  TELEGRAM_URL: "https://t.me/Balochping_ir",
+  FREE_SERVERS: [
+    { id: "free_tr", code: "TR", title: "TURKIYE", sub: "سرور رایگان ترکیه • اتصال پایدار", tag: "FREE ROUTE", accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png" },
+    { id: "free_ae", code: "AE", title: "UAE",     sub: "سرور رایگان امارات • خاورمیانه",  tag: "FREE ROUTE", accent: "#10e870", flag: "https://flagcdn.com/w160/ae.png" },
+    { id: "free_de", code: "DE", title: "GERMANY", sub: "سرور رایگان آلمان • سرور اروپا",   tag: "FREE ROUTE", accent: "#f5b700", flag: "https://flagcdn.com/w160/de.png" }
+  ],
+  VIP_SERVERS: [
+    { id: "vip_tr_1", code: "TR", title: "TURKIYE 1", sub: "PRIMARY GAMING ROUTE", tag: "VIP TURBO",    accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png" },
+    { id: "vip_tr_2", code: "TR", title: "TURKIYE 2", sub: "ALTERNATE ROUTE",      tag: "STABLE ROUTE", accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png" },
+    { id: "vip_de_1", code: "DE", title: "GERMANY 1", sub: "EUROPE GATEWAY",       tag: "PRO ROUTE",    accent: "#f5b700", flag: "https://flagcdn.com/w160/de.png" },
+    { id: "vip_ae_1", code: "AE", title: "UAE 1",     sub: "MIDDLE EAST CORE",     tag: "LOW PING",     accent: "#10e870", flag: "https://flagcdn.com/w160/ae.png" },
+    { id: "vip_ae_2", code: "AE", title: "UAE 2",     sub: "BACKUP GATEWAY",       tag: "DIRECT ROUTE", accent: "#00e5ff", flag: "https://flagcdn.com/w160/ae.png" },
+    { id: "vip_qa_1", code: "QA", title: "QATAR 1",   sub: "GULF CONNECT",         tag: "FAST ROUTE",   accent: "#8a1538", flag: "https://flagcdn.com/w160/qa.png" },
+    { id: "vip_bh_1", code: "BH", title: "BAHRAIN 1", sub: "GULF EDGE",            tag: "ESPORTS",      accent: "#ef4444", flag: "https://flagcdn.com/w160/bh.png" }
+  ]
+};
+
+let selectedVipTab = false;
+let modalOpen = false;
+let appState = {
+  activeId: null, isSyncing: false, syncFailed: false,
+  isVerifyingVip: false, isActivating: false,
+  vipNotice: "", vipError: "", savedCode: "",
+  vip: { active: false, codeMasked: "", daysLeft: 0, expiresAt: "", serverIds: [] }
+};
+
+function native() { return window.BPNative || null; }
+
+window.onNativeState = function(raw) {
+  try {
+    const next = (typeof raw === "string") ? JSON.parse(raw) : raw;
+    const wasActive = appState.vip && appState.vip.active;
+    appState = next;
+    if (!wasActive && appState.vip && appState.vip.active && modalOpen) {
+      modalOpen = false;
+      selectedVipTab = true;
+      document.getElementById("vipModal").classList.remove("open");
+    }
+    render();
+  } catch (e) {}
+};
+
+function setTab(isVip) { selectedVipTab = isVip; render(); }
+
+function openModal() {
+  modalOpen = true;
+  const inp = document.getElementById("codeInput");
+  if (!inp.value && appState.savedCode) inp.value = appState.savedCode;
+  document.getElementById("vipModal").classList.add("open");
+  if (native() && native().clearVipError) native().clearVipError();
+  updateModalBtn();
 }
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-render();if(native()?.getState)window.onNativeState(native().getState());
+
+function closeModal() {
+  if (appState.isActivating) return;
+  modalOpen = false;
+  document.getElementById("vipModal").classList.remove("open");
+}
+
+function updateModalBtn() {
+  const btn = document.getElementById("activateBtn");
+  const val = document.getElementById("codeInput").value.trim();
+  btn.disabled = !val || appState.isActivating;
+  btn.textContent = appState.isActivating ? "در حال بررسی آنلاین..." : "فعال‌سازی و باز کردن سرورهای VIP";
+}
+
+function submitVipCode() {
+  const val = document.getElementById("codeInput").value.trim();
+  if (!val || appState.isActivating) return;
+  if (native()) native().activateVip(val);
+}
+
+function openBuy() {
+  if (native()) native().openUrl(CONFIG.TELEGRAM_URL);
+}
+
+function clickServer(id, title, isVip) {
+  if (isVip && !(appState.vip && appState.vip.active)) { openModal(); return; }
+  if (appState.activeId === id) {
+    if (native()) native().disconnect();
+  } else {
+    if (native()) native().connect(id, title, isVip);
+  }
+}
+
+function render() {
+  const vipOn = !!(appState.vip && appState.vip.active);
+  const sub = document.getElementById("subtitle");
+  sub.className = "subtitle";
+  if (appState.isSyncing && !selectedVipTab) {
+    sub.textContent = "در حال دریافت سرورهای رمزنگاری‌شده...";
+  } else if (appState.syncFailed && !selectedVipTab) {
+    sub.textContent = "خطا در ارتباط با سرور • اینترنت را بررسی کنید";
+    sub.classList.add("err");
+  } else if (selectedVipTab && vipOn) {
+    sub.textContent = "اشتراک VIP فعال • " + appState.vip.daysLeft + " روز باقی‌مانده • نامحدود";
+    sub.classList.add("vip-active");
+  } else if (selectedVipTab) {
+    sub.textContent = CONFIG.VIP_SERVERS.length + " سرور اختصاصی VIP • حجم نامحدود";
+    sub.classList.add("vip-idle");
+  } else {
+    sub.textContent = CONFIG.FREE_SERVERS.length + " سرور رایگان • ترکیه، امارات و آلمان";
+  }
+
+  const ha = document.getElementById("headerAction");
+  if (appState.activeId) {
+    ha.innerHTML = '<button class="pill-btn" onclick="native()&&native().disconnect()">قطع اتصال</button>';
+  } else if (appState.syncFailed) {
+    ha.innerHTML = '<button class="pill-btn" onclick="native()&&native().retrySync()">تلاش مجدد</button>';
+  } else {
+    ha.innerHTML = "";
+  }
+
+  const tFree = document.getElementById("tabFree");
+  const tVip = document.getElementById("tabVip");
+  tFree.textContent = "رایگان (" + CONFIG.FREE_SERVERS.length + ")";
+  tFree.className = "tab" + (!selectedVipTab ? " free-on" : "");
+  tVip.className = "tab" + (selectedVipTab ? (" vip-on" + (vipOn ? " active" : "")) : "");
+  document.getElementById("tabVipTxt").textContent = vipOn ? ("VIP فعال (" + CONFIG.VIP_SERVERS.length + ")") : "سرورهای VIP";
+
+  const banner = document.getElementById("vipBannerSlot");
+  if (!selectedVipTab) {
+    banner.innerHTML = "";
+  } else if (vipOn) {
+    const days = Math.max(0, appState.vip.daysLeft || 0);
+    const pct = Math.max(0.08, Math.min(1, days / 30));
+    const dash = 188.5;
+    const off = dash * (1 - pct);
+    banner.innerHTML =
+      '<div class="vip-hero">' + ICONS.radarBg + '<div class="vip-inner">' +
+        '<div class="row-between">' +
+          '<span class="badge-active"><span class="dot" style="background:#10e870"></span>ACTIVE</span>' +
+          '<span class="pass-tag">BALOCH PING • PRO PASS ' + ICONS.crownSmall + '</span>' +
+        '</div>' +
+        '<div class="row" style="gap:14px">' +
+          '<div class="gauge-wrap">' +
+            '<svg width="74" height="74" viewBox="0 0 74 74">' +
+              '<circle cx="37" cy="37" r="30" fill="none" stroke="rgba(255,255,255,0.09)" stroke-width="5.5"/>' +
+              '<circle cx="37" cy="37" r="30" fill="none" stroke="url(#gGrad)" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="' + dash + '" stroke-dashoffset="' + off + '" transform="rotate(-90 37 37)"/>' +
+              '<defs><linearGradient id="gGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffe082"/><stop offset="60%" stop-color="#f5b700"/><stop offset="100%" stop-color="#10e870"/></linearGradient></defs>' +
+            '</svg>' +
+            '<div class="gauge-text"><span class="gauge-num">' + days + '</span><span class="gauge-lbl">روز مانده</span></div>' +
+          '</div>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div style="font-size:16px;font-weight:800">اشتراک VIP نامحدود</div>' +
+            '<div class="serial-bar" dir="ltr">ID ' + (appState.vip.codeMasked || "") + (appState.vip.expiresAt ? (" • EXP " + appState.vip.expiresAt) : "") + '</div>' +
+            '<div class="row" style="gap:6px;flex-wrap:wrap">' +
+              '<span class="mini-tag">حجم نامحدود</span>' +
+              '<span class="mini-tag gray">' + CONFIG.VIP_SERVERS.length + ' سرور اختصاصی</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="btn-row">' +
+          '<button class="btn-outline-gold" onclick="native()&&native().refreshVip()">' + ICONS.refresh + '<span>بروزرسانی سرورها</span></button>' +
+          (days <= 5 ? '<button class="btn-gold" style="flex:0.5" onclick="openBuy()">تمدید</button>' : '') +
+          '<button class="btn-danger" onclick="native()&&native().logoutVip()">خروج</button>' +
+        '</div>' +
+      '</div></div>';
+  } else {
+    banner.innerHTML =
+      '<div class="vip-hero">' + ICONS.radarBg + '<div class="vip-inner">' +
+        '<div class="row-between">' +
+          '<div class="row" style="gap:10px">' +
+            '<div class="crown-box">' + ICONS.crownBig + '</div>' +
+            '<div><div class="pass-tag">PRO GAMING PASS</div><div class="hero-title">سرورهای اختصاصی VIP</div></div>' +
+          '</div>' +
+          '<span class="badge-gold">۱ کاربره</span>' +
+        '</div>' +
+        '<div class="chips">' +
+          '<div class="chip gold"><span class="dot" style="background:#f5b700"></span>حجم نامحدود</div>' +
+          '<div class="chip emerald"><span class="dot" style="background:#10e870"></span>یکماهه </div>' +
+          '<div class="chip cyan"><span class="dot" style="background:#00e5ff"></span>تک‌کاربره</div>' +
+        '</div>' +
+        (appState.vipNotice ? '<div class="notice">' + appState.vipNotice + '</div>' : '') +
+        '<div class="btn-row">' +
+          '<button class="btn-gold" onclick="openBuy()">' + ICONS.boltDark + '<span>خرید اشتراک</span></button>' +
+          '<button class="btn-outline-gold" onclick="openModal()">' + ICONS.keyGold + '<span>ورود به حساب</span></button>' +
+        '</div>' +
+      '</div></div>';
+  }
+
+  const listEl = document.getElementById("serverList");
+  const items = selectedVipTab ? CONFIG.VIP_SERVERS : CONFIG.FREE_SERVERS;
+  listEl.innerHTML = items.map(function(s) {
+    const isVip = selectedVipTab;
+    const locked = isVip && !vipOn;
+    const connected = !locked && appState.activeId === s.id;
+    const cls = "srv-card" + (isVip ? " vip" : "") + (isVip && !locked ? " unlocked" : "") + (connected ? " connected" : "");
+    const badgeCls = isVip ? "vip" : "free";
+    const badgeTxt = isVip ? "VIP" : "FREE";
+    const iconHtml = locked
+      ? '<div class="status-icon lock">' + ICONS.lock + '</div>'
+      : connected
+        ? '<div class="status-icon check' + (isVip ? ' vip' : '') + '">' + ICONS.check + '</div>'
+        : '<div class="status-icon ring' + (isVip ? ' vip' : '') + '"></div>';
+
+    return (
+      '<div class="' + cls + '" onclick="clickServer(\'' + s.id + '\',\'' + s.title + '\',' + isVip + ')">' +
+        '<div class="thumb" style="border-color:' + (connected ? (isVip ? '#10e870' : '#9b87f5') : (isVip ? 'rgba(245,183,0,0.75)' : s.accent)) + '">' +
+          '<span class="thumb-code">' + s.code + '</span>' +
+          '<img src="' + s.flag + '" alt="' + s.title + '" onerror="this.style.display=\'none\'">' +
+          '<span class="thumb-badge ' + badgeCls + '">' + badgeTxt + '</span>' +
+        '</div>' +
+        '<div class="srv-info">' +
+          '<span class="srv-pill"><span class="dot" style="background:' + (connected ? (isVip ? '#10e870' : '#9b87f5') : (isVip ? '#f5b700' : s.accent)) + '"></span>' + (connected ? 'CONNECTED' : s.tag) + '</span>' +
+          '<div class="srv-name">' + s.title + '</div>' +
+          '<div class="srv-sub">' + (connected ? 'متصل' : s.sub) + '</div>' +
+        '</div>' +
+        iconHtml +
+      '</div>'
+    );
+  }).join("");
+
+  const errEl = document.getElementById("modalErr");
+  if (appState.vipError) {
+    errEl.textContent = appState.vipError;
+    errEl.style.display = "block";
+  } else {
+    errEl.style.display = "none";
+  }
+  updateModalBtn();
+}
+
+render();
+if (native() && native().getState) {
+  window.onNativeState(native().getState());
+}
 </script>
 </body>
 </html>
