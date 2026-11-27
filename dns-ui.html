@@ -204,6 +204,28 @@
   }
   .mini-tag.gray { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); color: #e2e8f0; }
 
+  /* کارت به زودی برای سرورهای رایگان */
+  .coming-soon {
+    border-radius: 22px;
+    padding: 28px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+  .soon-icon {
+    width: 52px; height: 52px; border-radius: 16px;
+    background: rgba(155,135,245,0.14);
+    border: 1px solid rgba(155,135,245,0.45);
+    color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .soon-title { font-size: 15px; font-weight: 800; color: #fff; }
+  .soon-sub { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+
   /* کارت سرورها */
   .list { display: flex; flex-direction: column; gap: 10px; }
   .srv-card {
@@ -310,7 +332,7 @@
 </div>
 
 <div class="tabs">
-  <div id="tabFree" class="tab free-on" onclick="setTab(false)">رایگان (3)</div>
+  <div id="tabFree" class="tab free-on" onclick="setTab(false)">رایگان</div>
   <div id="tabVip" class="tab" onclick="setTab(true)">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
       <path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/>
@@ -359,31 +381,21 @@
 <script>
 // === آیکون‌های برداری دقیقاً منطبق با نسخه اصلی اندروید (بدون هیچ ایموجی) ===
 const ICONS = {
-  // قفل توپُر متریال (دقیقاً Icons.Rounded.Lock)
   lock: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>',
-  // تیک اتصال
   check: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
-  // رعدوبرق مشکی توپُر دکمه خرید اشتراک
   boltDark: '<svg width="16" height="16" viewBox="0 0 24 24" fill="#140e00"><path d="M13.44 1.92L4.8 13.2h6.72l-1.44 8.88L19.2 10.56h-6.72z"/></svg>',
-  // کلید افقی صاف (دقیقاً GamingKeyIcon نسخه قبلی)
   keyGold: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffe082" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.2" cy="12" r="4.4"/><line x1="11.6" y1="12" x2="21.2" y2="12"/><line x1="17.8" y1="12" x2="17.8" y2="16.2"/><line x1="20.6" y1="12" x2="20.6" y2="15.3"/></svg>',
-  // تاج گیمینگ
   crownBig: '<svg width="22" height="22" viewBox="0 0 24 24" fill="#ffe082"><path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/><rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/></svg>',
   crownSmall: '<svg width="15" height="15" viewBox="0 0 24 24" fill="#ffe082"><path d="M2.9 17.3L4.1 6.7l4.5 4.8L12 4.3l3.4 7.2 4.5-4.8 1.2 10.6H2.9z"/><rect x="3.4" y="18.5" width="17.2" height="2.6" rx="1.3"/></svg>',
-  // آیکون بروزرسانی
   refresh: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffe082" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>',
-  // خطوط راداری ظریف پس‌زمینه کارت VIP
+  clock: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
   radarBg: '<svg class="vip-radar" viewBox="0 0 360 180" preserveAspectRatio="xMaxYMid slice"><circle cx="332" cy="90" r="62" fill="none" stroke="rgba(245,183,0,0.06)" stroke-width="1.2"/><circle cx="332" cy="90" r="124" fill="none" stroke="rgba(245,183,0,0.055)" stroke-width="1.2"/><circle cx="332" cy="90" r="186" fill="none" stroke="rgba(245,183,0,0.045)" stroke-width="1.2"/></svg>'
 };
 
 // === تنظیمات سریع (بدون بیلد روی همه گوشی‌ها اعمال می‌شود) ===
 const CONFIG = {
   TELEGRAM_URL: "https://t.me/Balochping_ir",
-  FREE_SERVERS: [
-    { id: "free_tr", code: "TR", title: "TURKIYE", sub: "سرور رایگان ترکیه • اتصال پایدار", tag: "FREE ROUTE", accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png" },
-    { id: "free_ae", code: "AE", title: "UAE",     sub: "سرور رایگان امارات • خاورمیانه",  tag: "FREE ROUTE", accent: "#10e870", flag: "https://flagcdn.com/w160/ae.png" },
-    { id: "free_de", code: "DE", title: "GERMANY", sub: "سرور رایگان آلمان • سرور اروپا",   tag: "FREE ROUTE", accent: "#f5b700", flag: "https://flagcdn.com/w160/de.png" }
-  ],
+  FREE_SERVERS: [],
   VIP_SERVERS: [
     { id: "vip_tr_1", code: "TR", title: "TURKIYE 1", sub: "PRIMARY GAMING ROUTE", tag: "VIP TURBO",    accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png" },
     { id: "vip_tr_2", code: "TR", title: "TURKIYE 2", sub: "ALTERNATE ROUTE",      tag: "STABLE ROUTE", accent: "#e30a17", flag: "https://flagcdn.com/w160/tr.png" },
@@ -479,7 +491,7 @@ function render() {
     sub.textContent = CONFIG.VIP_SERVERS.length + " سرور اختصاصی VIP • حجم نامحدود";
     sub.classList.add("vip-idle");
   } else {
-    sub.textContent = CONFIG.FREE_SERVERS.length + " سرور رایگان • ترکیه، امارات و آلمان";
+    sub.textContent = "سرورهای رایگان در روزهای آینده اضافه می‌شوند";
   }
 
   const ha = document.getElementById("headerAction");
@@ -493,7 +505,7 @@ function render() {
 
   const tFree = document.getElementById("tabFree");
   const tVip = document.getElementById("tabVip");
-  tFree.textContent = "رایگان (" + CONFIG.FREE_SERVERS.length + ")";
+  tFree.textContent = "رایگان";
   tFree.className = "tab" + (!selectedVipTab ? " free-on" : "");
   tVip.className = "tab" + (selectedVipTab ? (" vip-on" + (vipOn ? " active" : "")) : "");
   document.getElementById("tabVipTxt").textContent = vipOn ? ("VIP فعال (" + CONFIG.VIP_SERVERS.length + ")") : "سرورهای VIP";
@@ -560,36 +572,44 @@ function render() {
   }
 
   const listEl = document.getElementById("serverList");
-  const items = selectedVipTab ? CONFIG.VIP_SERVERS : CONFIG.FREE_SERVERS;
-  listEl.innerHTML = items.map(function(s) {
-    const isVip = selectedVipTab;
-    const locked = isVip && !vipOn;
-    const connected = !locked && appState.activeId === s.id;
-    const cls = "srv-card" + (isVip ? " vip" : "") + (isVip && !locked ? " unlocked" : "") + (connected ? " connected" : "");
-    const badgeCls = isVip ? "vip" : "free";
-    const badgeTxt = isVip ? "VIP" : "FREE";
-    const iconHtml = locked
-      ? '<div class="status-icon lock">' + ICONS.lock + '</div>'
-      : connected
-        ? '<div class="status-icon check' + (isVip ? ' vip' : '') + '">' + ICONS.check + '</div>'
-        : '<div class="status-icon ring' + (isVip ? ' vip' : '') + '"></div>';
+  if (!selectedVipTab) {
+    listEl.innerHTML =
+      '<div class="coming-soon">' +
+        '<div class="soon-icon">' + ICONS.clock + '</div>' +
+        '<div class="soon-title">سرورهای رایگان</div>' +
+        '<div class="soon-sub">در روزهای آینده اضافه می‌شود</div>' +
+        '<button class="btn-outline-gold" style="width:100%;margin-top:6px" onclick="setTab(true)">' + ICONS.crownSmall + '<span>مشاهده سرورهای VIP</span></button>' +
+      '</div>';
+  } else {
+    const items = CONFIG.VIP_SERVERS;
+    listEl.innerHTML = items.map(function(s) {
+      const isVip = true;
+      const locked = !vipOn;
+      const connected = !locked && appState.activeId === s.id;
+      const cls = "srv-card vip" + (!locked ? " unlocked" : "") + (connected ? " connected" : "");
+      const iconHtml = locked
+        ? '<div class="status-icon lock">' + ICONS.lock + '</div>'
+        : connected
+          ? '<div class="status-icon check vip">' + ICONS.check + '</div>'
+          : '<div class="status-icon ring vip"></div>';
 
-    return (
-      '<div class="' + cls + '" onclick="clickServer(\'' + s.id + '\',\'' + s.title + '\',' + isVip + ')">' +
-        '<div class="thumb" style="border-color:' + (connected ? (isVip ? '#10e870' : '#9b87f5') : (isVip ? 'rgba(245,183,0,0.75)' : s.accent)) + '">' +
-          '<span class="thumb-code">' + s.code + '</span>' +
-          '<img src="' + s.flag + '" alt="' + s.title + '" onerror="this.style.display=\'none\'">' +
-          '<span class="thumb-badge ' + badgeCls + '">' + badgeTxt + '</span>' +
-        '</div>' +
-        '<div class="srv-info">' +
-          '<span class="srv-pill"><span class="dot" style="background:' + (connected ? (isVip ? '#10e870' : '#9b87f5') : (isVip ? '#f5b700' : s.accent)) + '"></span>' + (connected ? 'CONNECTED' : s.tag) + '</span>' +
-          '<div class="srv-name">' + s.title + '</div>' +
-          '<div class="srv-sub">' + (connected ? 'متصل' : s.sub) + '</div>' +
-        '</div>' +
-        iconHtml +
-      '</div>'
-    );
-  }).join("");
+      return (
+        '<div class="' + cls + '" onclick="clickServer(\'' + s.id + '\',\'' + s.title + '\',true)">' +
+          '<div class="thumb" style="border-color:' + (connected ? '#10e870' : 'rgba(245,183,0,0.75)') + '">' +
+            '<span class="thumb-code">' + s.code + '</span>' +
+            '<img src="' + s.flag + '" alt="' + s.title + '" onerror="this.style.display=\'none\'">' +
+            '<span class="thumb-badge vip">VIP</span>' +
+          '</div>' +
+          '<div class="srv-info">' +
+            '<span class="srv-pill"><span class="dot" style="background:' + (connected ? '#10e870' : '#f5b700') + '"></span>' + (connected ? 'CONNECTED' : s.tag) + '</span>' +
+            '<div class="srv-name">' + s.title + '</div>' +
+            '<div class="srv-sub">' + (connected ? 'متصل' : s.sub) + '</div>' +
+          '</div>' +
+          iconHtml +
+        '</div>'
+      );
+    }).join("");
+  }
 
   const errEl = document.getElementById("modalErr");
   if (appState.vipError) {
